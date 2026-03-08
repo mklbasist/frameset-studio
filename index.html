@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FRAMESET — Minimalist Poster Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --border: #2e2e2e;
+    --text: #f0ede8;
+    --muted: #888;
+    --accent: #c8b99a;
+    --poster-bg: #e8e5e0;
+    --poster-text: #111;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  header {
+    padding: 18px 36px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+
+  .logo {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700; font-size: 19px;
+    letter-spacing: 0.3em; color: var(--text);
+  }
+  .logo span { color: var(--accent); }
+  .tagline { font-size: 10px; color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase; }
+
+  .studio-layout {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ── CONTROLS ── */
+  .controls {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 24px 22px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .section-label {
+    font-size: 9.5px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 12px; font-weight: 500;
+  }
+
+  .upload-zone {
+    border: 1.5px dashed var(--border);
+    border-radius: 4px; padding: 26px 16px;
+    text-align: center; cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .upload-zone:hover { border-color: var(--accent); background: rgba(200,185,154,0.04); }
+  .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .upload-icon { font-size: 24px; margin-bottom: 8px; display: block; }
+  .upload-text { font-size: 11px; color: var(--muted); line-height: 1.6; }
+  .upload-text strong { color: var(--accent); display: block; font-size: 12px; margin-bottom: 3px; font-weight: 500; }
+
+  .field-group { display: flex; flex-direction: column; gap: 10px; }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+
+  label { font-size: 9.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+
+  input[type="text"], input[type="number"] {
+    background: #111; border: 1px solid var(--border);
+    color: var(--text); padding: 9px 12px; font-size: 12px;
+    font-family: 'Inter', sans-serif; border-radius: 3px;
+    outline: none; transition: border-color 0.2s; width: 100%;
+  }
+  input:focus { border-color: var(--accent); }
+  input::placeholder { color: #3a3a3a; }
+
+  .starring-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+
+  .download-btn {
+    background: var(--accent); color: #111; border: none;
+    padding: 13px 20px; font-family: 'Oswald', sans-serif;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.25em;
+    text-transform: uppercase; cursor: pointer; border-radius: 3px;
+    width: 100%; transition: background 0.2s, transform 0.1s;
+  }
+  .download-btn:hover { background: #ddd0b8; }
+  .download-btn:active { transform: scale(0.99); }
+
+  #upload-thumb {
+    width: 100%; height: 56px; object-fit: cover;
+    border-radius: 3px; margin-top: 8px; display: none;
+    border: 1px solid var(--border);
+  }
+
+  .divider { height: 1px; background: var(--border); flex-shrink: 0; }
+
+  /* hint pill shown after image upload */
+  .pan-hint {
+    display: none;
+    font-size: 10px; color: var(--muted);
+    text-align: center; letter-spacing: 0.08em;
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    margin-top: 8px;
+  }
+
+  /* ── PREVIEW AREA ── */
+  .preview-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0a0a0a;
+    position: relative;
+    overflow: hidden;
+  }
+  .preview-area::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, #1c1a17 0%, #0a0a0a 70%);
+    pointer-events: none;
+  }
+
+  .poster-scaler {
+    position: relative; z-index: 1;
+    transform-origin: center center;
+  }
+
+  /* ── POSTER outer shell — rounded corners, clips everything ── */
+  .poster-outer {
+    width: 564px; height: 846px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 32px 100px rgba(0,0,0,0.92), 0 0 0 1px rgba(255,255,255,0.06);
+    display: flex; flex-direction: column;
+    background: var(--poster-bg);
+  }
+
+  /* image section with padding so poster-bg shows around it */
+  .poster-image-wrap {
+    padding: 20px 20px 0 20px;
+    background: var(--poster-bg);
+    flex-shrink: 0;
+  }
+
+  /* the clipping frame */
+  .poster-image-inner {
+    width: 100%; height: 618px;
+    overflow: hidden;
+    background: #222;
+    position: relative;
+    /* cursor changes based on state */
+    cursor: grab;
+  }
+  .poster-image-inner.dragging { cursor: grabbing; }
+  .poster-image-inner.no-image { cursor: default; }
+
+  /* image is absolutely positioned; JS moves it */
+  #posterImg {
+    position: absolute;
+    display: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    /* size & position set by JS */
+  }
+
+  .poster-image-placeholder {
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    color: #555; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    height: 100%; justify-content: center;
+  }
+
+  /* info panel */
+  .poster-info {
+    flex: 1; padding: 13px 22px 16px;
+    background: var(--poster-bg);
+    display: flex; flex-direction: column; justify-content: flex-start;
+  }
+
+  .poster-title-line { display: flex; align-items: baseline; gap: 11px; margin-bottom: 9px; }
+
+  .poster-title {
+    font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 34px;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--poster-text); line-height: 1;
+  }
+  .poster-year {
+    font-family: 'Oswald', sans-serif; font-weight: 400; font-size: 22px;
+    color: var(--poster-text); letter-spacing: 0.04em;
+  }
+
+  .poster-meta { display: flex; flex-direction: column; gap: 3px; }
+
+  .poster-meta-row { display: grid; grid-template-columns: 118px 1fr; align-items: baseline; }
+
+  .poster-meta-key {
+    font-family: 'Inter', sans-serif; font-size: 11px;
+    letter-spacing: 0.06em; color: #666; text-transform: lowercase; font-weight: 400;
+  }
+  .poster-meta-val {
+    font-family: 'Oswald', sans-serif; font-size: 13px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--poster-text); font-weight: 500;
+  }
+
+  .poster-starring-row {
+    display: grid; grid-template-columns: 118px 1fr;
+    align-items: baseline; margin-top: 14px;
+  }
+  .poster-starring-val {
+    font-family: 'Oswald', sans-serif; font-size: 12px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--poster-text); font-weight: 500; line-height: 1.7;
+  }
+
+
+  /* ── FLOATING FOOTER — slides up from bottom ── */
+  .footer-trigger {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .footer-tab {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    padding: 5px 18px 4px;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    transition: color 0.2s, background 0.2s;
+    user-select: none;
+  }
+
+  .footer-trigger:hover .footer-tab {
+    color: var(--accent);
+    background: #222;
+  }
+
+  .footer-panel {
+    position: fixed;
+    bottom: -80px;
+    left: 0; right: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    transition: bottom 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 99;
+  }
+
+  .footer-panel.open { bottom: 0; }
+
+  .footer-text {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  .footer-text .heart { color: #c0392b; }
+
+  .footer-x-link {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
+    border: 1px solid var(--border);
+    padding: 7px 14px;
+    border-radius: 20px;
+  }
+
+  .footer-x-link:hover { color: var(--text); border-color: #555; }
+
+  .footer-x-icon {
+    width: 13px; height: 13px;
+    fill: currentColor;
+    flex-shrink: 0;
+  }
+
+  .footer-sep {
+    width: 1px; height: 20px;
+    background: var(--border);
+  }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">FRAME<span>SET</span></div>
+  <div class="tagline">Minimalist Poster Studio</div>
+</header>
+
+<div class="studio-layout">
+
+  <aside class="controls">
+    <div>
+      <div class="section-label">Upload Image</div>
+      <div class="upload-zone" id="uploadZone">
+        <input type="file" accept="image/*" id="imageInput" onchange="handleImage(event)">
+        <span class="upload-icon">🎞</span>
+        <div class="upload-text">
+          <strong>Choose a still</strong>
+          Click or drag an image here
+        </div>
+      </div>
+      <img id="upload-thumb" src="" alt="preview">
+      <div class="pan-hint" id="panHint">✦ Drag image to reposition</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div>
+      <div class="section-label">Film Details</div>
+      <div class="field-group">
+        <div class="field">
+          <label>Movie Title</label>
+          <input type="text" id="fTitle" placeholder="Enter movie title" oninput="update()">
+        </div>
+        <div class="field">
+          <label>Year</label>
+          <input type="number" id="fYear" placeholder="Enter year" min="1888" max="2099" oninput="update()">
+        </div>
+        <div class="field">
+          <label>Running Time</label>
+          <input type="text" id="fRuntime" placeholder="Enter running time" oninput="update()">
+        </div>
+        <div class="field">
+          <label>Directed By</label>
+          <input type="text" id="fDirector" placeholder="Enter director" oninput="update()">
+        </div>
+        <div class="field">
+          <label>Produced By</label>
+          <input type="text" id="fProducer" placeholder="Enter producer" oninput="update()">
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div>
+      <div class="section-label">Starring (up to 4)</div>
+      <div class="starring-grid">
+        <input type="text" id="s1" placeholder="Name 1" oninput="update()">
+        <input type="text" id="s2" placeholder="Name 2" oninput="update()">
+        <input type="text" id="s3" placeholder="Name 3" oninput="update()">
+        <input type="text" id="s4" placeholder="Name 4" oninput="update()">
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <button class="download-btn" onclick="downloadPoster()">↓ Download Poster</button>
+  </aside>
+
+  <main class="preview-area" id="previewArea">
+    <div class="poster-scaler" id="posterScaler">
+      <div class="poster-outer" id="poster">
+
+        <div class="poster-image-wrap">
+          <div class="poster-image-inner no-image" id="posterImageInner">
+            <div class="poster-image-placeholder" id="imagePlaceholder">
+              <svg width="44" height="44" viewBox="0 0 48 48" fill="none">
+                <rect x="4" y="10" width="40" height="28" rx="2" stroke="#777" stroke-width="1.5"/>
+                <circle cx="16" cy="20" r="4" stroke="#777" stroke-width="1.5"/>
+                <path d="M4 34l10-8 8 6 6-5 16 11" stroke="#777" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+              Upload an image to begin
+            </div>
+            <img id="posterImg" src="" alt="">
+          </div>
+        </div>
+
+        <div class="poster-info">
+          <div class="poster-title-line">
+            <span class="poster-title" id="pTitle"></span>
+            <span class="poster-year" id="pYear"></span>
+          </div>
+          <div class="poster-meta">
+            <div class="poster-meta-row" id="rowRuntime" style="display:none">
+              <span class="poster-meta-key">running time</span>
+              <span class="poster-meta-val" id="pRuntime"></span>
+            </div>
+            <div class="poster-meta-row" id="rowDirector" style="display:none">
+              <span class="poster-meta-key">directed by</span>
+              <span class="poster-meta-val" id="pDirector"></span>
+            </div>
+            <div class="poster-meta-row" id="rowProducer" style="display:none">
+              <span class="poster-meta-key">produced by</span>
+              <span class="poster-meta-val" id="pProducer"></span>
+            </div>
+          </div>
+          <div class="poster-starring-row" id="rowStarring" style="display:none">
+            <span class="poster-meta-key">starring</span>
+            <span class="poster-starring-val" id="pStarring"></span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+  // ── Scale poster to fit preview area ──
+  function scalePoster() {
+    const area   = document.getElementById('previewArea');
+    const scaler = document.getElementById('posterScaler');
+    const scale  = Math.min((area.clientWidth - 64) / 564, (area.clientHeight - 64) / 846, 1);
+    scaler.style.transform = `scale(${scale})`;
+    return scale;
+  }
+  window.addEventListener('resize', scalePoster);
+  window.addEventListener('load',   scalePoster);
+
+  // ── Pan state ──
+  const FRAME_W = 524; // 564 - 2*20 padding
+  const FRAME_H = 618;
+
+  let imgNatW = 0, imgNatH = 0;
+  let imgDispW = 0, imgDispH = 0; // displayed size inside frame
+  let posX = 0, posY = 0;         // top-left offset in px
+  let isDragging = false;
+  let dragStartX = 0, dragStartY = 0;
+  let dragStartPosX = 0, dragStartPosY = 0;
+
+  function clamp(val, min, max) { return Math.max(min, Math.min(max, val)); }
+
+  // Centre image on load and compute bounds
+  function initImagePosition() {
+    const scaleW = FRAME_W / imgNatW;
+    const scaleH = FRAME_H / imgNatH;
+    // Cover: scale so image fills frame on both axes — no black bars
+    const fitScale = Math.max(scaleW, scaleH);
+    imgDispW = imgNatW * fitScale;
+    imgDispH = imgNatH * fitScale;
+    // centre
+    posX = (FRAME_W - imgDispW) / 2;
+    posY = (FRAME_H - imgDispH) / 2;
+    applyImgPos();
+  }
+
+  function applyImgPos() {
+    const img = document.getElementById('posterImg');
+    img.style.width  = imgDispW + 'px';
+    img.style.height = imgDispH + 'px';
+    img.style.left   = posX + 'px';
+    img.style.top    = posY + 'px';
+  }
+
+  // Bounds: image can move freely but we allow slight overscroll on each side (image can't disappear)
+  function clampPos(x, y) {
+    const minX = Math.min(0, FRAME_W - imgDispW);
+    const maxX = Math.max(0, FRAME_W - imgDispW);
+    const minY = Math.min(0, FRAME_H - imgDispH);
+    const maxY = Math.max(0, FRAME_H - imgDispH);
+    return {
+      x: clamp(x, minX, maxX),
+      y: clamp(y, minY, maxY)
+    };
+  }
+
+  // ── Drag on the image frame — mouse ──
+  const frame = document.getElementById('posterImageInner');
+
+  frame.addEventListener('mousedown', e => {
+    if (!document.getElementById('posterImg').style.display || document.getElementById('posterImg').style.display === 'none') return;
+    e.preventDefault();
+    isDragging = true;
+    dragStartX    = e.clientX;
+    dragStartY    = e.clientY;
+    dragStartPosX = posX;
+    dragStartPosY = posY;
+    frame.classList.add('dragging');
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    // account for poster CSS scale
+    const scale = parseFloat(document.getElementById('posterScaler').style.transform.replace('scale(','').replace(')','')) || 1;
+    const dx = (e.clientX - dragStartX) / scale;
+    const dy = (e.clientY - dragStartY) / scale;
+    const clamped = clampPos(dragStartPosX + dx, dragStartPosY + dy);
+    posX = clamped.x; posY = clamped.y;
+    applyImgPos();
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    frame.classList.remove('dragging');
+  });
+
+  // ── Drag — touch ──
+  frame.addEventListener('touchstart', e => {
+    if (!document.getElementById('posterImg').src) return;
+    const t = e.touches[0];
+    isDragging    = true;
+    dragStartX    = t.clientX;
+    dragStartY    = t.clientY;
+    dragStartPosX = posX;
+    dragStartPosY = posY;
+    e.preventDefault();
+  }, { passive: false });
+
+  document.addEventListener('touchmove', e => {
+    if (!isDragging) return;
+    const scale = parseFloat(document.getElementById('posterScaler').style.transform.replace('scale(','').replace(')','')) || 1;
+    const t  = e.touches[0];
+    const dx = (t.clientX - dragStartX) / scale;
+    const dy = (t.clientY - dragStartY) / scale;
+    const clamped = clampPos(dragStartPosX + dx, dragStartPosY + dy);
+    posX = clamped.x; posY = clamped.y;
+    applyImgPos();
+    e.preventDefault();
+  }, { passive: false });
+
+  document.addEventListener('touchend', () => { isDragging = false; });
+
+  // ── Image upload ──
+  function handleImage(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      const src = ev.target.result;
+
+      document.getElementById('upload-thumb').src = src;
+      document.getElementById('upload-thumb').style.display = 'block';
+
+      document.getElementById('panHint').style.display = 'block';
+
+      const img = document.getElementById('posterImg');
+      img.onload = function() {
+        imgNatW = img.naturalWidth;
+        imgNatH = img.naturalHeight;
+        initImagePosition();
+      };
+      img.src = src;
+      img.style.display = 'block';
+      document.getElementById('imagePlaceholder').style.display = 'none';
+      frame.classList.remove('no-image');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // ── Text fields ──
+  function val(id) { return document.getElementById(id).value.trim(); }
+
+  function setRow(rowId, valId, text) {
+    const row = document.getElementById(rowId);
+    if (text) { document.getElementById(valId).textContent = text.toUpperCase(); row.style.display = 'grid'; }
+    else { row.style.display = 'none'; }
+  }
+
+  function update() {
+    document.getElementById('pTitle').textContent = val('fTitle').toUpperCase();
+    document.getElementById('pYear').textContent  = val('fYear');
+    setRow('rowRuntime',  'pRuntime',  val('fRuntime'));
+    setRow('rowDirector', 'pDirector', val('fDirector'));
+    setRow('rowProducer', 'pProducer', val('fProducer'));
+    const names = [val('s1'),val('s2'),val('s3'),val('s4')].filter(Boolean).map(n=>n.toUpperCase());
+    const sr = document.getElementById('rowStarring');
+    if (names.length) { document.getElementById('pStarring').textContent = names.join('   '); sr.style.display = 'grid'; }
+    else { sr.style.display = 'none'; }
+  }
+
+  // ── Download ──
+  function downloadPoster() {
+    const poster = document.getElementById('poster');
+    poster.style.borderRadius = '0';
+    html2canvas(poster, {
+      scale: 3, useCORS: true, allowTaint: true,
+      backgroundColor: '#e8e5e0', logging: false,
+      width: 564, height: 846
+    }).then(canvas => {
+      poster.style.borderRadius = '';
+      const a = document.createElement('a');
+      a.download = (val('fTitle')||'poster').replace(/\s+/g,'_').toUpperCase()+'_poster.png';
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+    });
+  }
+
+  // ── Drag & drop file onto upload zone ──
+  const zone = document.getElementById('uploadZone');
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.style.borderColor='#c8b99a'; });
+  zone.addEventListener('dragleave', () => { zone.style.borderColor='#2e2e2e'; });
+  zone.addEventListener('drop', e => {
+    e.preventDefault(); zone.style.borderColor='#2e2e2e';
+    const f = e.dataTransfer.files[0];
+    if (f && f.type.startsWith('image/')) handleImage({target:{files:[f]}});
+  });
+
+  // ── Footer toggle ──
+  function toggleFooter() {
+    const panel = document.getElementById('footerPanel');
+    const tab   = document.querySelector('.footer-tab');
+    const open  = panel.classList.toggle('open');
+    tab.textContent = open ? 'Close ↓' : 'About ↑';
+  }
+
+  document.addEventListener('click', e => {
+    const panel   = document.getElementById('footerPanel');
+    const trigger = document.getElementById('footerTrigger');
+    if (panel && panel.classList.contains('open') && !panel.contains(e.target) && !trigger.contains(e.target)) {
+      panel.classList.remove('open');
+      document.querySelector('.footer-tab').textContent = 'About ↑';
+    }
+  });
+</script>
+
+  <!-- floating footer tab -->
+  <div class="footer-trigger" id="footerTrigger" onclick="toggleFooter()">
+    <div class="footer-tab">About ↑</div>
+  </div>
+
+  <!-- sliding footer panel -->
+  <div class="footer-panel" id="footerPanel">
+    <span class="footer-text">Made with <span class="heart">♥</span> by Mukul &nbsp;·&nbsp; India</span>
+    <div class="footer-sep"></div>
+    <a class="footer-x-link" href="https://x.com/YOUR_HANDLE" target="_blank" rel="noopener">
+      <svg class="footer-x-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+      </svg>
+      @YOUR_HANDLE
+    </a>
+  </div>
+</body>
+</html>
