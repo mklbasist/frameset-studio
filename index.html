@@ -2,326 +2,242 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>FRAMESET — Minimalist Poster Studio</title>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --bg: #0f0f0f;
-    --surface: #1a1a1a;
-    --border: #2e2e2e;
-    --text: #f0ede8;
-    --muted: #888;
-    --accent: #c8b99a;
-    --poster-bg: #e8e5e0;
-    --poster-text: #111;
-  }
+:root {
+  --bg: #0f0f0f;
+  --surface: #1a1a1a;
+  --border: #2e2e2e;
+  --text: #f0ede8;
+  --muted: #777;
+  --accent: #c8b99a;
+  --poster-bg: #e8e5e0;
+  --poster-text: #111;
+}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', sans-serif;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  min-height: 100%;
+}
 
-  header {
-    padding: 18px 36px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-shrink: 0;
-  }
+/* ─── HEADER ─────────────────────────── */
+header {
+  padding: 15px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+.logo { font-family:'Oswald',sans-serif; font-weight:700; font-size:18px; letter-spacing:.3em; }
+.logo span { color: var(--accent); }
+.tagline { font-size:10px; color:var(--muted); letter-spacing:.15em; text-transform:uppercase; }
 
-  .logo {
-    font-family: 'Oswald', sans-serif;
-    font-weight: 700; font-size: 19px;
-    letter-spacing: 0.3em; color: var(--text);
-  }
-  .logo span { color: var(--accent); }
-  .tagline { font-size: 10px; color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase; }
+/* ─── DESKTOP LAYOUT ─────────────────── */
+.studio-layout {
+  display: flex;
+  height: calc(100vh - 53px);
+}
 
+/* ─── CONTROLS PANEL ─────────────────── */
+.controls {
+  width: 300px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  overflow-y: auto;
+}
+.section-label { font-size:9px; letter-spacing:.25em; text-transform:uppercase; color:var(--accent); margin-bottom:10px; font-weight:600; }
+.upload-zone {
+  border:1.5px dashed var(--border); border-radius:4px; padding:20px 14px;
+  text-align:center; cursor:pointer; position:relative; overflow:hidden;
+  transition: border-color .2s;
+}
+.upload-zone:hover { border-color:var(--accent); }
+.upload-zone input { position:absolute; inset:0; opacity:0; cursor:pointer; }
+.upload-icon { font-size:22px; margin-bottom:6px; display:block; }
+.upload-text { font-size:11px; color:var(--muted); line-height:1.5; }
+.upload-text strong { color:var(--accent); display:block; font-size:12px; margin-bottom:2px; font-weight:500; }
+#uploadThumb { width:100%; height:50px; object-fit:cover; border-radius:3px; margin-top:8px; display:none; border:1px solid var(--border); }
+.pan-hint { display:none; font-size:10px; color:var(--muted); text-align:center; padding:5px 10px; border:1px solid var(--border); border-radius:20px; margin-top:7px; }
+
+.divider { height:1px; background:var(--border); flex-shrink:0; }
+
+.field-group { display:flex; flex-direction:column; gap:9px; }
+.field { display:flex; flex-direction:column; gap:4px; }
+label { font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+input[type=text], input[type=number] {
+  background:#111; border:1px solid var(--border); color:var(--text);
+  padding:8px 11px; font-size:12px; font-family:'Inter',sans-serif;
+  border-radius:3px; outline:none; transition:border-color .2s; width:100%;
+}
+input:focus { border-color:var(--accent); }
+input::placeholder { color:#383838; }
+.starring-grid { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+.download-btn {
+  background:var(--accent); color:#111; border:none;
+  padding:13px; font-family:'Oswald',sans-serif; font-size:13px;
+  font-weight:700; letter-spacing:.25em; text-transform:uppercase;
+  cursor:pointer; border-radius:3px; width:100%; transition:background .2s;
+}
+.download-btn:hover { background:#d9c9ac; }
+.download-btn:active { background:#b8a589; }
+
+/* ─── PREVIEW AREA ───────────────────── */
+.preview-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #080808;
+  position: relative;
+  overflow: hidden;
+}
+.preview-area::before {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background: radial-gradient(ellipse at 60% 40%, #1d1b18 0%, #080808 70%);
+}
+.poster-scaler {
+  position: relative;
+  z-index: 1;
+  transform-origin: center center;
+}
+
+/* ─── THE POSTER ─────────────────────── */
+/* Fixed real dimensions — always 564×846, scaled via CSS transform */
+.poster {
+  width: 564px;
+  height: 846px;
+  background: var(--poster-bg);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 40px 120px rgba(0,0,0,.95), 0 0 0 1px rgba(255,255,255,.05);
+  flex-shrink: 0;
+}
+
+/* image section — padded so bg shows around photo */
+.poster-img-wrap { padding:20px 20px 0; background:var(--poster-bg); flex-shrink:0; }
+.poster-img-frame {
+  width:100%; height:618px;
+  overflow:hidden; background:#1e1e1e;
+  position:relative; cursor:grab;
+}
+.poster-img-frame.drag { cursor:grabbing; }
+.poster-img-frame.empty { cursor:default; }
+
+#posterImg {
+  position:absolute; display:none;
+  user-select:none; -webkit-user-drag:none; pointer-events:none;
+}
+.poster-ph {
+  width:100%; height:100%;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:14px; color:#4a4a4a; font-size:10px; letter-spacing:.12em; text-transform:uppercase;
+}
+
+/* info section */
+.poster-info {
+  flex:1; padding:13px 22px 18px;
+  background:var(--poster-bg);
+  display:flex; flex-direction:column;
+}
+.poster-title-row { display:flex; align-items:baseline; gap:10px; margin-bottom:9px; }
+.poster-title { font-family:'Oswald',sans-serif; font-weight:700; font-size:34px; letter-spacing:.03em; text-transform:uppercase; color:var(--poster-text); line-height:1; }
+.poster-year  { font-family:'Oswald',sans-serif; font-weight:400; font-size:21px; color:var(--poster-text); letter-spacing:.03em; }
+.poster-meta  { display:flex; flex-direction:column; gap:3px; }
+.poster-row   { display:grid; grid-template-columns:116px 1fr; align-items:baseline; }
+.poster-key   { font-family:'Inter',sans-serif; font-size:10.5px; letter-spacing:.05em; color:#5e5e5e; font-weight:400; }
+.poster-val   { font-family:'Oswald',sans-serif; font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:var(--poster-text); font-weight:500; }
+.poster-star-row { display:grid; grid-template-columns:116px 1fr; align-items:baseline; margin-top:13px; }
+.poster-star-val { font-family:'Oswald',sans-serif; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--poster-text); font-weight:500; line-height:1.7; }
+
+/* ─── FOOTER ─────────────────────────── */
+.footer-trigger {
+  position:fixed; bottom:0; left:50%; transform:translateX(-50%);
+  z-index:100; cursor:pointer;
+}
+.footer-tab {
+  background:var(--surface); border:1px solid var(--border); border-bottom:none;
+  border-radius:8px 8px 0 0; padding:5px 18px 4px;
+  font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted);
+  transition:color .2s; user-select:none; white-space:nowrap;
+}
+.footer-trigger:hover .footer-tab { color:var(--accent); }
+.footer-panel {
+  position:fixed; bottom:-90px; left:0; right:0; height:72px;
+  background:var(--surface); border-top:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center; gap:18px;
+  transition:bottom .35s cubic-bezier(.4,0,.2,1); z-index:99;
+}
+.footer-panel.open { bottom:0; }
+.footer-text { font-size:12px; color:var(--muted); letter-spacing:.07em; }
+.footer-text .heart { color:#c0392b; }
+.footer-sep { width:1px; height:18px; background:var(--border); }
+.footer-link {
+  display:flex; align-items:center; gap:7px; text-decoration:none;
+  color:var(--muted); font-size:12px; transition:color .2s;
+  border:1px solid var(--border); padding:6px 14px; border-radius:20px;
+}
+.footer-link:hover { color:var(--text); border-color:#555; }
+.footer-link svg { width:13px; height:13px; fill:currentColor; }
+
+/* ─── MOBILE ──────────────────────────── */
+@media (max-width: 700px) {
+  .tagline { display:none; }
+
+  /* stack vertically — form on top, preview below */
   .studio-layout {
-    display: grid;
-    grid-template-columns: 340px 1fr;
-    flex: 1;
-    overflow: hidden;
+    flex-direction: column;
+    height: auto;
+    min-height: calc(100vh - 53px);
   }
 
-  /* ── CONTROLS ── */
   .controls {
-    background: var(--surface);
-    border-right: 1px solid var(--border);
-    padding: 24px 22px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    overflow-y: visible;
+    height: auto;
+    gap: 16px;
+    padding: 16px;
   }
 
-  .section-label {
-    font-size: 9.5px; letter-spacing: 0.25em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 12px; font-weight: 500;
-  }
-
-  .upload-zone {
-    border: 1.5px dashed var(--border);
-    border-radius: 4px; padding: 26px 16px;
-    text-align: center; cursor: pointer;
-    transition: border-color 0.2s, background 0.2s;
-    position: relative; overflow: hidden;
-  }
-  .upload-zone:hover { border-color: var(--accent); background: rgba(200,185,154,0.04); }
-  .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-  .upload-icon { font-size: 24px; margin-bottom: 8px; display: block; }
-  .upload-text { font-size: 11px; color: var(--muted); line-height: 1.6; }
-  .upload-text strong { color: var(--accent); display: block; font-size: 12px; margin-bottom: 3px; font-weight: 500; }
-
-  .field-group { display: flex; flex-direction: column; gap: 10px; }
-  .field { display: flex; flex-direction: column; gap: 5px; }
-
-  label { font-size: 9.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
-
-  input[type="text"], input[type="number"] {
-    background: #111; border: 1px solid var(--border);
-    color: var(--text); padding: 9px 12px; font-size: 12px;
-    font-family: 'Inter', sans-serif; border-radius: 3px;
-    outline: none; transition: border-color 0.2s; width: 100%;
-  }
-  input:focus { border-color: var(--accent); }
-  input::placeholder { color: #3a3a3a; }
-
-  .starring-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
-
-  .download-btn {
-    background: var(--accent); color: #111; border: none;
-    padding: 13px 20px; font-family: 'Oswald', sans-serif;
-    font-size: 13px; font-weight: 600; letter-spacing: 0.25em;
-    text-transform: uppercase; cursor: pointer; border-radius: 3px;
-    width: 100%; transition: background 0.2s, transform 0.1s;
-  }
-  .download-btn:hover { background: #ddd0b8; }
-  .download-btn:active { transform: scale(0.99); }
-
-  #upload-thumb {
-    width: 100%; height: 56px; object-fit: cover;
-    border-radius: 3px; margin-top: 8px; display: none;
-    border: 1px solid var(--border);
-  }
-
-  .divider { height: 1px; background: var(--border); flex-shrink: 0; }
-
-  /* hint pill shown after image upload */
-  .pan-hint {
-    display: none;
-    font-size: 10px; color: var(--muted);
-    text-align: center; letter-spacing: 0.08em;
-    padding: 6px 10px;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    margin-top: 8px;
-  }
-
-  /* ── PREVIEW AREA ── */
+  /* preview takes up a good chunk of screen */
   .preview-area {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #0a0a0a;
-    position: relative;
-    overflow: hidden;
-  }
-  .preview-area::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse at center, #1c1a17 0%, #0a0a0a 70%);
-    pointer-events: none;
-  }
-
-  .poster-scaler {
-    position: relative; z-index: 1;
-    transform-origin: center center;
-  }
-
-  /* ── POSTER outer shell — rounded corners, clips everything ── */
-  .poster-outer {
-    width: 564px; height: 846px;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 32px 100px rgba(0,0,0,0.92), 0 0 0 1px rgba(255,255,255,0.06);
-    display: flex; flex-direction: column;
-    background: var(--poster-bg);
-  }
-
-  /* image section with padding so poster-bg shows around it */
-  .poster-image-wrap {
-    padding: 20px 20px 0 20px;
-    background: var(--poster-bg);
+    width: 100%;
+    height: 75vw;
+    min-height: 280px;
     flex-shrink: 0;
-  }
-
-  /* the clipping frame */
-  .poster-image-inner {
-    width: 100%; height: 618px;
-    overflow: hidden;
-    background: #222;
-    position: relative;
-    /* cursor changes based on state */
-    cursor: grab;
-  }
-  .poster-image-inner.dragging { cursor: grabbing; }
-  .poster-image-inner.no-image { cursor: default; }
-
-  /* image is absolutely positioned; JS moves it */
-  #posterImg {
-    position: absolute;
-    display: none;
-    user-select: none;
-    -webkit-user-drag: none;
-    /* size & position set by JS */
-  }
-
-  .poster-image-placeholder {
-    display: flex; flex-direction: column; align-items: center; gap: 14px;
-    color: #555; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
-    height: 100%; justify-content: center;
-  }
-
-  /* info panel */
-  .poster-info {
-    flex: 1; padding: 13px 22px 16px;
-    background: var(--poster-bg);
-    display: flex; flex-direction: column; justify-content: flex-start;
-  }
-
-  .poster-title-line { display: flex; align-items: baseline; gap: 11px; margin-bottom: 9px; }
-
-  .poster-title {
-    font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 34px;
-    letter-spacing: 0.04em; text-transform: uppercase;
-    color: var(--poster-text); line-height: 1;
-  }
-  .poster-year {
-    font-family: 'Oswald', sans-serif; font-weight: 400; font-size: 22px;
-    color: var(--poster-text); letter-spacing: 0.04em;
-  }
-
-  .poster-meta { display: flex; flex-direction: column; gap: 3px; }
-
-  .poster-meta-row { display: grid; grid-template-columns: 118px 1fr; align-items: baseline; }
-
-  .poster-meta-key {
-    font-family: 'Inter', sans-serif; font-size: 11px;
-    letter-spacing: 0.06em; color: #666; text-transform: lowercase; font-weight: 400;
-  }
-  .poster-meta-val {
-    font-family: 'Oswald', sans-serif; font-size: 13px;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--poster-text); font-weight: 500;
-  }
-
-  .poster-starring-row {
-    display: grid; grid-template-columns: 118px 1fr;
-    align-items: baseline; margin-top: 14px;
-  }
-  .poster-starring-val {
-    font-family: 'Oswald', sans-serif; font-size: 12px;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--poster-text); font-weight: 500; line-height: 1.7;
-  }
-
-
-  /* ── FLOATING FOOTER — slides up from bottom ── */
-  .footer-trigger {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-  }
-
-  .footer-tab {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-bottom: none;
-    border-radius: 8px 8px 0 0;
-    padding: 5px 18px 4px;
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    transition: color 0.2s, background 0.2s;
-    user-select: none;
-  }
-
-  .footer-trigger:hover .footer-tab {
-    color: var(--accent);
-    background: #222;
   }
 
   .footer-panel {
-    position: fixed;
-    bottom: -80px;
-    left: 0; right: 0;
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    transition: bottom 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 99;
+    height: auto;
+    min-height: 60px;
+    bottom: -120px;
+    padding: 14px 20px;
+    flex-wrap: wrap;
+    gap: 10px;
   }
+}
 
-  .footer-panel.open { bottom: 0; }
-
-  .footer-text {
-    font-size: 12px;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-  }
-
-  .footer-text .heart { color: #c0392b; }
-
-  .footer-x-link {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    text-decoration: none;
-    color: var(--muted);
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    transition: color 0.2s;
-    border: 1px solid var(--border);
-    padding: 7px 14px;
-    border-radius: 20px;
-  }
-
-  .footer-x-link:hover { color: var(--text); border-color: #555; }
-
-  .footer-x-icon {
-    width: 13px; height: 13px;
-    fill: currentColor;
-    flex-shrink: 0;
-  }
-
-  .footer-sep {
-    width: 1px; height: 20px;
-    background: var(--border);
-  }
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+::-webkit-scrollbar { width:4px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
 </style>
 </head>
 <body>
@@ -333,19 +249,18 @@
 
 <div class="studio-layout">
 
+  <!-- CONTROLS -->
   <aside class="controls">
+
     <div>
       <div class="section-label">Upload Image</div>
       <div class="upload-zone" id="uploadZone">
-        <input type="file" accept="image/*" id="imageInput" onchange="handleImage(event)">
+        <input type="file" accept="image/*" id="imgInput" onchange="handleUpload(event)">
         <span class="upload-icon">🎞</span>
-        <div class="upload-text">
-          <strong>Choose a still</strong>
-          Click or drag an image here
-        </div>
+        <div class="upload-text"><strong>Choose a still</strong>Click or drag here</div>
       </div>
-      <img id="upload-thumb" src="" alt="preview">
-      <div class="pan-hint" id="panHint">✦ Drag image to reposition</div>
+      <img id="uploadThumb" src="" alt="">
+      <div class="pan-hint" id="panHint">✦ Drag the image to reposition</div>
     </div>
 
     <div class="divider"></div>
@@ -353,26 +268,11 @@
     <div>
       <div class="section-label">Film Details</div>
       <div class="field-group">
-        <div class="field">
-          <label>Movie Title</label>
-          <input type="text" id="fTitle" placeholder="Enter movie title" oninput="update()">
-        </div>
-        <div class="field">
-          <label>Year</label>
-          <input type="number" id="fYear" placeholder="Enter year" min="1888" max="2099" oninput="update()">
-        </div>
-        <div class="field">
-          <label>Running Time</label>
-          <input type="text" id="fRuntime" placeholder="Enter running time" oninput="update()">
-        </div>
-        <div class="field">
-          <label>Directed By</label>
-          <input type="text" id="fDirector" placeholder="Enter director" oninput="update()">
-        </div>
-        <div class="field">
-          <label>Produced By</label>
-          <input type="text" id="fProducer" placeholder="Enter producer" oninput="update()">
-        </div>
+        <div class="field"><label>Movie Title</label><input type="text" id="fTitle" placeholder="Enter movie title" oninput="update()"></div>
+        <div class="field"><label>Year</label><input type="number" id="fYear" placeholder="Enter year" oninput="update()"></div>
+        <div class="field"><label>Running Time</label><input type="text" id="fRuntime" placeholder="Enter running time" oninput="update()"></div>
+        <div class="field"><label>Directed By</label><input type="text" id="fDirector" placeholder="Enter director" oninput="update()"></div>
+        <div class="field"><label>Produced By</label><input type="text" id="fProducer" placeholder="Enter producer" oninput="update()"></div>
       </div>
     </div>
 
@@ -391,19 +291,21 @@
     <div class="divider"></div>
 
     <button class="download-btn" onclick="downloadPoster()">↓ Download Poster</button>
+
   </aside>
 
+  <!-- PREVIEW -->
   <main class="preview-area" id="previewArea">
     <div class="poster-scaler" id="posterScaler">
-      <div class="poster-outer" id="poster">
+      <div class="poster" id="poster">
 
-        <div class="poster-image-wrap">
-          <div class="poster-image-inner no-image" id="posterImageInner">
-            <div class="poster-image-placeholder" id="imagePlaceholder">
-              <svg width="44" height="44" viewBox="0 0 48 48" fill="none">
-                <rect x="4" y="10" width="40" height="28" rx="2" stroke="#777" stroke-width="1.5"/>
-                <circle cx="16" cy="20" r="4" stroke="#777" stroke-width="1.5"/>
-                <path d="M4 34l10-8 8 6 6-5 16 11" stroke="#777" stroke-width="1.5" stroke-linejoin="round"/>
+        <div class="poster-img-wrap">
+          <div class="poster-img-frame empty" id="imgFrame">
+            <div class="poster-ph" id="posterPh">
+              <svg width="42" height="42" viewBox="0 0 48 48" fill="none">
+                <rect x="4" y="10" width="40" height="28" rx="2" stroke="#555" stroke-width="1.5"/>
+                <circle cx="16" cy="20" r="4" stroke="#555" stroke-width="1.5"/>
+                <path d="M4 34l10-8 8 6 6-5 16 11" stroke="#555" stroke-width="1.5" stroke-linejoin="round"/>
               </svg>
               Upload an image to begin
             </div>
@@ -412,27 +314,18 @@
         </div>
 
         <div class="poster-info">
-          <div class="poster-title-line">
+          <div class="poster-title-row">
             <span class="poster-title" id="pTitle"></span>
-            <span class="poster-year" id="pYear"></span>
+            <span class="poster-year"  id="pYear"></span>
           </div>
           <div class="poster-meta">
-            <div class="poster-meta-row" id="rowRuntime" style="display:none">
-              <span class="poster-meta-key">running time</span>
-              <span class="poster-meta-val" id="pRuntime"></span>
-            </div>
-            <div class="poster-meta-row" id="rowDirector" style="display:none">
-              <span class="poster-meta-key">directed by</span>
-              <span class="poster-meta-val" id="pDirector"></span>
-            </div>
-            <div class="poster-meta-row" id="rowProducer" style="display:none">
-              <span class="poster-meta-key">produced by</span>
-              <span class="poster-meta-val" id="pProducer"></span>
-            </div>
+            <div class="poster-row" id="rowRuntime"  style="display:none"><span class="poster-key">running time</span><span class="poster-val" id="pRuntime"></span></div>
+            <div class="poster-row" id="rowDirector" style="display:none"><span class="poster-key">directed by</span><span class="poster-val" id="pDirector"></span></div>
+            <div class="poster-row" id="rowProducer" style="display:none"><span class="poster-key">produced by</span><span class="poster-val" id="pProducer"></span></div>
           </div>
-          <div class="poster-starring-row" id="rowStarring" style="display:none">
-            <span class="poster-meta-key">starring</span>
-            <span class="poster-starring-val" id="pStarring"></span>
+          <div class="poster-star-row" id="rowStarring" style="display:none">
+            <span class="poster-key">starring</span>
+            <span class="poster-star-val" id="pStarring"></span>
           </div>
         </div>
 
@@ -442,231 +335,270 @@
 
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<!-- FOOTER -->
+<div class="footer-trigger" id="footerTrigger" onclick="toggleFooter()">
+  <div class="footer-tab" id="footerTab">About ↑</div>
+</div>
+<div class="footer-panel" id="footerPanel">
+  <span class="footer-text">Made with <span class="heart">♥</span> by Mukul &nbsp;·&nbsp; India</span>
+  <div class="footer-sep"></div>
+  <a class="footer-link" href="https://x.com/YOUR_HANDLE" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    @YOUR_HANDLE
+  </a>
+</div>
+
 <script>
-  // ── Scale poster to fit preview area ──
-  function scalePoster() {
-    const area   = document.getElementById('previewArea');
-    const scaler = document.getElementById('posterScaler');
-    const scale  = Math.min((area.clientWidth - 64) / 564, (area.clientHeight - 64) / 846, 1);
-    scaler.style.transform = `scale(${scale})`;
-    return scale;
-  }
-  window.addEventListener('resize', scalePoster);
-  window.addEventListener('load',   scalePoster);
+// ── Constants ──────────────────────────────────────────────────────────────
+const PW = 564, PH = 846;   // poster dimensions
+const FX = 20,  FY = 20;    // image frame offset (padding)
+const FW = 524, FH = 618;   // image frame size (PW - 2*20, fixed height)
 
-  // ── Pan state ──
-  const FRAME_W = 524; // 564 - 2*20 padding
-  const FRAME_H = 618;
+// ── Image state ────────────────────────────────────────────────────────────
+let natW = 0, natH = 0;     // natural image size
+let dW = 0,   dH = 0;       // display size inside frame
+let px = 0,   py = 0;       // current position (top-left of image inside frame)
+let dragging = false;
+let dx0 = 0, dy0 = 0, px0 = 0, py0 = 0;
 
-  let imgNatW = 0, imgNatH = 0;
-  let imgDispW = 0, imgDispH = 0; // displayed size inside frame
-  let posX = 0, posY = 0;         // top-left offset in px
-  let isDragging = false;
-  let dragStartX = 0, dragStartY = 0;
-  let dragStartPosX = 0, dragStartPosY = 0;
+// ── Scale poster to fit preview area ──────────────────────────────────────
+function scalePoser() {
+  const area   = document.getElementById('previewArea');
+  const scaler = document.getElementById('posterScaler');
+  const pad    = 32;
+  const s      = Math.min((area.clientWidth - pad) / PW, (area.clientHeight - pad) / PH, 1);
+  scaler.style.transform = `scale(${s})`;
+}
+window.addEventListener('resize', scalePoser);
+window.addEventListener('load',   scalePoser);
 
-  function clamp(val, min, max) { return Math.max(min, Math.min(max, val)); }
+function getScale() {
+  const t = document.getElementById('posterScaler').style.transform || 'scale(1)';
+  return parseFloat(t.replace('scale(','')) || 1;
+}
 
-  // Centre image on load and compute bounds
-  function initImagePosition() {
-    const scaleW = FRAME_W / imgNatW;
-    const scaleH = FRAME_H / imgNatH;
-    // Cover: scale so image fills frame on both axes — no black bars
-    const fitScale = Math.max(scaleW, scaleH);
-    imgDispW = imgNatW * fitScale;
-    imgDispH = imgNatH * fitScale;
-    // centre
-    posX = (FRAME_W - imgDispW) / 2;
-    posY = (FRAME_H - imgDispH) / 2;
-    applyImgPos();
-  }
+// ── Position image with cover + centre ────────────────────────────────────
+function initPos() {
+  const s = Math.max(FW / natW, FH / natH);
+  dW = natW * s;
+  dH = natH * s;
+  px = (FW - dW) / 2;
+  py = (FH - dH) / 2;
+  applyPos();
+}
 
-  function applyImgPos() {
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+function applyPos() {
+  const img = document.getElementById('posterImg');
+  img.style.width  = dW + 'px';
+  img.style.height = dH + 'px';
+  img.style.left   = px + 'px';
+  img.style.top    = py + 'px';
+}
+
+function clampedPos(x, y) {
+  return {
+    x: clamp(x, Math.min(0, FW - dW), Math.max(0, FW - dW)),
+    y: clamp(y, Math.min(0, FH - dH), Math.max(0, FH - dH))
+  };
+}
+
+// ── Drag ───────────────────────────────────────────────────────────────────
+const frame = document.getElementById('imgFrame');
+
+frame.addEventListener('mousedown', e => {
+  if (!natW) return;
+  e.preventDefault();
+  dragging = true; dx0 = e.clientX; dy0 = e.clientY; px0 = px; py0 = py;
+  frame.classList.add('drag');
+});
+document.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  const sc = getScale();
+  const c  = clampedPos(px0 + (e.clientX - dx0) / sc, py0 + (e.clientY - dy0) / sc);
+  px = c.x; py = c.y; applyPos();
+});
+document.addEventListener('mouseup', () => { dragging = false; frame.classList.remove('drag'); });
+
+frame.addEventListener('touchstart', e => {
+  if (!natW) return;
+  const t = e.touches[0];
+  dragging = true; dx0 = t.clientX; dy0 = t.clientY; px0 = px; py0 = py;
+  e.preventDefault();
+}, { passive: false });
+document.addEventListener('touchmove', e => {
+  if (!dragging) return;
+  const sc = getScale();
+  const t  = e.touches[0];
+  const c  = clampedPos(px0 + (t.clientX - dx0) / sc, py0 + (t.clientY - dy0) / sc);
+  px = c.x; py = c.y; applyPos();
+  e.preventDefault();
+}, { passive: false });
+document.addEventListener('touchend', () => { dragging = false; });
+
+// ── Upload ─────────────────────────────────────────────────────────────────
+function handleUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const src = ev.target.result;
+    document.getElementById('uploadThumb').src = src;
+    document.getElementById('uploadThumb').style.display = 'block';
+    document.getElementById('panHint').style.display = 'block';
     const img = document.getElementById('posterImg');
-    img.style.width  = imgDispW + 'px';
-    img.style.height = imgDispH + 'px';
-    img.style.left   = posX + 'px';
-    img.style.top    = posY + 'px';
+    img.onload = () => { natW = img.naturalWidth; natH = img.naturalHeight; initPos(); };
+    img.src = src;
+    img.style.display = 'block';
+    document.getElementById('posterPh').style.display = 'none';
+    frame.classList.remove('empty');
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── Text fields ────────────────────────────────────────────────────────────
+function v(id) { return document.getElementById(id).value.trim(); }
+function setRow(rowId, valId, text) {
+  const row = document.getElementById(rowId);
+  if (text) { document.getElementById(valId).textContent = text.toUpperCase(); row.style.display = 'grid'; }
+  else row.style.display = 'none';
+}
+function update() {
+  document.getElementById('pTitle').textContent = v('fTitle').toUpperCase();
+  document.getElementById('pYear').textContent  = v('fYear');
+  setRow('rowRuntime',  'pRuntime',  v('fRuntime'));
+  setRow('rowDirector', 'pDirector', v('fDirector'));
+  setRow('rowProducer', 'pProducer', v('fProducer'));
+  const names = [v('s1'),v('s2'),v('s3'),v('s4')].filter(Boolean).map(n => n.toUpperCase());
+  const sr = document.getElementById('rowStarring');
+  if (names.length) { document.getElementById('pStarring').textContent = names.join('   '); sr.style.display = 'grid'; }
+  else sr.style.display = 'none';
+}
+
+// ── Download — pure Canvas, no html2canvas ─────────────────────────────────
+// Draws the poster manually so it always matches what you see,
+// regardless of CSS transforms or mobile scaling.
+function downloadPoster() {
+  const S  = 3; // 3× = 1692×2538 px output
+  const cv = document.createElement('canvas');
+  cv.width  = PW * S;
+  cv.height = PH * S;
+  const ctx = cv.getContext('2d');
+  ctx.scale(S, S);
+
+  // 1. Background
+  ctx.fillStyle = '#e8e5e0';
+  ctx.fillRect(0, 0, PW, PH);
+
+  // 2. Photo (clipped to frame area)
+  const imgEl = document.getElementById('posterImg');
+  if (natW > 0 && imgEl.complete && imgEl.naturalWidth > 0) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(FX, FY, FW, FH);
+    ctx.clip();
+    ctx.drawImage(imgEl, FX + px, FY + py, dW, dH);
+    ctx.restore();
   }
 
-  // Bounds: image can move freely but we allow slight overscroll on each side (image can't disappear)
-  function clampPos(x, y) {
-    const minX = Math.min(0, FRAME_W - imgDispW);
-    const maxX = Math.max(0, FRAME_W - imgDispW);
-    const minY = Math.min(0, FRAME_H - imgDispH);
-    const maxY = Math.max(0, FRAME_H - imgDispH);
-    return {
-      x: clamp(x, minX, maxX),
-      y: clamp(y, minY, maxY)
-    };
-  }
+  // 3. Info panel background
+  const INFO_Y = FY + FH; // 638
+  ctx.fillStyle = '#e8e5e0';
+  ctx.fillRect(0, INFO_Y, PW, PH - INFO_Y);
 
-  // ── Drag on the image frame — mouse ──
-  const frame = document.getElementById('posterImageInner');
+  // 4. Text — load fonts then draw
+  document.fonts.load('700 34px Oswald').then(() => {
+    let y = INFO_Y + 13;
 
-  frame.addEventListener('mousedown', e => {
-    if (!document.getElementById('posterImg').style.display || document.getElementById('posterImg').style.display === 'none') return;
-    e.preventDefault();
-    isDragging = true;
-    dragStartX    = e.clientX;
-    dragStartY    = e.clientY;
-    dragStartPosX = posX;
-    dragStartPosY = posY;
-    frame.classList.add('dragging');
-  });
-
-  document.addEventListener('mousemove', e => {
-    if (!isDragging) return;
-    // account for poster CSS scale
-    const scale = parseFloat(document.getElementById('posterScaler').style.transform.replace('scale(','').replace(')','')) || 1;
-    const dx = (e.clientX - dragStartX) / scale;
-    const dy = (e.clientY - dragStartY) / scale;
-    const clamped = clampPos(dragStartPosX + dx, dragStartPosY + dy);
-    posX = clamped.x; posY = clamped.y;
-    applyImgPos();
-  });
-
-  document.addEventListener('mouseup', () => {
-    if (!isDragging) return;
-    isDragging = false;
-    frame.classList.remove('dragging');
-  });
-
-  // ── Drag — touch ──
-  frame.addEventListener('touchstart', e => {
-    if (!document.getElementById('posterImg').src) return;
-    const t = e.touches[0];
-    isDragging    = true;
-    dragStartX    = t.clientX;
-    dragStartY    = t.clientY;
-    dragStartPosX = posX;
-    dragStartPosY = posY;
-    e.preventDefault();
-  }, { passive: false });
-
-  document.addEventListener('touchmove', e => {
-    if (!isDragging) return;
-    const scale = parseFloat(document.getElementById('posterScaler').style.transform.replace('scale(','').replace(')','')) || 1;
-    const t  = e.touches[0];
-    const dx = (t.clientX - dragStartX) / scale;
-    const dy = (t.clientY - dragStartY) / scale;
-    const clamped = clampPos(dragStartPosX + dx, dragStartPosY + dy);
-    posX = clamped.x; posY = clamped.y;
-    applyImgPos();
-    e.preventDefault();
-  }, { passive: false });
-
-  document.addEventListener('touchend', () => { isDragging = false; });
-
-  // ── Image upload ──
-  function handleImage(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(ev) {
-      const src = ev.target.result;
-
-      document.getElementById('upload-thumb').src = src;
-      document.getElementById('upload-thumb').style.display = 'block';
-
-      document.getElementById('panHint').style.display = 'block';
-
-      const img = document.getElementById('posterImg');
-      img.onload = function() {
-        imgNatW = img.naturalWidth;
-        imgNatH = img.naturalHeight;
-        initImagePosition();
-      };
-      img.src = src;
-      img.style.display = 'block';
-      document.getElementById('imagePlaceholder').style.display = 'none';
-      frame.classList.remove('no-image');
-    };
-    reader.readAsDataURL(file);
-  }
-
-  // ── Text fields ──
-  function val(id) { return document.getElementById(id).value.trim(); }
-
-  function setRow(rowId, valId, text) {
-    const row = document.getElementById(rowId);
-    if (text) { document.getElementById(valId).textContent = text.toUpperCase(); row.style.display = 'grid'; }
-    else { row.style.display = 'none'; }
-  }
-
-  function update() {
-    document.getElementById('pTitle').textContent = val('fTitle').toUpperCase();
-    document.getElementById('pYear').textContent  = val('fYear');
-    setRow('rowRuntime',  'pRuntime',  val('fRuntime'));
-    setRow('rowDirector', 'pDirector', val('fDirector'));
-    setRow('rowProducer', 'pProducer', val('fProducer'));
-    const names = [val('s1'),val('s2'),val('s3'),val('s4')].filter(Boolean).map(n=>n.toUpperCase());
-    const sr = document.getElementById('rowStarring');
-    if (names.length) { document.getElementById('pStarring').textContent = names.join('   '); sr.style.display = 'grid'; }
-    else { sr.style.display = 'none'; }
-  }
-
-  // ── Download ──
-  function downloadPoster() {
-    const poster = document.getElementById('poster');
-    poster.style.borderRadius = '0';
-    html2canvas(poster, {
-      scale: 3, useCORS: true, allowTaint: true,
-      backgroundColor: '#e8e5e0', logging: false,
-      width: 564, height: 846
-    }).then(canvas => {
-      poster.style.borderRadius = '';
-      const a = document.createElement('a');
-      a.download = (val('fTitle')||'poster').replace(/\s+/g,'_').toUpperCase()+'_poster.png';
-      a.href = canvas.toDataURL('image/png');
-      a.click();
-    });
-  }
-
-  // ── Drag & drop file onto upload zone ──
-  const zone = document.getElementById('uploadZone');
-  zone.addEventListener('dragover', e => { e.preventDefault(); zone.style.borderColor='#c8b99a'; });
-  zone.addEventListener('dragleave', () => { zone.style.borderColor='#2e2e2e'; });
-  zone.addEventListener('drop', e => {
-    e.preventDefault(); zone.style.borderColor='#2e2e2e';
-    const f = e.dataTransfer.files[0];
-    if (f && f.type.startsWith('image/')) handleImage({target:{files:[f]}});
-  });
-
-  // ── Footer toggle ──
-  function toggleFooter() {
-    const panel = document.getElementById('footerPanel');
-    const tab   = document.querySelector('.footer-tab');
-    const open  = panel.classList.toggle('open');
-    tab.textContent = open ? 'Close ↓' : 'About ↑';
-  }
-
-  document.addEventListener('click', e => {
-    const panel   = document.getElementById('footerPanel');
-    const trigger = document.getElementById('footerTrigger');
-    if (panel && panel.classList.contains('open') && !panel.contains(e.target) && !trigger.contains(e.target)) {
-      panel.classList.remove('open');
-      document.querySelector('.footer-tab').textContent = 'About ↑';
+    // Title + Year
+    const titleTxt = v('fTitle').toUpperCase();
+    const yearTxt  = v('fYear');
+    if (titleTxt || yearTxt) {
+      y += 34;
+      ctx.fillStyle = '#111';
+      if (titleTxt) {
+        ctx.font = '700 34px Oswald, sans-serif';
+        ctx.fillText(titleTxt, 22, y);
+        if (yearTxt) {
+          const tw = ctx.measureText(titleTxt).width;
+          ctx.font = '400 21px Oswald, sans-serif';
+          ctx.fillText(yearTxt, 22 + tw + 11, y);
+        }
+      } else {
+        ctx.font = '400 21px Oswald, sans-serif';
+        ctx.fillText(yearTxt, 22, y);
+      }
     }
+
+    // Meta rows
+    const rows = [
+      { key: 'running time', val: v('fRuntime').toUpperCase()  },
+      { key: 'directed by',  val: v('fDirector').toUpperCase() },
+      { key: 'produced by',  val: v('fProducer').toUpperCase() },
+    ].filter(r => r.val);
+
+    rows.forEach(r => {
+      y += 17;
+      ctx.fillStyle = '#666';
+      ctx.font = '400 11px Inter, sans-serif';
+      ctx.fillText(r.key, 22, y);
+      ctx.fillStyle = '#111';
+      ctx.font = '500 13px Oswald, sans-serif';
+      ctx.fillText(r.val, 140, y);
+    });
+
+    // Starring
+    const names = [v('s1'),v('s2'),v('s3'),v('s4')].filter(Boolean).map(n => n.toUpperCase());
+    if (names.length) {
+      y += 26;
+      ctx.fillStyle = '#666';
+      ctx.font = '400 11px Inter, sans-serif';
+      ctx.fillText('starring', 22, y);
+      ctx.fillStyle = '#111';
+      ctx.font = '500 12px Oswald, sans-serif';
+      ctx.fillText(names.join('   '), 140, y);
+    }
+
+    // Save
+    cv.toBlob(blob => {
+      const url = URL.createObjectURL(blob);
+      const a   = document.createElement('a');
+      a.download = (v('fTitle') || 'poster').replace(/\s+/g, '_').toUpperCase() + '_poster.png';
+      a.href = url;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+    }, 'image/png');
   });
+}
+
+// ── Footer ─────────────────────────────────────────────────────────────────
+function toggleFooter() {
+  const panel = document.getElementById('footerPanel');
+  const tab   = document.getElementById('footerTab');
+  const open  = panel.classList.toggle('open');
+  tab.textContent = open ? 'Close ↓' : 'About ↑';
+}
+document.addEventListener('click', e => {
+  const panel   = document.getElementById('footerPanel');
+  const trigger = document.getElementById('footerTrigger');
+  if (panel.classList.contains('open') && !panel.contains(e.target) && !trigger.contains(e.target)) {
+    panel.classList.remove('open');
+    document.getElementById('footerTab').textContent = 'About ↑';
+  }
+});
+
+// ── Drag & drop file ───────────────────────────────────────────────────────
+const zone = document.getElementById('uploadZone');
+zone.addEventListener('dragover',  e => { e.preventDefault(); zone.style.borderColor = '#c8b99a'; });
+zone.addEventListener('dragleave', () => { zone.style.borderColor = '#2e2e2e'; });
+zone.addEventListener('drop', e => {
+  e.preventDefault(); zone.style.borderColor = '#2e2e2e';
+  const f = e.dataTransfer.files[0];
+  if (f && f.type.startsWith('image/')) handleUpload({ target: { files: [f] } });
+});
 </script>
-
-  <!-- floating footer tab -->
-  <div class="footer-trigger" id="footerTrigger" onclick="toggleFooter()">
-    <div class="footer-tab">About ↑</div>
-  </div>
-
-  <!-- sliding footer panel -->
-  <div class="footer-panel" id="footerPanel">
-    <span class="footer-text">Made with <span class="heart">♥</span> by Mukul &nbsp;·&nbsp; India</span>
-    <div class="footer-sep"></div>
-    <a class="footer-x-link" href="https://x.com/YOUR_HANDLE" target="_blank" rel="noopener">
-      <svg class="footer-x-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-      </svg>
-      @YOUR_HANDLE
-    </a>
-  </div>
 </body>
 </html>
