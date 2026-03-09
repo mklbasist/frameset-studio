@@ -142,7 +142,7 @@ input::placeholder { color: #383838; }
       <div class="field-group">
         <div class="field"><label>Movie Title</label><input type="text" id="fTitle" placeholder="Enter movie title" oninput="update()"></div>
         <div class="field"><label>Year</label><input type="number" id="fYear" placeholder="Enter year" oninput="update()"></div>
-        <div class="field"><label>Running Time</label><input type="text" id="fRuntime" placeholder="Enter running time" oninput="update()"></div>
+        <div class="field"><label>Running Time</label><input type="number" id="fRuntime" placeholder="e.g. 175" min="1" max="999" oninput="update()"></div>
         <div class="field"><label>Directed By</label><input type="text" id="fDirector" placeholder="Enter director" oninput="update()"></div>
         <div class="field"><label>Produced By</label><input type="text" id="fProducer" placeholder="Enter producer" oninput="update()"></div>
       </div>
@@ -304,7 +304,7 @@ function setRow(rId, vId, text) {
 function update() {
   document.getElementById('pTitle').textContent = v('fTitle').toUpperCase();
   document.getElementById('pYear').textContent  = v('fYear');
-  setRow('rowRuntime',  'pRuntime',  v('fRuntime'));
+  const rt = v('fRuntime'); setRow('rowRuntime', 'pRuntime', rt ? rt + ' MINUTES' : '');
   setRow('rowDirector', 'pDirector', v('fDirector'));
   setRow('rowProducer', 'pProducer', v('fProducer'));
   const names=[v('s1'),v('s2'),v('s3'),v('s4')].filter(Boolean).map(n=>n.toUpperCase());
@@ -317,12 +317,10 @@ function update() {
 // Canvas draws at EXACTLY the CSS sizes — no scale factor confusion.
 // Output is 564×846. On screen that looks normal sized (like an A5 image).
 function downloadPoster() {
-  const cv = document.createElement('canvas');
-  const EX = 4; // 4× = 2256×3120px high res
-  cv.width  = PW * EX;
-  cv.height = PH * EX;
+  const cv  = document.createElement('canvas');
+  cv.width  = PW;
+  cv.height = PH;
   const ctx = cv.getContext('2d');
-  ctx.scale(EX, EX);
 
   // 1 — poster background
   ctx.fillStyle = '#e8e4de';
@@ -379,7 +377,7 @@ function downloadPoster() {
 
     // Meta rows — 24px line height
     const rows = [
-      { key: 'running time', val: v('fRuntime').toUpperCase()  },
+      { key: 'running time', val: v('fRuntime') ? v('fRuntime') + ' MINUTES' : '' },
       { key: 'directed by',  val: v('fDirector').toUpperCase() },
       { key: 'produced by',  val: v('fProducer').toUpperCase() },
     ].filter(r => r.val);
