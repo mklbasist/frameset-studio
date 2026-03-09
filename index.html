@@ -7,237 +7,114 @@
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
-  --bg: #0f0f0f;
-  --surface: #1a1a1a;
-  --border: #2e2e2e;
-  --text: #f0ede8;
-  --muted: #777;
-  --accent: #c8b99a;
-  --poster-bg: #e8e5e0;
-  --poster-text: #111;
+  --bg: #0f0f0f; --surface: #1a1a1a; --border: #2e2e2e;
+  --text: #f0ede8; --muted: #777; --accent: #c8b99a;
 }
+html, body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100%; }
 
-html, body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Inter', sans-serif;
-  min-height: 100%;
-}
-
-/* ─── HEADER ─────────────────────────── */
-header {
-  padding: 15px 24px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--bg);
-  position: sticky;
-  top: 0;
-  z-index: 40;
-}
-.logo { font-family:'Oswald',sans-serif; font-weight:700; font-size:18px; letter-spacing:.3em; }
+/* HEADER */
+header { padding: 15px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--bg); position: sticky; top: 0; z-index: 40; }
+.logo { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: .3em; }
 .logo span { color: var(--accent); }
-.tagline { font-size:10px; color:var(--muted); letter-spacing:.15em; text-transform:uppercase; }
+.tagline { font-size: 10px; color: var(--muted); letter-spacing: .15em; text-transform: uppercase; }
 
-/* ─── DESKTOP LAYOUT ─────────────────── */
-.studio-layout {
-  display: flex;
-  height: calc(100vh - 53px);
-}
+/* LAYOUT */
+.studio-layout { display: flex; height: calc(100vh - 53px); }
 
-/* ─── CONTROLS PANEL ─────────────────── */
-.controls {
-  width: 300px;
-  flex-shrink: 0;
-  background: var(--surface);
-  border-right: 1px solid var(--border);
-  padding: 20px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  overflow-y: auto;
-}
-.section-label { font-size:9px; letter-spacing:.25em; text-transform:uppercase; color:var(--accent); margin-bottom:10px; font-weight:600; }
-.upload-zone {
-  border:1.5px dashed var(--border); border-radius:4px; padding:20px 14px;
-  text-align:center; cursor:pointer; position:relative; overflow:hidden;
-  transition: border-color .2s;
-}
-.upload-zone:hover { border-color:var(--accent); }
-.upload-zone input { position:absolute; inset:0; opacity:0; cursor:pointer; }
-.upload-icon { font-size:22px; margin-bottom:6px; display:block; }
-.upload-text { font-size:11px; color:var(--muted); line-height:1.5; }
-.upload-text strong { color:var(--accent); display:block; font-size:12px; margin-bottom:2px; font-weight:500; }
-#uploadThumb { width:100%; height:50px; object-fit:cover; border-radius:3px; margin-top:8px; display:none; border:1px solid var(--border); }
-.pan-hint { display:none; font-size:10px; color:var(--muted); text-align:center; padding:5px 10px; border:1px solid var(--border); border-radius:20px; margin-top:7px; }
+/* CONTROLS */
+.controls { width: 300px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--border); padding: 20px 18px; display: flex; flex-direction: column; gap: 18px; overflow-y: auto; }
+.section-label { font-size: 9px; letter-spacing: .25em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; font-weight: 600; }
+.upload-zone { border: 1.5px dashed var(--border); border-radius: 4px; padding: 20px 14px; text-align: center; cursor: pointer; position: relative; overflow: hidden; transition: border-color .2s; }
+.upload-zone:hover { border-color: var(--accent); }
+.upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.upload-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.upload-text { font-size: 11px; color: var(--muted); line-height: 1.5; }
+.upload-text strong { color: var(--accent); display: block; font-size: 12px; margin-bottom: 2px; }
+#uploadThumb { width: 100%; height: 50px; object-fit: cover; border-radius: 3px; margin-top: 8px; display: none; border: 1px solid var(--border); }
+.pan-hint { display: none; font-size: 10px; color: var(--muted); text-align: center; padding: 5px 10px; border: 1px solid var(--border); border-radius: 20px; margin-top: 7px; }
+.divider { height: 1px; background: var(--border); flex-shrink: 0; }
+.field-group { display: flex; flex-direction: column; gap: 9px; }
+.field { display: flex; flex-direction: column; gap: 4px; }
+label { font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+input[type=text], input[type=number] { background: #111; border: 1px solid var(--border); color: var(--text); padding: 8px 11px; font-size: 12px; font-family: 'Inter', sans-serif; border-radius: 3px; outline: none; transition: border-color .2s; width: 100%; }
+input:focus { border-color: var(--accent); }
+input::placeholder { color: #383838; }
+.starring-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.download-btn { background: var(--accent); color: #111; border: none; padding: 13px; font-family: 'Oswald', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: .25em; text-transform: uppercase; cursor: pointer; border-radius: 3px; width: 100%; transition: background .2s; }
+.download-btn:hover { background: #d9c9ac; }
+.download-btn:active { background: #b8a589; }
 
-.divider { height:1px; background:var(--border); flex-shrink:0; }
+/* PREVIEW */
+.preview-area { flex: 1; display: flex; align-items: center; justify-content: center; background: #080808; position: relative; overflow: hidden; }
+.preview-area::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 60% 40%, #1d1b18 0%, #080808 70%); pointer-events: none; }
+.poster-scaler { position: relative; z-index: 1; transform-origin: center center; }
 
-.field-group { display:flex; flex-direction:column; gap:9px; }
-.field { display:flex; flex-direction:column; gap:4px; }
-label { font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); font-weight:600; }
-input[type=text], input[type=number] {
-  background:#111; border:1px solid var(--border); color:var(--text);
-  padding:8px 11px; font-size:12px; font-family:'Inter',sans-serif;
-  border-radius:3px; outline:none; transition:border-color .2s; width:100%;
-}
-input:focus { border-color:var(--accent); }
-input::placeholder { color:#383838; }
-.starring-grid { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
-.download-btn {
-  background:var(--accent); color:#111; border:none;
-  padding:13px; font-family:'Oswald',sans-serif; font-size:13px;
-  font-weight:700; letter-spacing:.25em; text-transform:uppercase;
-  cursor:pointer; border-radius:3px; width:100%; transition:background .2s;
-}
-.download-btn:hover { background:#d9c9ac; }
-.download-btn:active { background:#b8a589; }
-
-/* ─── PREVIEW AREA ───────────────────── */
-.preview-area {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #080808;
-  position: relative;
-  overflow: hidden;
-}
-.preview-area::before {
-  content:''; position:absolute; inset:0; pointer-events:none;
-  background: radial-gradient(ellipse at 60% 40%, #1d1b18 0%, #080808 70%);
-}
-.poster-scaler {
-  position: relative;
-  z-index: 1;
-  transform-origin: center center;
-}
-
-/* ─── THE POSTER ─────────────────────── */
-/* Fixed real dimensions — always 564×846, scaled via CSS transform */
+/* ═══════════════════════════════════════
+   POSTER — 564×846px real size
+   Image area:  524×560px (20px padding)
+   Info area:   564×266px
+   ═══════════════════════════════════════ */
 .poster {
-  width: 564px;
-  height: 846px;
-  background: var(--poster-bg);
-  border-radius: 10px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  width: 564px; height: 780px;
+  background: #e8e4de;
+  border-radius: 10px; overflow: hidden;
+  display: flex; flex-direction: column;
   box-shadow: 0 40px 120px rgba(0,0,0,.95), 0 0 0 1px rgba(255,255,255,.05);
   flex-shrink: 0;
 }
 
-/* image section — padded so bg shows around photo */
-.poster-img-wrap { padding:20px 20px 0; background:var(--poster-bg); flex-shrink:0; }
-.poster-img-frame {
-  width:100%; height:580px;
-  overflow:hidden; background:#1e1e1e;
-  position:relative; cursor:grab;
-}
-.poster-img-frame.drag { cursor:grabbing; }
-.poster-img-frame.empty { cursor:default; }
+/* image section */
+.p-img-pad { padding: 20px 20px 0; background: #e8e4de; flex-shrink: 0; }
+.p-img-box { width: 100%; height: 560px; overflow: hidden; background: #1a1a1a; position: relative; cursor: grab; }
+.p-img-box.drag { cursor: grabbing; }
+.p-img-box.empty { cursor: default; }
+#posterImg { position: absolute; display: none; user-select: none; -webkit-user-drag: none; pointer-events: none; }
+.p-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; color: #444; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
 
-#posterImg {
-  position:absolute; display:none;
-  user-select:none; -webkit-user-drag:none; pointer-events:none;
-}
-.poster-ph {
-  width:100%; height:100%;
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  gap:14px; color:#4a4a4a; font-size:10px; letter-spacing:.12em; text-transform:uppercase;
-}
+/* info section — 266px tall */
+.p-info { flex: 1; padding: 10px 22px 20px; background: #e8e4de; display: flex; flex-direction: column; }
 
-/* info section */
-.poster-info {
-  flex:1; padding:16px 22px 20px;
-  background:var(--poster-bg);
-  display:flex; flex-direction:column;
-}
-.poster-title-row { display:flex; align-items:baseline; gap:10px; margin-bottom:9px; }
-.poster-title { font-family:'Oswald',sans-serif; font-weight:700; font-size:34px; letter-spacing:.04em; text-transform:uppercase; color:var(--poster-text); line-height:1; }
-.poster-year  { font-family:'Oswald',sans-serif; font-weight:400; font-size:22px; color:var(--poster-text); letter-spacing:.04em; }
-.poster-meta  { display:flex; flex-direction:column; gap:3px; }
-.poster-row   { display:grid; grid-template-columns:118px 1fr; align-items:baseline; }
-.poster-key   { font-family:'Inter',sans-serif; font-size:11px; letter-spacing:.06em; color:#666; font-weight:400; }
-.poster-val   { font-family:'Oswald',sans-serif; font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:var(--poster-text); font-weight:500; }
-.poster-star-row { display:grid; grid-template-columns:118px 1fr; align-items:baseline; margin-top:14px; }
-.poster-star-val { font-family:'Oswald',sans-serif; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--poster-text); font-weight:500; line-height:1.7; }
+/* TITLE ROW — big bold Oswald */
+.p-title-row { display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px; }
+.p-title { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 46px; letter-spacing: .02em; text-transform: uppercase; color: #111; line-height: 1; }
+.p-year  { font-family: 'Oswald', sans-serif; font-weight: 400; font-size: 28px; color: #111; letter-spacing: .02em; line-height: 1; }
 
-/* ─── FOOTER ─────────────────────────── */
-.footer-trigger {
-  position:fixed; bottom:0; left:50%; transform:translateX(-50%);
-  z-index:100; cursor:pointer;
-}
-.footer-tab {
-  background:var(--surface); border:1px solid var(--border); border-bottom:none;
-  border-radius:8px 8px 0 0; padding:5px 18px 4px;
-  font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted);
-  transition:color .2s; user-select:none; white-space:nowrap;
-}
-.footer-trigger:hover .footer-tab { color:var(--accent); }
-.footer-panel {
-  position:fixed; bottom:-90px; left:0; right:0; height:72px;
-  background:var(--surface); border-top:1px solid var(--border);
-  display:flex; align-items:center; justify-content:center; gap:18px;
-  transition:bottom .35s cubic-bezier(.4,0,.2,1); z-index:99;
-}
-.footer-panel.open { bottom:0; }
-.footer-text { font-size:12px; color:var(--muted); letter-spacing:.07em; }
-.footer-text .heart { color:#c0392b; }
-.footer-sep { width:1px; height:18px; background:var(--border); }
-.footer-link {
-  display:flex; align-items:center; gap:7px; text-decoration:none;
-  color:var(--muted); font-size:12px; transition:color .2s;
-  border:1px solid var(--border); padding:6px 14px; border-radius:20px;
-}
-.footer-link:hover { color:var(--text); border-color:#555; }
-.footer-link svg { width:13px; height:13px; fill:currentColor; }
+/* META ROWS */
+.p-meta { display: flex; flex-direction: column; gap: 2px; }
+.p-row  { display: grid; grid-template-columns: 120px 1fr; align-items: baseline; }
+.p-key  { font-family: 'Inter', sans-serif; font-size: 12px; color: #666; font-weight: 400; letter-spacing: .02em; }
+.p-val  { font-family: 'Oswald', sans-serif; font-size: 15px; font-weight: 600; text-transform: uppercase; color: #111; letter-spacing: .08em; }
 
-/* ─── MOBILE ──────────────────────────── */
+/* STARRING */
+.p-star-row { display: grid; grid-template-columns: 120px 1fr; align-items: baseline; margin-top: 14px; }
+.p-star-val { font-family: 'Oswald', sans-serif; font-size: 14px; font-weight: 600; text-transform: uppercase; color: #111; letter-spacing: .1em; line-height: 1.6; }
+
+/* FOOTER */
+.footer-trigger { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); z-index: 100; cursor: pointer; }
+.footer-tab { background: var(--surface); border: 1px solid var(--border); border-bottom: none; border-radius: 8px 8px 0 0; padding: 5px 18px 4px; font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); user-select: none; transition: color .2s; }
+.footer-trigger:hover .footer-tab { color: var(--accent); }
+.footer-panel { position: fixed; bottom: -90px; left: 0; right: 0; height: 72px; background: var(--surface); border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: center; gap: 18px; transition: bottom .35s cubic-bezier(.4,0,.2,1); z-index: 99; }
+.footer-panel.open { bottom: 0; }
+.footer-text { font-size: 12px; color: var(--muted); letter-spacing: .07em; }
+.footer-text .heart { color: #c0392b; }
+.footer-sep { width: 1px; height: 18px; background: var(--border); }
+.footer-link { display: flex; align-items: center; gap: 7px; text-decoration: none; color: var(--muted); font-size: 12px; border: 1px solid var(--border); padding: 6px 14px; border-radius: 20px; transition: color .2s; }
+.footer-link:hover { color: var(--text); border-color: #555; }
+.footer-link svg { width: 13px; height: 13px; fill: currentColor; }
+
+/* MOBILE */
 @media (max-width: 700px) {
-  .tagline { display:none; }
-
-  /* stack vertically — form on top, preview below */
-  .studio-layout {
-    flex-direction: column;
-    height: auto;
-    min-height: calc(100vh - 53px);
-  }
-
-  .controls {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    overflow-y: visible;
-    height: auto;
-    gap: 16px;
-    padding: 16px;
-  }
-
-  /* preview takes up a good chunk of screen */
-  .preview-area {
-    width: 100%;
-    height: 75vw;
-    min-height: 280px;
-    flex-shrink: 0;
-  }
-
-  .footer-panel {
-    height: auto;
-    min-height: 60px;
-    bottom: -120px;
-    padding: 14px 20px;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
+  .tagline { display: none; }
+  .studio-layout { flex-direction: column; height: auto; min-height: calc(100vh - 53px); }
+  .controls { width: 100%; border-right: none; border-bottom: 1px solid var(--border); overflow-y: visible; height: auto; }
+  .preview-area { width: 100%; height: 75vw; min-height: 280px; flex-shrink: 0; }
+  .footer-panel { height: auto; min-height: 60px; bottom: -120px; padding: 14px 20px; flex-wrap: wrap; gap: 10px; }
 }
 
-::-webkit-scrollbar { width:4px; }
-::-webkit-scrollbar-track { background:transparent; }
-::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 </style>
 </head>
 <body>
@@ -248,10 +125,7 @@ input::placeholder { color:#383838; }
 </header>
 
 <div class="studio-layout">
-
-  <!-- CONTROLS -->
   <aside class="controls">
-
     <div>
       <div class="section-label">Upload Image</div>
       <div class="upload-zone" id="uploadZone">
@@ -260,11 +134,9 @@ input::placeholder { color:#383838; }
         <div class="upload-text"><strong>Choose a still</strong>Click or drag here</div>
       </div>
       <img id="uploadThumb" src="" alt="">
-      <div class="pan-hint" id="panHint">✦ Drag the image to reposition</div>
+      <div class="pan-hint" id="panHint">✦ Drag image to reposition</div>
     </div>
-
     <div class="divider"></div>
-
     <div>
       <div class="section-label">Film Details</div>
       <div class="field-group">
@@ -275,9 +147,7 @@ input::placeholder { color:#383838; }
         <div class="field"><label>Produced By</label><input type="text" id="fProducer" placeholder="Enter producer" oninput="update()"></div>
       </div>
     </div>
-
     <div class="divider"></div>
-
     <div>
       <div class="section-label">Starring (up to 4)</div>
       <div class="starring-grid">
@@ -287,21 +157,16 @@ input::placeholder { color:#383838; }
         <input type="text" id="s4" placeholder="Name 4" oninput="update()">
       </div>
     </div>
-
     <div class="divider"></div>
-
     <button class="download-btn" onclick="downloadPoster()">↓ Download Poster</button>
-
   </aside>
 
-  <!-- PREVIEW -->
   <main class="preview-area" id="previewArea">
     <div class="poster-scaler" id="posterScaler">
       <div class="poster" id="poster">
-
-        <div class="poster-img-wrap">
-          <div class="poster-img-frame empty" id="imgFrame">
-            <div class="poster-ph" id="posterPh">
+        <div class="p-img-pad">
+          <div class="p-img-box empty" id="imgFrame">
+            <div class="p-placeholder" id="posterPh">
               <svg width="42" height="42" viewBox="0 0 48 48" fill="none">
                 <rect x="4" y="10" width="40" height="28" rx="2" stroke="#555" stroke-width="1.5"/>
                 <circle cx="16" cy="20" r="4" stroke="#555" stroke-width="1.5"/>
@@ -312,135 +177,108 @@ input::placeholder { color:#383838; }
             <img id="posterImg" src="" alt="">
           </div>
         </div>
-
-        <div class="poster-info">
-          <div class="poster-title-row">
-            <span class="poster-title" id="pTitle"></span>
-            <span class="poster-year"  id="pYear"></span>
+        <div class="p-info">
+          <div class="p-title-row">
+            <span class="p-title" id="pTitle"></span>
+            <span class="p-year"  id="pYear"></span>
           </div>
-          <div class="poster-meta">
-            <div class="poster-row" id="rowRuntime"  style="display:none"><span class="poster-key">running time</span><span class="poster-val" id="pRuntime"></span></div>
-            <div class="poster-row" id="rowDirector" style="display:none"><span class="poster-key">directed by</span><span class="poster-val" id="pDirector"></span></div>
-            <div class="poster-row" id="rowProducer" style="display:none"><span class="poster-key">produced by</span><span class="poster-val" id="pProducer"></span></div>
+          <div class="p-meta">
+            <div class="p-row" id="rowRuntime"  style="display:none"><span class="p-key">running time</span><span class="p-val" id="pRuntime"></span></div>
+            <div class="p-row" id="rowDirector" style="display:none"><span class="p-key">directed by</span><span class="p-val" id="pDirector"></span></div>
+            <div class="p-row" id="rowProducer" style="display:none"><span class="p-key">produced by</span><span class="p-val" id="pProducer"></span></div>
           </div>
-          <div class="poster-star-row" id="rowStarring" style="display:none">
-            <span class="poster-key">starring</span>
-            <span class="poster-star-val" id="pStarring"></span>
+          <div class="p-star-row" id="rowStarring" style="display:none">
+            <span class="p-key">starring</span>
+            <span class="p-star-val" id="pStarring"></span>
           </div>
         </div>
-
       </div>
     </div>
   </main>
-
 </div>
 
-<!-- FOOTER -->
 <div class="footer-trigger" id="footerTrigger" onclick="toggleFooter()">
   <div class="footer-tab" id="footerTab">About ↑</div>
 </div>
 <div class="footer-panel" id="footerPanel">
   <span class="footer-text">Made with <span class="heart">♥</span> by Mukul &nbsp;·&nbsp; India</span>
   <div class="footer-sep"></div>
-  <a class="footer-link" href="https://x.com/mklbasist" target="_blank" rel="noopener">
+  <a class="footer-link" href="https://x.com/YOUR_HANDLE" target="_blank" rel="noopener">
     <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-    @mklbasist
+    @YOUR_HANDLE
   </a>
 </div>
 
 <script>
-// ── Constants ──────────────────────────────────────────────────────────────
-const PW = 564, PH = 846;   // poster dimensions
-const FX = 20,  FY = 20;    // image frame offset (padding)
-const FW = 524, FH = 618;   // image frame size (PW - 2*20, fixed height)
+// ── Poster real dimensions ─────────────────────────────────────────────────
+const PW = 564, PH = 780;
+const FX = 20,  FY = 20;   // image frame position inside poster
+const FW = 524, FH = 560;  // image frame size
 
-// ── Image state ────────────────────────────────────────────────────────────
-let natW = 0, natH = 0;     // natural image size
-let dW = 0,   dH = 0;       // display size inside frame
-let px = 0,   py = 0;       // current position (top-left of image inside frame)
-let dragging = false;
-let dx0 = 0, dy0 = 0, px0 = 0, py0 = 0;
-
-// ── Scale poster to fit preview area ──────────────────────────────────────
-function scalePoser() {
-  const area   = document.getElementById('previewArea');
-  const scaler = document.getElementById('posterScaler');
-  const pad    = 32;
-  const s      = Math.min((area.clientWidth - pad) / PW, (area.clientHeight - pad) / PH, 1);
-  scaler.style.transform = `scale(${s})`;
+// ── Scale poster preview to fit screen ────────────────────────────────────
+function scalePoster() {
+  const area = document.getElementById('previewArea');
+  const s    = Math.min((area.clientWidth - 32) / PW, (area.clientHeight - 32) / PH, 1);
+  document.getElementById('posterScaler').style.transform = `scale(${s})`;
 }
-window.addEventListener('resize', scalePoser);
-window.addEventListener('load',   scalePoser);
-
+window.addEventListener('resize', scalePoster);
+window.addEventListener('load',   scalePoster);
 function getScale() {
   const t = document.getElementById('posterScaler').style.transform || 'scale(1)';
-  return parseFloat(t.replace('scale(','')) || 1;
+  return parseFloat(t.replace('scale(', '')) || 1;
 }
 
-// ── Position image with cover + centre ────────────────────────────────────
+// ── Image pan state ────────────────────────────────────────────────────────
+let natW=0, natH=0, dW=0, dH=0, px=0, py=0;
+let drag=false, dx0=0, dy0=0, px0=0, py0=0;
+
 function initPos() {
-  const s = Math.max(FW / natW, FH / natH);
-  dW = natW * s;
-  dH = natH * s;
-  px = (FW - dW) / 2;
-  py = (FH - dH) / 2;
+  const s = Math.max(FW/natW, FH/natH);
+  dW = natW*s; dH = natH*s;
+  px = (FW-dW)/2; py = (FH-dH)/2;
   applyPos();
 }
-
-function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
-
 function applyPos() {
   const img = document.getElementById('posterImg');
-  img.style.width  = dW + 'px';
-  img.style.height = dH + 'px';
-  img.style.left   = px + 'px';
-  img.style.top    = py + 'px';
+  img.style.width=dW+'px'; img.style.height=dH+'px';
+  img.style.left=px+'px';  img.style.top=py+'px';
 }
-
-function clampedPos(x, y) {
+function clamp(v,lo,hi){ return Math.max(lo,Math.min(hi,v)); }
+function clampedPos(x,y){
   return {
-    x: clamp(x, Math.min(0, FW - dW), Math.max(0, FW - dW)),
-    y: clamp(y, Math.min(0, FH - dH), Math.max(0, FH - dH))
+    x: clamp(x, Math.min(0,FW-dW), Math.max(0,FW-dW)),
+    y: clamp(y, Math.min(0,FH-dH), Math.max(0,FH-dH))
   };
 }
 
-// ── Drag ───────────────────────────────────────────────────────────────────
 const frame = document.getElementById('imgFrame');
-
 frame.addEventListener('mousedown', e => {
-  if (!natW) return;
-  e.preventDefault();
-  dragging = true; dx0 = e.clientX; dy0 = e.clientY; px0 = px; py0 = py;
+  if (!natW) return; e.preventDefault();
+  drag=true; dx0=e.clientX; dy0=e.clientY; px0=px; py0=py;
   frame.classList.add('drag');
 });
 document.addEventListener('mousemove', e => {
-  if (!dragging) return;
-  const sc = getScale();
-  const c  = clampedPos(px0 + (e.clientX - dx0) / sc, py0 + (e.clientY - dy0) / sc);
-  px = c.x; py = c.y; applyPos();
+  if (!drag) return;
+  const sc=getScale(), c=clampedPos(px0+(e.clientX-dx0)/sc, py0+(e.clientY-dy0)/sc);
+  px=c.x; py=c.y; applyPos();
 });
-document.addEventListener('mouseup', () => { dragging = false; frame.classList.remove('drag'); });
-
+document.addEventListener('mouseup', () => { drag=false; frame.classList.remove('drag'); });
 frame.addEventListener('touchstart', e => {
   if (!natW) return;
-  const t = e.touches[0];
-  dragging = true; dx0 = t.clientX; dy0 = t.clientY; px0 = px; py0 = py;
+  const t=e.touches[0]; drag=true; dx0=t.clientX; dy0=t.clientY; px0=px; py0=py;
   e.preventDefault();
-}, { passive: false });
+}, {passive:false});
 document.addEventListener('touchmove', e => {
-  if (!dragging) return;
-  const sc = getScale();
-  const t  = e.touches[0];
-  const c  = clampedPos(px0 + (t.clientX - dx0) / sc, py0 + (t.clientY - dy0) / sc);
-  px = c.x; py = c.y; applyPos();
-  e.preventDefault();
-}, { passive: false });
-document.addEventListener('touchend', () => { dragging = false; });
+  if (!drag) return;
+  const sc=getScale(), t=e.touches[0];
+  const c=clampedPos(px0+(t.clientX-dx0)/sc, py0+(t.clientY-dy0)/sc);
+  px=c.x; py=c.y; applyPos(); e.preventDefault();
+}, {passive:false});
+document.addEventListener('touchend', () => { drag=false; });
 
 // ── Upload ─────────────────────────────────────────────────────────────────
 function handleUpload(e) {
-  const file = e.target.files[0];
-  if (!file) return;
+  const file = e.target.files[0]; if (!file) return;
   const reader = new FileReader();
   reader.onload = ev => {
     const src = ev.target.result;
@@ -448,9 +286,8 @@ function handleUpload(e) {
     document.getElementById('uploadThumb').style.display = 'block';
     document.getElementById('panHint').style.display = 'block';
     const img = document.getElementById('posterImg');
-    img.onload = () => { natW = img.naturalWidth; natH = img.naturalHeight; initPos(); };
-    img.src = src;
-    img.style.display = 'block';
+    img.onload = () => { natW=img.naturalWidth; natH=img.naturalHeight; initPos(); };
+    img.src = src; img.style.display = 'block';
     document.getElementById('posterPh').style.display = 'none';
     frame.classList.remove('empty');
   };
@@ -458,11 +295,11 @@ function handleUpload(e) {
 }
 
 // ── Text fields ────────────────────────────────────────────────────────────
-function v(id) { return document.getElementById(id).value.trim(); }
-function setRow(rowId, valId, text) {
-  const row = document.getElementById(rowId);
-  if (text) { document.getElementById(valId).textContent = text.toUpperCase(); row.style.display = 'grid'; }
-  else row.style.display = 'none';
+function v(id){ return document.getElementById(id).value.trim(); }
+function setRow(rId, vId, text) {
+  const row = document.getElementById(rId);
+  if (text) { document.getElementById(vId).textContent=text.toUpperCase(); row.style.display='grid'; }
+  else row.style.display='none';
 }
 function update() {
   document.getElementById('pTitle').textContent = v('fTitle').toUpperCase();
@@ -470,68 +307,75 @@ function update() {
   setRow('rowRuntime',  'pRuntime',  v('fRuntime'));
   setRow('rowDirector', 'pDirector', v('fDirector'));
   setRow('rowProducer', 'pProducer', v('fProducer'));
-  const names = [v('s1'),v('s2'),v('s3'),v('s4')].filter(Boolean).map(n => n.toUpperCase());
-  const sr = document.getElementById('rowStarring');
-  if (names.length) { document.getElementById('pStarring').textContent = names.join('   '); sr.style.display = 'grid'; }
-  else sr.style.display = 'none';
+  const names=[v('s1'),v('s2'),v('s3'),v('s4')].filter(Boolean).map(n=>n.toUpperCase());
+  const sr=document.getElementById('rowStarring');
+  if (names.length){ document.getElementById('pStarring').textContent=names.join('   '); sr.style.display='grid'; }
+  else sr.style.display='none';
 }
 
-// ── Download — pure Canvas, no html2canvas ─────────────────────────────────
-// Draws the poster manually so it always matches what you see,
-// regardless of CSS transforms or mobile scaling.
+// ── Download ───────────────────────────────────────────────────────────────
+// Canvas draws at EXACTLY the CSS sizes — no scale factor confusion.
+// Output is 564×846. On screen that looks normal sized (like an A5 image).
 function downloadPoster() {
-  const S  = 3; // 3× = 1692×2538 px output
-  const cv = document.createElement('canvas');
-  cv.width  = PW * S;
-  cv.height = PH * S;
+  const cv  = document.createElement('canvas');
+  cv.width  = PW;
+  cv.height = PH;
   const ctx = cv.getContext('2d');
-  ctx.scale(S, S);
 
-  // 1. Background
-  ctx.fillStyle = '#e8e5e0';
+  // 1 — poster background
+  ctx.fillStyle = '#e8e4de';
   ctx.fillRect(0, 0, PW, PH);
 
-  // 2. Photo (clipped to frame area)
+  // 2 — photo clipped to frame
   const imgEl = document.getElementById('posterImg');
-  if (natW > 0 && imgEl.complete && imgEl.naturalWidth > 0) {
+  if (natW > 0 && imgEl.complete) {
     ctx.save();
-    ctx.beginPath();
-    ctx.rect(FX, FY, FW, FH);
-    ctx.clip();
-    ctx.drawImage(imgEl, FX + px, FY + py, dW, dH);
+    ctx.beginPath(); ctx.rect(FX, FY, FW, FH); ctx.clip();
+    ctx.drawImage(imgEl, FX+px, FY+py, dW, dH);
+
+    // FRAMESET watermark — top left of image, golden, no bg bar
+    ctx.font = '700 11px Oswald, sans-serif';
+    ctx.letterSpacing = '3px';
+    ctx.fillStyle = 'rgba(200, 185, 154, 0.55)';
+    ctx.fillText('FRAMESET', FX + 12, FY + 22);
+
     ctx.restore();
   }
 
-  // 3. Info panel background
-  const INFO_Y = FY + FH; // 638
-  ctx.fillStyle = '#e8e5e0';
-  ctx.fillRect(0, INFO_Y, PW, PH - INFO_Y);
+  // 3 — info background
+  const IY = FY + FH; // top of info section = 600
+  ctx.fillStyle = '#e8e4de';
+  ctx.fillRect(0, IY, PW, PH-IY);
 
-  // 4. Text — load fonts then draw
-  document.fonts.load('700 34px Oswald').then(() => {
-    let y = INFO_Y + 13;
+  // 4 — text (wait for fonts)
+  Promise.all([
+    document.fonts.load('700 46px Oswald'),
+    document.fonts.load('400 28px Oswald'),
+    document.fonts.load('600 15px Oswald'),
+    document.fonts.load('400 12px Inter'),
+  ]).then(() => {
 
-    // Title + Year
     const titleTxt = v('fTitle').toUpperCase();
     const yearTxt  = v('fYear');
-    if (titleTxt || yearTxt) {
-      y += 34;
-      ctx.fillStyle = '#111';
-      if (titleTxt) {
-        ctx.font = '700 34px Oswald, sans-serif';
-        ctx.fillText(titleTxt, 22, y);
-        if (yearTxt) {
-          const tw = ctx.measureText(titleTxt).width;
-          ctx.font = '400 21px Oswald, sans-serif';
-          ctx.fillText(yearTxt, 22 + tw + 11, y);
-        }
-      } else {
-        ctx.font = '400 21px Oswald, sans-serif';
-        ctx.fillText(yearTxt, 22, y);
+
+    // Title + Year — baseline at IY + 18 + 46 = IY + 46
+    let y = IY + 46;
+    ctx.fillStyle = '#111';
+
+    if (titleTxt) {
+      ctx.font = '700 46px Oswald, sans-serif';
+      ctx.fillText(titleTxt, 22, y);
+      if (yearTxt) {
+        const tw = ctx.measureText(titleTxt).width;
+        ctx.font = '400 28px Oswald, sans-serif';
+        ctx.fillText(yearTxt, 22 + tw + 14, y);
       }
+    } else if (yearTxt) {
+      ctx.font = '400 28px Oswald, sans-serif';
+      ctx.fillText(yearTxt, 22, y);
     }
 
-    // Meta rows
+    // Meta rows — 24px line height
     const rows = [
       { key: 'running time', val: v('fRuntime').toUpperCase()  },
       { key: 'directed by',  val: v('fDirector').toUpperCase() },
@@ -539,65 +383,61 @@ function downloadPoster() {
     ].filter(r => r.val);
 
     rows.forEach(r => {
-      y += 17;
+      y += 24;
       ctx.fillStyle = '#666';
-      ctx.font = '400 11px Inter, sans-serif';
+      ctx.font = '400 12px Inter, sans-serif';
       ctx.fillText(r.key, 22, y);
       ctx.fillStyle = '#111';
-      ctx.font = '500 13px Oswald, sans-serif';
-      ctx.fillText(r.val, 140, y);
+      ctx.font = '600 15px Oswald, sans-serif';
+      ctx.fillText(r.val, 144, y);
     });
 
-    // Starring
-    const names = [v('s1'),v('s2'),v('s3'),v('s4')].filter(Boolean).map(n => n.toUpperCase());
+    // Starring — extra gap above
+    const names = [v('s1'),v('s2'),v('s3'),v('s4')].filter(Boolean).map(n=>n.toUpperCase());
     if (names.length) {
-      y += 26;
+      y += 30;
       ctx.fillStyle = '#666';
-      ctx.font = '400 11px Inter, sans-serif';
+      ctx.font = '400 12px Inter, sans-serif';
       ctx.fillText('starring', 22, y);
       ctx.fillStyle = '#111';
-      ctx.font = '500 12px Oswald, sans-serif';
-      ctx.fillText(names.join('   '), 140, y);
+      ctx.font = '600 14px Oswald, sans-serif';
+      ctx.fillText(names.join('   '), 144, y);
     }
 
     // Save
     cv.toBlob(blob => {
       const url = URL.createObjectURL(blob);
       const a   = document.createElement('a');
-      a.download = (v('fTitle') || 'poster').replace(/\s+/g, '_').toUpperCase() + '_poster.png';
-      a.href = url;
-      document.body.appendChild(a);
-      a.click();
+      a.download = (v('fTitle')||'poster').replace(/\s+/g,'_').toUpperCase()+'_poster.png';
+      a.href = url; document.body.appendChild(a); a.click();
       document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(url), 2000);
+      setTimeout(()=>URL.revokeObjectURL(url), 2000);
     }, 'image/png');
   });
 }
 
 // ── Footer ─────────────────────────────────────────────────────────────────
 function toggleFooter() {
-  const panel = document.getElementById('footerPanel');
-  const tab   = document.getElementById('footerTab');
-  const open  = panel.classList.toggle('open');
+  const panel=document.getElementById('footerPanel'), tab=document.getElementById('footerTab');
+  const open=panel.classList.toggle('open');
   tab.textContent = open ? 'Close ↓' : 'About ↑';
 }
 document.addEventListener('click', e => {
-  const panel   = document.getElementById('footerPanel');
-  const trigger = document.getElementById('footerTrigger');
+  const panel=document.getElementById('footerPanel'), trigger=document.getElementById('footerTrigger');
   if (panel.classList.contains('open') && !panel.contains(e.target) && !trigger.contains(e.target)) {
     panel.classList.remove('open');
-    document.getElementById('footerTab').textContent = 'About ↑';
+    document.getElementById('footerTab').textContent='About ↑';
   }
 });
 
 // ── Drag & drop file ───────────────────────────────────────────────────────
-const zone = document.getElementById('uploadZone');
-zone.addEventListener('dragover',  e => { e.preventDefault(); zone.style.borderColor = '#c8b99a'; });
-zone.addEventListener('dragleave', () => { zone.style.borderColor = '#2e2e2e'; });
-zone.addEventListener('drop', e => {
-  e.preventDefault(); zone.style.borderColor = '#2e2e2e';
-  const f = e.dataTransfer.files[0];
-  if (f && f.type.startsWith('image/')) handleUpload({ target: { files: [f] } });
+const zone=document.getElementById('uploadZone');
+zone.addEventListener('dragover',  e=>{e.preventDefault();zone.style.borderColor='#c8b99a';});
+zone.addEventListener('dragleave', ()=>{zone.style.borderColor='#2e2e2e';});
+zone.addEventListener('drop', e=>{
+  e.preventDefault(); zone.style.borderColor='#2e2e2e';
+  const f=e.dataTransfer.files[0];
+  if (f&&f.type.startsWith('image/')) handleUpload({target:{files:[f]}});
 });
 </script>
 </body>
