@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FRAMESET — Community Gallery</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0a0a0a;
+  --surface: #141414;
+  --border: #242424;
+  --text: #f0ede8;
+  --muted: #666;
+  --accent: #c8b99a;
+  --accent2: #8a7560;
+  --red: #c0392b;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Crimson Pro', Georgia, serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── NOISE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* ── HEADER ── */
+header {
+  position: sticky; top: 0; z-index: 100;
+  padding: 0 32px;
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(10,10,10,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.logo {
+  font-family: 'Oswald', sans-serif; font-weight: 700;
+  font-size: 17px; letter-spacing: .3em; text-decoration: none; color: var(--text);
+}
+.logo span { color: var(--accent); }
+
+.nav { display: flex; align-items: center; gap: 28px; }
+.nav a {
+  font-family: 'Oswald', sans-serif; font-size: 10px;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--muted); text-decoration: none; transition: color .2s;
+}
+.nav a:hover, .nav a.active { color: var(--accent); }
+.nav-divider { width: 1px; height: 14px; background: var(--border); }
+
+.make-btn {
+  font-family: 'Oswald', sans-serif; font-size: 10px; font-weight: 600;
+  letter-spacing: .2em; text-transform: uppercase;
+  background: var(--accent); color: #111; border: none;
+  padding: 8px 18px; border-radius: 2px; cursor: pointer;
+  text-decoration: none; transition: background .2s;
+}
+.make-btn:hover { background: #d9c9ac; }
+
+/* hamburger — mobile */
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+.hamburger span { width: 22px; height: 1.5px; background: var(--text); transition: all .3s; display: block; }
+.mobile-menu {
+  display: none; position: fixed; inset: 60px 0 0;
+  background: rgba(10,10,10,0.97); backdrop-filter: blur(20px);
+  z-index: 99; flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-family: 'Oswald', sans-serif; font-size: 22px; font-weight: 600;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--text);
+  text-decoration: none; transition: color .2s;
+}
+.mobile-menu a:hover { color: var(--accent); }
+
+/* ── HERO ── */
+.hero {
+  padding: 80px 32px 60px;
+  text-align: center; position: relative; z-index: 1;
+  border-bottom: 1px solid var(--border);
+}
+.hero-eyebrow {
+  font-family: 'Oswald', sans-serif; font-size: 9px;
+  letter-spacing: .4em; text-transform: uppercase; color: var(--accent);
+  margin-bottom: 18px; display: block;
+}
+.hero-title {
+  font-family: 'Oswald', sans-serif; font-weight: 700;
+  font-size: clamp(42px, 8vw, 88px);
+  letter-spacing: -.01em; line-height: .95;
+  color: var(--text); margin-bottom: 20px;
+}
+.hero-title em { font-style: italic; color: var(--accent); font-family: 'Crimson Pro', serif; font-weight: 300; }
+.hero-sub {
+  font-size: 18px; color: var(--muted); font-weight: 300;
+  font-style: italic; letter-spacing: .02em; max-width: 420px; margin: 0 auto 32px;
+  line-height: 1.5;
+}
+.hero-count {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'Oswald', sans-serif; font-size: 11px;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--muted);
+}
+.hero-count-num {
+  font-size: 28px; font-weight: 700; color: var(--accent);
+  line-height: 1; font-family: 'Oswald', sans-serif;
+}
+
+/* ── FILTERS ── */
+.filters {
+  padding: 20px 32px;
+  display: flex; align-items: center; gap: 12px;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 60px; z-index: 90;
+  background: rgba(10,10,10,0.95); backdrop-filter: blur(10px);
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+}
+.filter-btn {
+  font-family: 'Oswald', sans-serif; font-size: 10px;
+  letter-spacing: .15em; text-transform: uppercase;
+  padding: 6px 16px; border-radius: 2px; border: 1px solid var(--border);
+  background: transparent; color: var(--muted); cursor: pointer;
+  transition: all .2s; white-space: nowrap; flex-shrink: 0;
+}
+.filter-btn:hover { border-color: var(--accent2); color: var(--accent); }
+.filter-btn.active { background: var(--accent); color: #111; border-color: var(--accent); }
+.filter-sep { width: 1px; height: 16px; background: var(--border); flex-shrink: 0; }
+.search-wrap { margin-left: auto; position: relative; flex-shrink: 0; }
+.search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 13px; height: 13px; stroke: var(--muted); fill: none; pointer-events: none; }
+#searchInput {
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text); padding: 7px 12px 7px 32px;
+  font-family: 'Oswald', sans-serif; font-size: 10px;
+  letter-spacing: .1em; text-transform: uppercase;
+  border-radius: 2px; outline: none; width: 180px; transition: border-color .2s;
+}
+#searchInput:focus { border-color: var(--accent); }
+#searchInput::placeholder { color: #333; }
+
+/* ── GALLERY GRID ── */
+.gallery-wrap { padding: 32px; position: relative; z-index: 1; }
+
+/* masonry via columns */
+.gallery-grid {
+  columns: 4 220px;
+  column-gap: 16px;
+}
+.poster-card {
+  break-inside: avoid;
+  margin-bottom: 16px;
+  position: relative; overflow: hidden;
+  border-radius: 4px;
+  cursor: pointer;
+  background: var(--surface);
+  transition: transform .3s cubic-bezier(.4,0,.2,1), box-shadow .3s;
+}
+.poster-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,.7); }
+.poster-card img {
+  width: 100%; display: block;
+  transition: transform .4s cubic-bezier(.4,0,.2,1);
+}
+.poster-card:hover img { transform: scale(1.03); }
+
+.card-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.85) 0%, transparent 50%);
+  opacity: 0; transition: opacity .3s;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 16px;
+}
+.poster-card:hover .card-overlay { opacity: 1; }
+.card-title {
+  font-family: 'Oswald', sans-serif; font-weight: 700;
+  font-size: 15px; letter-spacing: .05em; text-transform: uppercase;
+  color: #fff; line-height: 1.1;
+}
+.card-year {
+  font-family: 'Crimson Pro', serif; font-size: 13px;
+  color: var(--accent); font-style: italic; margin-top: 3px;
+}
+.card-date {
+  font-family: 'Oswald', sans-serif; font-size: 9px;
+  letter-spacing: .15em; color: rgba(255,255,255,.4);
+  text-transform: uppercase; margin-top: 8px;
+}
+
+/* empty state */
+.empty-state {
+  text-align: center; padding: 100px 32px;
+  display: none; position: relative; z-index: 1;
+}
+.empty-state.visible { display: block; }
+.empty-icon { font-size: 48px; margin-bottom: 20px; display: block; opacity: .4; }
+.empty-title { font-family: 'Oswald', sans-serif; font-size: 22px; letter-spacing: .1em; color: var(--muted); margin-bottom: 10px; }
+.empty-sub { font-size: 16px; color: #444; font-style: italic; }
+
+/* loading skeleton */
+.skeleton-grid { columns: 4 220px; column-gap: 16px; padding: 32px; }
+.skeleton-card {
+  break-inside: avoid; margin-bottom: 16px;
+  border-radius: 4px; background: var(--surface);
+  animation: shimmer 1.5s infinite;
+}
+@keyframes shimmer {
+  0%, 100% { opacity: .4; }
+  50% { opacity: .8; }
+}
+
+/* ── LIGHTBOX ── */
+.lightbox {
+  display: none; position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,.93); backdrop-filter: blur(8px);
+  align-items: center; justify-content: center;
+}
+.lightbox.open { display: flex; }
+.lightbox-inner {
+  position: relative; max-width: 90vw; max-height: 90vh;
+  display: flex; gap: 32px; align-items: flex-start;
+}
+.lightbox-img {
+  max-height: 85vh; max-width: 55vw;
+  object-fit: contain; border-radius: 6px;
+  box-shadow: 0 40px 100px rgba(0,0,0,.8);
+}
+.lightbox-info {
+  padding-top: 12px; min-width: 200px; max-width: 260px;
+}
+.lb-title {
+  font-family: 'Oswald', sans-serif; font-weight: 700;
+  font-size: 28px; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--text); line-height: 1;
+}
+.lb-year {
+  font-family: 'Crimson Pro', serif; font-size: 20px;
+  color: var(--accent); font-style: italic; margin-top: 6px; display: block;
+}
+.lb-divider { height: 1px; background: var(--border); margin: 16px 0; }
+.lb-meta { font-size: 13px; color: var(--muted); font-style: italic; line-height: 1.6; }
+.lb-date { font-family: 'Oswald', sans-serif; font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: #444; margin-top: 12px; }
+.lb-actions { margin-top: 20px; display: flex; flex-direction: column; gap: 8px; }
+.lb-btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 16px; border-radius: 2px; border: none; cursor: pointer;
+  font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 600;
+  letter-spacing: .15em; text-transform: uppercase; text-decoration: none;
+  transition: opacity .2s;
+}
+.lb-btn:hover { opacity: .85; }
+.lb-btn.primary { background: var(--accent); color: #111; }
+.lb-btn.secondary { background: var(--border); color: var(--text); }
+.lb-close {
+  position: fixed; top: 24px; right: 28px;
+  width: 36px; height: 36px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--muted); transition: color .2s;
+  font-size: 18px; z-index: 10;
+}
+.lb-close:hover { color: var(--text); }
+
+/* ── SUBMIT MODAL ── */
+.submit-bar {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  z-index: 150; display: none;
+}
+.submit-bar.visible { display: flex; }
+.submit-pill {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 40px; padding: 12px 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.6);
+  backdrop-filter: blur(10px);
+}
+.submit-text { font-size: 13px; color: var(--muted); font-style: italic; }
+.submit-text strong { color: var(--accent); font-style: normal; font-family: 'Oswald', sans-serif; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+.submit-yes {
+  background: var(--accent); color: #111; border: none;
+  padding: 8px 20px; border-radius: 20px; cursor: pointer;
+  font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 700;
+  letter-spacing: .15em; text-transform: uppercase; transition: background .2s;
+}
+.submit-yes:hover { background: #d9c9ac; }
+.submit-no {
+  background: transparent; color: var(--muted); border: none;
+  padding: 8px 14px; cursor: pointer; font-size: 12px; transition: color .2s;
+}
+.submit-no:hover { color: var(--text); }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border); padding: 28px 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: relative; z-index: 1;
+}
+.footer-copy { font-size: 12px; color: #444; font-style: italic; }
+.footer-copy span { color: var(--red); }
+.footer-link { font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color .2s; }
+.footer-link:hover { color: var(--accent); }
+
+/* ── MOBILE ── */
+@media (max-width: 700px) {
+  header { padding: 0 20px; }
+  .nav { display: none; }
+  .hamburger { display: flex; }
+  .hero { padding: 50px 20px 40px; }
+  .filters { padding: 14px 20px; }
+  .search-wrap { display: none; }
+  .gallery-wrap { padding: 20px; }
+  .gallery-grid { columns: 2 140px; column-gap: 10px; }
+  .skeleton-grid { columns: 2 140px; column-gap: 10px; padding: 20px; }
+  .lightbox-inner { flex-direction: column; max-width: 92vw; }
+  .lightbox-img { max-width: 92vw; max-height: 55vh; }
+  .lightbox-info { min-width: unset; max-width: 100%; }
+  footer { flex-direction: column; gap: 12px; text-align: center; padding: 20px; }
+}
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a class="logo" href="index.html">FRAME<span>SET</span></a>
+  <nav class="nav">
+    <a href="index.html">Create</a>
+    <div class="nav-divider"></div>
+    <a href="gallery.html" class="active">Gallery</a>
+    <div class="nav-divider"></div>
+    <a class="make-btn" href="index.html">Make a Poster →</a>
+  </nav>
+  <div class="hamburger" onclick="toggleMenu()" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html" onclick="toggleMenu()">Create</a>
+  <a href="gallery.html" onclick="toggleMenu()">Gallery</a>
+  <a href="index.html" style="color:var(--accent)">Make a Poster →</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-eyebrow">Community Creations</span>
+  <h1 class="hero-title">Every frame<br>tells a <em>story</em></h1>
+  <p class="hero-sub">Posters made by film lovers, for film lovers.</p>
+  <div class="hero-count">
+    <span class="hero-count-num" id="totalCount">—</span>
+    posters created
+  </div>
+</section>
+
+<!-- FILTERS -->
+<div class="filters">
+  <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+  <button class="filter-btn" onclick="setFilter('recent', this)">Recent</button>
+  <button class="filter-btn" onclick="setFilter('classic', this)">Classic (pre-2000)</button>
+  <button class="filter-btn" onclick="setFilter('modern', this)">Modern (2000+)</button>
+  <div class="filter-sep"></div>
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" id="searchInput" placeholder="Search films..." oninput="handleSearch()">
+  </div>
+</div>
+
+<!-- SKELETON LOADING -->
+<div class="skeleton-grid" id="skeletonGrid">
+  <div class="skeleton-card" style="height:280px"></div>
+  <div class="skeleton-card" style="height:220px"></div>
+  <div class="skeleton-card" style="height:320px"></div>
+  <div class="skeleton-card" style="height:250px"></div>
+  <div class="skeleton-card" style="height:290px"></div>
+  <div class="skeleton-card" style="height:240px"></div>
+  <div class="skeleton-card" style="height:310px"></div>
+  <div class="skeleton-card" style="height:260px"></div>
+</div>
+
+<!-- GALLERY -->
+<div class="gallery-wrap" id="galleryWrap" style="display:none">
+  <div class="gallery-grid" id="galleryGrid"></div>
+</div>
+
+<!-- EMPTY STATE -->
+<div class="empty-state" id="emptyState">
+  <span class="empty-icon">🎞</span>
+  <div class="empty-title">No posters yet</div>
+  <p class="empty-sub">Be the first to add yours to the gallery.</p>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <div class="lightbox-inner">
+    <img class="lightbox-img" id="lbImg" src="" alt="">
+    <div class="lightbox-info">
+      <div class="lb-title" id="lbTitle"></div>
+      <span class="lb-year" id="lbYear"></span>
+      <div class="lb-divider"></div>
+      <div class="lb-meta" id="lbMeta"></div>
+      <div class="lb-date" id="lbDate"></div>
+      <div class="lb-actions">
+        <a class="lb-btn primary" href="index.html">Make your own →</a>
+        <button class="lb-btn secondary" onclick="downloadFromGallery()">↓ Save Poster</button>
+      </div>
+    </div>
+  </div>
+  <div class="lb-close" onclick="closeLightboxDirect()">✕</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-copy">© 2026 Mukul · All rights reserved · Made with <span>♥</span> in India</div>
+  <a class="footer-link" href="https://x.com/mklbasist" target="_blank">@mklbasist ↗</a>
+</footer>
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getFirestore, collection, getDocs, addDoc, orderBy, query, limit } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAWwHiFUAmx5xglk8c0srYXG6yuJX3qG8U",
+  authDomain: "frameset-3350d.firebaseapp.com",
+  projectId: "frameset-3350d",
+  storageBucket: "frameset-3350d.firebasestorage.app",
+  messagingSenderId: "269498161536",
+  appId: "1:269498161536:web:22ff3d52c39d6c91030965"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+// ── State ─────────────────────────────────────────────────────────────────
+let allPosters    = [];
+let filtered      = [];
+let currentFilter = 'all';
+let currentSearch = '';
+let activePoster  = null;
+
+// ── Load posters from Firestore ───────────────────────────────────────────
+async function loadPosters() {
+  try {
+    const q    = query(collection(db, 'posters'), orderBy('createdAt', 'desc'), limit(200));
+    const snap = await getDocs(q);
+    allPosters = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    document.getElementById('totalCount').textContent = allPosters.length;
+    applyFilters();
+  } catch(e) {
+    console.error('Firebase error:', e);
+    showEmpty();
+  } finally {
+    document.getElementById('skeletonGrid').style.display = 'none';
+  }
+}
+
+// ── Render ────────────────────────────────────────────────────────────────
+function renderPosters(posters) {
+  const grid = document.getElementById('galleryGrid');
+  grid.innerHTML = '';
+
+  if (!posters.length) { showEmpty(); return; }
+
+  document.getElementById('galleryWrap').style.display = 'block';
+  document.getElementById('emptyState').classList.remove('visible');
+
+  posters.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'poster-card';
+    card.style.animationDelay = (i * 0.05) + 's';
+    card.innerHTML = `
+      <img src="${p.imageUrl}" alt="${p.title}" loading="lazy">
+      <div class="card-overlay">
+        <div class="card-title">${p.title || 'Untitled'}</div>
+        ${p.year ? `<div class="card-year">${p.year}</div>` : ''}
+        <div class="card-date">${formatDate(p.createdAt)}</div>
+      </div>`;
+    card.onclick = () => openLightbox(p);
+    grid.appendChild(card);
+  });
+}
+
+function showEmpty() {
+  document.getElementById('galleryWrap').style.display = 'none';
+  document.getElementById('emptyState').classList.add('visible');
+}
+
+function formatDate(ts) {
+  if (!ts) return '';
+  const d = ts.toDate ? ts.toDate() : new Date(ts);
+  return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+}
+
+// ── Filters ───────────────────────────────────────────────────────────────
+function applyFilters() {
+  filtered = allPosters.filter(p => {
+    const yr = parseInt(p.year) || 0;
+    if (currentFilter === 'classic' && yr >= 2000) return false;
+    if (currentFilter === 'modern'  && yr < 2000)  return false;
+    if (currentSearch) {
+      const s = currentSearch.toLowerCase();
+      return (p.title||'').toLowerCase().includes(s) || (p.year||'').toString().includes(s);
+    }
+    return true;
+  });
+  renderPosters(filtered);
+}
+
+window.setFilter = (f, btn) => {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+};
+
+window.handleSearch = () => {
+  currentSearch = document.getElementById('searchInput').value.trim();
+  applyFilters();
+};
+
+// ── Lightbox ──────────────────────────────────────────────────────────────
+window.openLightbox = (p) => {
+  activePoster = p;
+  document.getElementById('lbImg').src   = p.imageUrl;
+  document.getElementById('lbTitle').textContent = (p.title || 'Untitled').toUpperCase();
+  document.getElementById('lbYear').textContent  = p.year || '';
+  document.getElementById('lbDate').textContent  = 'Added ' + formatDate(p.createdAt);
+  const meta = [p.director ? 'Dir. ' + p.director : '', p.runtime ? p.runtime + ' min' : ''].filter(Boolean).join(' · ');
+  document.getElementById('lbMeta').textContent = meta;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeLightbox = (e) => {
+  if (e.target === document.getElementById('lightbox')) closeLightboxDirect();
+};
+window.closeLightboxDirect = () => {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+  activePoster = null;
+};
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightboxDirect(); });
+
+window.downloadFromGallery = () => {
+  if (!activePoster) return;
+  const a = document.createElement('a');
+  a.href = activePoster.imageUrl;
+  a.download = (activePoster.title || 'poster').toUpperCase().replace(/\s+/g,'_') + '_poster.png';
+  a.target = '_blank';
+  a.click();
+};
+
+// ── Hamburger ─────────────────────────────────────────────────────────────
+window.toggleMenu = () => {
+  document.getElementById('mobileMenu').classList.toggle('open');
+};
+
+// ── Expose addToGallery for creator page to call ──────────────────────────
+window.addPosterToGallery = async (data) => {
+  try {
+    await addDoc(collection(db, 'posters'), {
+      ...data,
+      createdAt: new Date()
+    });
+    return true;
+  } catch(e) {
+    console.error('Failed to add poster:', e);
+    return false;
+  }
+};
+
+// ── Init ──────────────────────────────────────────────────────────────────
+loadPosters();
+</script>
+</body>
+</html>
