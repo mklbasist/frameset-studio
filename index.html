@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Copyright (c) 2026 Mukul (@mklbasist). All Rights Reserved. -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -14,31 +15,24 @@
 html, body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100%; }
 
 /* HEADER */
-header { padding: 0 24px; height: 53px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--bg); position: sticky; top: 0; z-index: 40; }
-.nav-links { display: flex; align-items: center; gap: 20px; }
-.nav-links a { font-family:'Oswald',sans-serif; font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); text-decoration:none; transition:color .2s; }
-.nav-links a:hover { color:var(--accent); }
-.nav-links .gallery-btn { border:1px solid var(--border); padding:6px 14px; border-radius:2px; }
-.nav-links .gallery-btn:hover { border-color:var(--accent); color:var(--accent); }
-.hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; }
-.hamburger span { width:22px; height:1.5px; background:var(--text); display:block; transition:all .3s; }
-.mobile-menu { display:none; position:fixed; inset:53px 0 0; background:rgba(10,10,10,0.97); backdrop-filter:blur(20px); z-index:99; flex-direction:column; align-items:center; justify-content:center; gap:32px; }
-.mobile-menu.open { display:flex; }
-.mobile-menu a { font-family:'Oswald',sans-serif; font-size:22px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:var(--text); text-decoration:none; transition:color .2s; }
-.mobile-menu a:hover { color:var(--accent); }
-/* Gallery prompt pill */
-.gallery-prompt { display:none; position:fixed; bottom:24px; left:50%; transform:translateX(-50%); z-index:150; }
-.gallery-prompt.visible { display:flex; }
-.gallery-pill { display:flex; align-items:center; gap:14px; background:var(--surface); border:1px solid var(--border); border-radius:40px; padding:12px 20px; box-shadow:0 20px 60px rgba(0,0,0,.6); backdrop-filter:blur(10px); white-space:nowrap; }
-.gallery-pill-text { font-size:13px; color:var(--muted); font-family:'Inter',sans-serif; }
-.gallery-pill-text strong { color:var(--accent); font-family:'Oswald',sans-serif; font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-style:normal; }
-.gpill-yes { background:var(--accent); color:#111; border:none; padding:8px 20px; border-radius:20px; cursor:pointer; font-family:'Oswald',sans-serif; font-size:11px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; transition:background .2s; }
-.gpill-yes:hover { background:#d9c9ac; }
-.gpill-no { background:transparent; color:var(--muted); border:none; padding:8px 14px; cursor:pointer; font-size:12px; transition:color .2s; font-family:'Inter',sans-serif; }
-.gpill-no:hover { color:var(--text); }
-.logo { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: .3em; }
+header {
+  padding: 0 24px; height: 53px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--bg); position: sticky; top: 0; z-index: 40;
+}
+.logo { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: .3em; text-decoration: none; color: var(--text); }
 .logo span { color: var(--accent); }
+.nav-links { display: flex; align-items: center; gap: 20px; }
+.nav-links a { font-family: 'Oswald', sans-serif; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color .2s; border: 1px solid var(--border); padding: 6px 14px; border-radius: 2px; }
+.nav-links a:hover { border-color: var(--accent); color: var(--accent); }
 .tagline { font-size: 10px; color: var(--muted); letter-spacing: .15em; text-transform: uppercase; }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+.hamburger span { width: 22px; height: 1.5px; background: var(--text); display: block; }
+.mobile-menu { display: none; position: fixed; inset: 53px 0 0; background: rgba(10,10,10,0.97); backdrop-filter: blur(20px); z-index: 99; flex-direction: column; align-items: center; justify-content: center; gap: 32px; }
+.mobile-menu.open { display: flex; }
+.mobile-menu a { font-family: 'Oswald', sans-serif; font-size: 22px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--text); text-decoration: none; }
+.mobile-menu a:hover { color: var(--accent); }
 
 /* LAYOUT */
 .studio-layout { display: flex; height: calc(100vh - 53px); }
@@ -71,73 +65,57 @@ input::placeholder { color: #383838; }
 .share-section.visible { display: flex; }
 .share-label { font-size: 9px; letter-spacing: .25em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
 .share-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
-.share-btn {
-  display: flex; align-items: center; justify-content: center; gap: 7px;
-  padding: 9px 8px; border-radius: 3px; border: none; cursor: pointer;
-  font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
-  letter-spacing: .03em; transition: opacity .2s; text-decoration: none;
-}
-.share-btn:hover { opacity: 0.85; }
+.share-btn { display: flex; align-items: center; justify-content: center; gap: 7px; padding: 9px 8px; border-radius: 3px; border: none; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; transition: opacity .2s; text-decoration: none; }
+.share-btn:hover { opacity: .85; }
 .share-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
-.share-btn.x-btn        { background: #000; color: #fff; }
+.share-btn.x-btn { background: #000; color: #fff; }
 .share-btn.whatsapp-btn { background: #25D366; color: #fff; }
 .share-btn.facebook-btn { background: #1877F2; color: #fff; }
-.share-btn.copy-btn     { background: var(--border); color: var(--text); }
-.copy-btn.copied        { background: #2a6e3f; color: #fff; }
-.share-btn.native-btn   { background: #222; color: #fff; grid-column: span 2; display: none; }
+.share-btn.copy-btn { background: var(--border); color: var(--text); }
+.copy-btn.copied { background: #2a6e3f; color: #fff; }
+.share-btn.native-btn { background: #222; color: #fff; grid-column: span 2; display: none; }
+
+/* GALLERY PROMPT */
+.gallery-prompt { display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 150; }
+.gallery-prompt.visible { display: flex; }
+.gallery-pill { display: flex; align-items: center; gap: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 40px; padding: 12px 20px; box-shadow: 0 20px 60px rgba(0,0,0,.6); backdrop-filter: blur(10px); white-space: nowrap; }
+.gallery-pill-text { font-size: 13px; color: var(--muted); font-family: 'Inter', sans-serif; }
+.gallery-pill-text strong { color: var(--accent); font-family: 'Oswald', sans-serif; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+.gpill-yes { background: var(--accent); color: #111; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; transition: background .2s; }
+.gpill-yes:hover { background: #d9c9ac; }
+.gpill-no { background: transparent; color: var(--muted); border: none; padding: 8px 14px; cursor: pointer; font-size: 12px; font-family: 'Inter', sans-serif; }
 
 /* PREVIEW */
 .preview-area { flex: 1; display: flex; align-items: center; justify-content: center; background: #080808; position: relative; overflow: hidden; }
 .preview-area::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 60% 40%, #1d1b18 0%, #080808 70%); pointer-events: none; }
 .poster-scaler { position: relative; z-index: 1; transform-origin: center center; }
 
-/* ═══════════════════════════════════════
-   POSTER — 564×846px real size
-   Image area:  524×560px (20px padding)
-   Info area:   564×266px
-   ═══════════════════════════════════════ */
-.poster {
-  width: 564px; height: 780px;
-  background: #e8e4de;
-  border-radius: 10px; overflow: hidden;
-  display: flex; flex-direction: column;
-  box-shadow: 0 40px 120px rgba(0,0,0,.95), 0 0 0 1px rgba(255,255,255,.05);
-  flex-shrink: 0;
-}
-
-/* image section */
+/* POSTER — 564×780px */
+.poster { width: 564px; height: 780px; background: #e8e4de; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 40px 120px rgba(0,0,0,.95), 0 0 0 1px rgba(255,255,255,.05); flex-shrink: 0; }
 .p-img-pad { padding: 20px 20px 0; background: #e8e4de; flex-shrink: 0; }
 .p-img-box { width: 100%; height: 560px; overflow: hidden; background: #1a1a1a; position: relative; cursor: grab; }
 .p-img-box.drag { cursor: grabbing; }
 .p-img-box.empty { cursor: default; }
 #posterImg { position: absolute; display: none; user-select: none; -webkit-user-drag: none; pointer-events: none; }
 .p-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; color: #444; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
-
-/* info section — 266px tall */
 .p-info { flex: 1; padding: 10px 22px 20px; background: #e8e4de; display: flex; flex-direction: column; }
-
-/* TITLE ROW — big bold Oswald */
 .p-title-row { display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px; }
 .p-title { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 46px; letter-spacing: .02em; text-transform: uppercase; color: #111; line-height: 1; }
-.p-year  { font-family: 'Oswald', sans-serif; font-weight: 400; font-size: 28px; color: #111; letter-spacing: .02em; line-height: 1; }
-
-/* META ROWS */
+.p-year { font-family: 'Oswald', sans-serif; font-weight: 400; font-size: 28px; color: #111; letter-spacing: .02em; line-height: 1; }
 .p-meta { display: flex; flex-direction: column; gap: 2px; }
-.p-row  { display: grid; grid-template-columns: 120px 1fr; align-items: baseline; }
-.p-key  { font-family: 'Inter', sans-serif; font-size: 12px; color: #666; font-weight: 400; letter-spacing: .02em; }
-.p-val  { font-family: 'Oswald', sans-serif; font-size: 15px; font-weight: 600; text-transform: uppercase; color: #111; letter-spacing: .08em; }
-
-/* STARRING */
+.p-row { display: grid; grid-template-columns: 120px 1fr; align-items: baseline; }
+.p-key { font-family: 'Inter', sans-serif; font-size: 12px; color: #666; font-weight: 400; }
+.p-val { font-family: 'Oswald', sans-serif; font-size: 15px; font-weight: 600; text-transform: uppercase; color: #111; letter-spacing: .08em; }
 .p-star-row { display: grid; grid-template-columns: 120px 1fr; align-items: baseline; margin-top: 14px; }
 .p-star-val { font-family: 'Oswald', sans-serif; font-size: 14px; font-weight: 600; text-transform: uppercase; color: #111; letter-spacing: .1em; line-height: 1.6; }
 
 /* FOOTER */
 .footer-trigger { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); z-index: 100; cursor: pointer; }
-.footer-tab { background: var(--surface); border: 1px solid var(--border); border-bottom: none; border-radius: 8px 8px 0 0; padding: 5px 18px 4px; font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); user-select: none; transition: color .2s; }
+.footer-tab { background: var(--surface); border: 1px solid var(--border); border-bottom: none; border-radius: 8px 8px 0 0; padding: 5px 18px 4px; font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); user-select: none; }
 .footer-trigger:hover .footer-tab { color: var(--accent); }
 .footer-panel { position: fixed; bottom: -90px; left: 0; right: 0; height: 72px; background: var(--surface); border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: center; gap: 18px; transition: bottom .35s cubic-bezier(.4,0,.2,1); z-index: 99; }
 .footer-panel.open { bottom: 0; }
-.footer-text { font-size: 12px; color: var(--muted); letter-spacing: .07em; }
+.footer-text { font-size: 12px; color: var(--muted); }
 .footer-text .heart { color: #c0392b; }
 .footer-sep { width: 1px; height: 18px; background: var(--border); }
 .footer-link { display: flex; align-items: center; gap: 7px; text-decoration: none; color: var(--muted); font-size: 12px; border: 1px solid var(--border); padding: 6px 14px; border-radius: 20px; transition: color .2s; }
@@ -147,34 +125,36 @@ input::placeholder { color: #383838; }
 /* MOBILE */
 @media (max-width: 700px) {
   .tagline { display: none; }
-  .nav-links .gallery-btn { display: none; }
+  .nav-links { display: none; }
   .hamburger { display: flex; }
   .studio-layout { flex-direction: column; height: auto; min-height: calc(100vh - 53px); }
   .controls { width: 100%; border-right: none; border-bottom: 1px solid var(--border); overflow-y: visible; height: auto; }
   .preview-area { width: 100%; height: 75vw; min-height: 280px; flex-shrink: 0; }
   .footer-panel { height: auto; min-height: 60px; bottom: -120px; padding: 14px 20px; flex-wrap: wrap; gap: 10px; }
+  .gallery-pill { flex-wrap: wrap; justify-content: center; }
 }
-
 ::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 </style>
 </head>
 <body>
 
 <header>
-  <a class="logo" href="index.html" style="text-decoration:none;color:var(--text)">FRAME<span>SET</span></a>
+  <a class="logo" href="index.html">FRAME<span>SET</span></a>
   <div class="nav-links">
-    <a href="gallery.html" class="gallery-btn">Gallery</a>
-    <div class="tagline">Minimalist Poster Studio</div>
+    <a href="gallery.html">Community Gallery</a>
+    <span class="tagline">Minimalist Poster Studio</span>
   </div>
-  <div class="hamburger" onclick="toggleMenu()" id="hamburger"><span></span><span></span><span></span></div>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
 </header>
+
 <div class="mobile-menu" id="mobileMenu">
   <a href="index.html" onclick="toggleMenu()">Create</a>
   <a href="gallery.html" onclick="toggleMenu()">Community Gallery</a>
 </div>
-<!-- Gallery prompt -->
+
 <div class="gallery-prompt" id="galleryPrompt">
   <div class="gallery-pill">
     <span class="gallery-pill-text">Add to <strong>Community Gallery?</strong></span>
@@ -201,7 +181,7 @@ input::placeholder { color: #383838; }
       <div class="field-group">
         <div class="field"><label>Movie Title</label><input type="text" id="fTitle" placeholder="Enter movie title" oninput="update()"></div>
         <div class="field"><label>Year</label><input type="number" id="fYear" placeholder="Enter year" oninput="update()"></div>
-        <div class="field"><label>Running Time</label><input type="number" id="fRuntime" placeholder="e.g. 175" min="1" max="999" oninput="update()"></div>
+        <div class="field"><label>Running Time (mins)</label><input type="number" id="fRuntime" placeholder="e.g. 175" min="1" max="999" oninput="update()"></div>
         <div class="field"><label>Directed By</label><input type="text" id="fDirector" placeholder="Enter director" oninput="update()"></div>
         <div class="field"><label>Produced By</label><input type="text" id="fProducer" placeholder="Enter producer" oninput="update()"></div>
       </div>
@@ -218,7 +198,6 @@ input::placeholder { color: #383838; }
     </div>
     <div class="divider"></div>
     <button class="download-btn" onclick="downloadPoster()">↓ Download Poster</button>
-
     <div class="share-section" id="shareSection">
       <div class="share-label">Share your poster</div>
       <button class="share-btn native-btn" id="nativeShareBtn" onclick="doNativeShare()">
@@ -228,7 +207,7 @@ input::placeholder { color: #383838; }
       <div class="share-btns">
         <a class="share-btn x-btn" id="shareX" href="#" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          Post on X
+          Share on X
         </a>
         <a class="share-btn whatsapp-btn" id="shareWA" href="#" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -244,12 +223,11 @@ input::placeholder { color: #383838; }
         </button>
       </div>
     </div>
-
   </aside>
 
   <main class="preview-area" id="previewArea">
     <div class="poster-scaler" id="posterScaler">
-      <div class="poster" id="poster">
+      <div class="poster">
         <div class="p-img-pad">
           <div class="p-img-box empty" id="imgFrame">
             <div class="p-placeholder" id="posterPh">
@@ -287,7 +265,7 @@ input::placeholder { color: #383838; }
   <div class="footer-tab" id="footerTab">About ↑</div>
 </div>
 <div class="footer-panel" id="footerPanel">
-  <span class="footer-text">Made with <span class="heart">♥</span> by Mukul &nbsp;·&nbsp; India</span>
+  <span class="footer-text">Made with <span class="heart">♥</span> by Mukul · India</span>
   <div class="footer-sep"></div>
   <a class="footer-link" href="https://x.com/mklbasist" target="_blank" rel="noopener">
     <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -296,83 +274,86 @@ input::placeholder { color: #383838; }
 </div>
 
 <script>
-// ── Poster real dimensions ─────────────────────────────────────────────────
+// ── Constants ───────────────────────────────────────────────────────────────
 const PW = 564, PH = 780;
-const FX = 20,  FY = 20;   // image frame position inside poster
-const FW = 524, FH = 560;  // image frame size
+const FX = 20,  FY = 20;
+const FW = 524, FH = 560;
+const SITE_URL = 'https://frameset.vercel.app';
+const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/du9uiyufc/image/upload';
+const CLOUDINARY_PRESET = 'frameset_gallery';
 
-// ── Scale poster preview to fit screen ────────────────────────────────────
+// ── Scale poster preview ────────────────────────────────────────────────────
 function scalePoster() {
   const area = document.getElementById('previewArea');
-  const s    = Math.min((area.clientWidth - 32) / PW, (area.clientHeight - 32) / PH, 1);
-  document.getElementById('posterScaler').style.transform = `scale(${s})`;
+  const s = Math.min((area.clientWidth - 32) / PW, (area.clientHeight - 32) / PH, 1);
+  document.getElementById('posterScaler').style.transform = 'scale(' + s + ')';
 }
 window.addEventListener('resize', scalePoster);
-window.addEventListener('load',   scalePoster);
+window.addEventListener('load', scalePoster);
 function getScale() {
   const t = document.getElementById('posterScaler').style.transform || 'scale(1)';
   return parseFloat(t.replace('scale(', '')) || 1;
 }
 
-// ── Image pan state ────────────────────────────────────────────────────────
-let natW=0, natH=0, dW=0, dH=0, px=0, py=0;
-let drag=false, dx0=0, dy0=0, px0=0, py0=0;
+// ── Image pan ───────────────────────────────────────────────────────────────
+let natW = 0, natH = 0, dW = 0, dH = 0, px = 0, py = 0;
+let drag = false, dx0 = 0, dy0 = 0, px0 = 0, py0 = 0;
 
 function initPos() {
-  const s = Math.max(FW/natW, FH/natH);
-  dW = natW*s; dH = natH*s;
-  px = (FW-dW)/2; py = (FH-dH)/2;
+  const s = Math.max(FW / natW, FH / natH);
+  dW = natW * s; dH = natH * s;
+  px = (FW - dW) / 2; py = (FH - dH) / 2;
   applyPos();
 }
 function applyPos() {
   const img = document.getElementById('posterImg');
-  img.style.width=dW+'px'; img.style.height=dH+'px';
-  img.style.left=px+'px';  img.style.top=py+'px';
+  img.style.width = dW + 'px'; img.style.height = dH + 'px';
+  img.style.left = px + 'px'; img.style.top = py + 'px';
 }
-function clamp(v,lo,hi){ return Math.max(lo,Math.min(hi,v)); }
-function clampedPos(x,y){
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+function clampedPos(x, y) {
   return {
-    x: clamp(x, Math.min(0,FW-dW), Math.max(0,FW-dW)),
-    y: clamp(y, Math.min(0,FH-dH), Math.max(0,FH-dH))
+    x: clamp(x, Math.min(0, FW - dW), Math.max(0, FW - dW)),
+    y: clamp(y, Math.min(0, FH - dH), Math.max(0, FH - dH))
   };
 }
 
 const frame = document.getElementById('imgFrame');
-frame.addEventListener('mousedown', e => {
+frame.addEventListener('mousedown', function(e) {
   if (!natW) return; e.preventDefault();
-  drag=true; dx0=e.clientX; dy0=e.clientY; px0=px; py0=py;
+  drag = true; dx0 = e.clientX; dy0 = e.clientY; px0 = px; py0 = py;
   frame.classList.add('drag');
 });
-document.addEventListener('mousemove', e => {
+document.addEventListener('mousemove', function(e) {
   if (!drag) return;
-  const sc=getScale(), c=clampedPos(px0+(e.clientX-dx0)/sc, py0+(e.clientY-dy0)/sc);
-  px=c.x; py=c.y; applyPos();
+  const sc = getScale(), c = clampedPos(px0 + (e.clientX - dx0) / sc, py0 + (e.clientY - dy0) / sc);
+  px = c.x; py = c.y; applyPos();
 });
-document.addEventListener('mouseup', () => { drag=false; frame.classList.remove('drag'); });
-frame.addEventListener('touchstart', e => {
+document.addEventListener('mouseup', function() { drag = false; frame.classList.remove('drag'); });
+frame.addEventListener('touchstart', function(e) {
   if (!natW) return;
-  const t=e.touches[0]; drag=true; dx0=t.clientX; dy0=t.clientY; px0=px; py0=py;
+  const t = e.touches[0]; drag = true; dx0 = t.clientX; dy0 = t.clientY; px0 = px; py0 = py;
   e.preventDefault();
-}, {passive:false});
-document.addEventListener('touchmove', e => {
+}, { passive: false });
+document.addEventListener('touchmove', function(e) {
   if (!drag) return;
-  const sc=getScale(), t=e.touches[0];
-  const c=clampedPos(px0+(t.clientX-dx0)/sc, py0+(t.clientY-dy0)/sc);
-  px=c.x; py=c.y; applyPos(); e.preventDefault();
-}, {passive:false});
-document.addEventListener('touchend', () => { drag=false; });
+  const sc = getScale(), t = e.touches[0];
+  const c = clampedPos(px0 + (t.clientX - dx0) / sc, py0 + (t.clientY - dy0) / sc);
+  px = c.x; py = c.y; applyPos(); e.preventDefault();
+}, { passive: false });
+document.addEventListener('touchend', function() { drag = false; });
 
-// ── Upload ─────────────────────────────────────────────────────────────────
+// ── Upload ──────────────────────────────────────────────────────────────────
 function handleUpload(e) {
   const file = e.target.files[0]; if (!file) return;
   const reader = new FileReader();
-  reader.onload = ev => {
+  reader.onload = function(ev) {
     const src = ev.target.result;
     document.getElementById('uploadThumb').src = src;
     document.getElementById('uploadThumb').style.display = 'block';
     document.getElementById('panHint').style.display = 'block';
     const img = document.getElementById('posterImg');
-    img.onload = () => { natW=img.naturalWidth; natH=img.naturalHeight; initPos(); };
+    img.onload = function() { natW = img.naturalWidth; natH = img.naturalHeight; initPos(); };
     img.src = src; img.style.display = 'block';
     document.getElementById('posterPh').style.display = 'none';
     frame.classList.remove('empty');
@@ -380,489 +361,77 @@ function handleUpload(e) {
   reader.readAsDataURL(file);
 }
 
-// ── Text fields ────────────────────────────────────────────────────────────
-function v(id){ return document.getElementById(id).value.trim(); }
+// ── Text fields ─────────────────────────────────────────────────────────────
+function v(id) { return document.getElementById(id).value.trim(); }
 function setRow(rId, vId, text) {
   const row = document.getElementById(rId);
-  if (text) { document.getElementById(vId).textContent=text.toUpperCase(); row.style.display='grid'; }
-  else row.style.display='none';
+  if (text) { document.getElementById(vId).textContent = text.toUpperCase(); row.style.display = 'grid'; }
+  else row.style.display = 'none';
 }
 function update() {
   document.getElementById('pTitle').textContent = v('fTitle').toUpperCase();
   document.getElementById('pYear').textContent  = v('fYear');
-  const rt = v('fRuntime'); setRow('rowRuntime', 'pRuntime', rt ? rt + ' MINUTES' : '');
+  var rt = v('fRuntime'); setRow('rowRuntime', 'pRuntime', rt ? rt + ' MINUTES' : '');
   setRow('rowDirector', 'pDirector', v('fDirector'));
   setRow('rowProducer', 'pProducer', v('fProducer'));
-  const names=[v('s1'),v('s2'),v('s3'),v('s4')].filter(Boolean).map(n=>n.toUpperCase());
-  const sr=document.getElementById('rowStarring');
-  if (names.length){ document.getElementById('pStarring').textContent=names.join('   '); sr.style.display='grid'; }
-  else sr.style.display='none';
+  var names = [v('s1'), v('s2'), v('s3'), v('s4')].filter(Boolean).map(function(n) { return n.toUpperCase(); });
+  var sr = document.getElementById('rowStarring');
+  if (names.length) { document.getElementById('pStarring').textContent = names.join('   '); sr.style.display = 'grid'; }
+  else sr.style.display = 'none';
 }
 
-// ── Download ───────────────────────────────────────────────────────────────
-// Canvas draws at EXACTLY the CSS sizes — no scale factor confusion.
-// Output is 564×846. On screen that looks normal sized (like an A5 image).
+// ── Download ────────────────────────────────────────────────────────────────
+var lastPosterBlob = null;
+
 function downloadPoster() {
-const cv = document.createElement('canvas');
-const EX = 4; // 4× = 2256×3120px high res
-cv.width  = PW * EX;
-cv.height = PH * EX;
-const ctx = cv.getContext('2d');
-ctx.scale(EX, EX);<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>FRAMESET — Minimalist Poster Studio</title>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --bg: #0f0f0f; --surface: #1a1a1a; --border: #2e2e2e;
-  --text: #f0ede8; --muted: #777; --accent: #c8b99a;
-}
-html, body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100%; }
+  var EX = 4;
+  var cv = document.createElement('canvas');
+  cv.width  = PW * EX;
+  cv.height = PH * EX;
+  var ctx = cv.getContext('2d');
+  ctx.scale(EX, EX);
 
-/* HEADER */
-header { padding: 0 24px; height: 53px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--bg); position: sticky; top: 0; z-index: 40; }
-.nav-links { display: flex; align-items: center; gap: 20px; }
-.nav-links a { font-family:'Oswald',sans-serif; font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); text-decoration:none; transition:color .2s; }
-.nav-links a:hover { color:var(--accent); }
-.nav-links .gallery-btn { border:1px solid var(--border); padding:6px 14px; border-radius:2px; }
-.nav-links .gallery-btn:hover { border-color:var(--accent); color:var(--accent); }
-.hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; }
-.hamburger span { width:22px; height:1.5px; background:var(--text); display:block; transition:all .3s; }
-.mobile-menu { display:none; position:fixed; inset:53px 0 0; background:rgba(10,10,10,0.97); backdrop-filter:blur(20px); z-index:99; flex-direction:column; align-items:center; justify-content:center; gap:32px; }
-.mobile-menu.open { display:flex; }
-.mobile-menu a { font-family:'Oswald',sans-serif; font-size:22px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:var(--text); text-decoration:none; transition:color .2s; }
-.mobile-menu a:hover { color:var(--accent); }
-/* Gallery prompt pill */
-.gallery-prompt { display:none; position:fixed; bottom:24px; left:50%; transform:translateX(-50%); z-index:150; }
-.gallery-prompt.visible { display:flex; }
-.gallery-pill { display:flex; align-items:center; gap:14px; background:var(--surface); border:1px solid var(--border); border-radius:40px; padding:12px 20px; box-shadow:0 20px 60px rgba(0,0,0,.6); backdrop-filter:blur(10px); white-space:nowrap; }
-.gallery-pill-text { font-size:13px; color:var(--muted); font-family:'Inter',sans-serif; }
-.gallery-pill-text strong { color:var(--accent); font-family:'Oswald',sans-serif; font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-style:normal; }
-.gpill-yes { background:var(--accent); color:#111; border:none; padding:8px 20px; border-radius:20px; cursor:pointer; font-family:'Oswald',sans-serif; font-size:11px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; transition:background .2s; }
-.gpill-yes:hover { background:#d9c9ac; }
-.gpill-no { background:transparent; color:var(--muted); border:none; padding:8px 14px; cursor:pointer; font-size:12px; transition:color .2s; font-family:'Inter',sans-serif; }
-.gpill-no:hover { color:var(--text); }
-.logo { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: .3em; }
-.logo span { color: var(--accent); }
-.tagline { font-size: 10px; color: var(--muted); letter-spacing: .15em; text-transform: uppercase; }
-
-/* LAYOUT */
-.studio-layout { display: flex; height: calc(100vh - 53px); }
-
-/* CONTROLS */
-.controls { width: 300px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--border); padding: 20px 18px; display: flex; flex-direction: column; gap: 18px; overflow-y: auto; }
-.section-label { font-size: 9px; letter-spacing: .25em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; font-weight: 600; }
-.upload-zone { border: 1.5px dashed var(--border); border-radius: 4px; padding: 20px 14px; text-align: center; cursor: pointer; position: relative; overflow: hidden; transition: border-color .2s; }
-.upload-zone:hover { border-color: var(--accent); }
-.upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-.upload-icon { font-size: 22px; margin-bottom: 6px; display: block; }
-.upload-text { font-size: 11px; color: var(--muted); line-height: 1.5; }
-.upload-text strong { color: var(--accent); display: block; font-size: 12px; margin-bottom: 2px; }
-#uploadThumb { width: 100%; height: 50px; object-fit: cover; border-radius: 3px; margin-top: 8px; display: none; border: 1px solid var(--border); }
-.pan-hint { display: none; font-size: 10px; color: var(--muted); text-align: center; padding: 5px 10px; border: 1px solid var(--border); border-radius: 20px; margin-top: 7px; }
-.divider { height: 1px; background: var(--border); flex-shrink: 0; }
-.field-group { display: flex; flex-direction: column; gap: 9px; }
-.field { display: flex; flex-direction: column; gap: 4px; }
-label { font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
-input[type=text], input[type=number] { background: #111; border: 1px solid var(--border); color: var(--text); padding: 8px 11px; font-size: 12px; font-family: 'Inter', sans-serif; border-radius: 3px; outline: none; transition: border-color .2s; width: 100%; }
-input:focus { border-color: var(--accent); }
-input::placeholder { color: #383838; }
-.starring-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
-.download-btn { background: var(--accent); color: #111; border: none; padding: 13px; font-family: 'Oswald', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: .25em; text-transform: uppercase; cursor: pointer; border-radius: 3px; width: 100%; transition: background .2s; }
-.download-btn:hover { background: #d9c9ac; }
-.download-btn:active { background: #b8a589; }
-
-/* SHARE */
-.share-section { display: none; flex-direction: column; gap: 8px; }
-.share-section.visible { display: flex; }
-.share-label { font-size: 9px; letter-spacing: .25em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
-.share-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
-.share-btn {
-  display: flex; align-items: center; justify-content: center; gap: 7px;
-  padding: 9px 8px; border-radius: 3px; border: none; cursor: pointer;
-  font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
-  letter-spacing: .03em; transition: opacity .2s; text-decoration: none;
-}
-.share-btn:hover { opacity: 0.85; }
-.share-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
-.share-btn.x-btn        { background: #000; color: #fff; }
-.share-btn.whatsapp-btn { background: #25D366; color: #fff; }
-.share-btn.facebook-btn { background: #1877F2; color: #fff; }
-.share-btn.copy-btn     { background: var(--border); color: var(--text); }
-.copy-btn.copied        { background: #2a6e3f; color: #fff; }
-.share-btn.native-btn   { background: #222; color: #fff; grid-column: span 2; display: none; }
-
-/* PREVIEW */
-.preview-area { flex: 1; display: flex; align-items: center; justify-content: center; background: #080808; position: relative; overflow: hidden; }
-.preview-area::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 60% 40%, #1d1b18 0%, #080808 70%); pointer-events: none; }
-.poster-scaler { position: relative; z-index: 1; transform-origin: center center; }
-
-/* ═══════════════════════════════════════
-   POSTER — 564×846px real size
-   Image area:  524×560px (20px padding)
-   Info area:   564×266px
-   ═══════════════════════════════════════ */
-.poster {
-  width: 564px; height: 780px;
-  background: #e8e4de;
-  border-radius: 10px; overflow: hidden;
-  display: flex; flex-direction: column;
-  box-shadow: 0 40px 120px rgba(0,0,0,.95), 0 0 0 1px rgba(255,255,255,.05);
-  flex-shrink: 0;
-}
-
-/* image section */
-.p-img-pad { padding: 20px 20px 0; background: #e8e4de; flex-shrink: 0; }
-.p-img-box { width: 100%; height: 560px; overflow: hidden; background: #1a1a1a; position: relative; cursor: grab; }
-.p-img-box.drag { cursor: grabbing; }
-.p-img-box.empty { cursor: default; }
-#posterImg { position: absolute; display: none; user-select: none; -webkit-user-drag: none; pointer-events: none; }
-.p-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; color: #444; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
-
-/* info section — 266px tall */
-.p-info { flex: 1; padding: 10px 22px 20px; background: #e8e4de; display: flex; flex-direction: column; }
-
-/* TITLE ROW — big bold Oswald */
-.p-title-row { display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px; }
-.p-title { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 46px; letter-spacing: .02em; text-transform: uppercase; color: #111; line-height: 1; }
-.p-year  { font-family: 'Oswald', sans-serif; font-weight: 400; font-size: 28px; color: #111; letter-spacing: .02em; line-height: 1; }
-
-/* META ROWS */
-.p-meta { display: flex; flex-direction: column; gap: 2px; }
-.p-row  { display: grid; grid-template-columns: 120px 1fr; align-items: baseline; }
-.p-key  { font-family: 'Inter', sans-serif; font-size: 12px; color: #666; font-weight: 400; letter-spacing: .02em; }
-.p-val  { font-family: 'Oswald', sans-serif; font-size: 15px; font-weight: 600; text-transform: uppercase; color: #111; letter-spacing: .08em; }
-
-/* STARRING */
-.p-star-row { display: grid; grid-template-columns: 120px 1fr; align-items: baseline; margin-top: 14px; }
-.p-star-val { font-family: 'Oswald', sans-serif; font-size: 14px; font-weight: 600; text-transform: uppercase; color: #111; letter-spacing: .1em; line-height: 1.6; }
-
-/* FOOTER */
-.footer-trigger { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); z-index: 100; cursor: pointer; }
-.footer-tab { background: var(--surface); border: 1px solid var(--border); border-bottom: none; border-radius: 8px 8px 0 0; padding: 5px 18px 4px; font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); user-select: none; transition: color .2s; }
-.footer-trigger:hover .footer-tab { color: var(--accent); }
-.footer-panel { position: fixed; bottom: -90px; left: 0; right: 0; height: 72px; background: var(--surface); border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: center; gap: 18px; transition: bottom .35s cubic-bezier(.4,0,.2,1); z-index: 99; }
-.footer-panel.open { bottom: 0; }
-.footer-text { font-size: 12px; color: var(--muted); letter-spacing: .07em; }
-.footer-text .heart { color: #c0392b; }
-.footer-sep { width: 1px; height: 18px; background: var(--border); }
-.footer-link { display: flex; align-items: center; gap: 7px; text-decoration: none; color: var(--muted); font-size: 12px; border: 1px solid var(--border); padding: 6px 14px; border-radius: 20px; transition: color .2s; }
-.footer-link:hover { color: var(--text); border-color: #555; }
-.footer-link svg { width: 13px; height: 13px; fill: currentColor; }
-
-/* MOBILE */
-@media (max-width: 700px) {
-  .tagline { display: none; }
-  .nav-links .gallery-btn { display: none; }
-  .hamburger { display: flex; }
-  .studio-layout { flex-direction: column; height: auto; min-height: calc(100vh - 53px); }
-  .controls { width: 100%; border-right: none; border-bottom: 1px solid var(--border); overflow-y: visible; height: auto; }
-  .preview-area { width: 100%; height: 75vw; min-height: 280px; flex-shrink: 0; }
-  .footer-panel { height: auto; min-height: 60px; bottom: -120px; padding: 14px 20px; flex-wrap: wrap; gap: 10px; }
-}
-
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-</style>
-</head>
-<body>
-
-<header>
-  <a class="logo" href="index.html" style="text-decoration:none;color:var(--text)">FRAME<span>SET</span></a>
-  <div class="nav-links">
-    <a href="gallery.html" class="gallery-btn">Gallery</a>
-    <div class="tagline">Minimalist Poster Studio</div>
-  </div>
-  <div class="hamburger" onclick="toggleMenu()" id="hamburger"><span></span><span></span><span></span></div>
-</header>
-<div class="mobile-menu" id="mobileMenu">
-  <a href="index.html" onclick="toggleMenu()">Create</a>
-  <a href="gallery.html" onclick="toggleMenu()">Community Gallery</a>
-</div>
-<!-- Gallery prompt -->
-<div class="gallery-prompt" id="galleryPrompt">
-  <div class="gallery-pill">
-    <span class="gallery-pill-text">Add to <strong>Community Gallery?</strong></span>
-    <button class="gpill-yes" onclick="submitToGallery()">Yes, Add It</button>
-    <button class="gpill-no" onclick="hideGalleryPrompt()">No thanks</button>
-  </div>
-</div>
-
-<div class="studio-layout">
-  <aside class="controls">
-    <div>
-      <div class="section-label">Upload Image</div>
-      <div class="upload-zone" id="uploadZone">
-        <input type="file" accept="image/*" id="imgInput" onchange="handleUpload(event)">
-        <span class="upload-icon">🎞</span>
-        <div class="upload-text"><strong>Choose a still</strong>Click or drag here</div>
-      </div>
-      <img id="uploadThumb" src="" alt="">
-      <div class="pan-hint" id="panHint">✦ Drag image to reposition</div>
-    </div>
-    <div class="divider"></div>
-    <div>
-      <div class="section-label">Film Details</div>
-      <div class="field-group">
-        <div class="field"><label>Movie Title</label><input type="text" id="fTitle" placeholder="Enter movie title" oninput="update()"></div>
-        <div class="field"><label>Year</label><input type="number" id="fYear" placeholder="Enter year" oninput="update()"></div>
-        <div class="field"><label>Running Time</label><input type="number" id="fRuntime" placeholder="e.g. 175" min="1" max="999" oninput="update()"></div>
-        <div class="field"><label>Directed By</label><input type="text" id="fDirector" placeholder="Enter director" oninput="update()"></div>
-        <div class="field"><label>Produced By</label><input type="text" id="fProducer" placeholder="Enter producer" oninput="update()"></div>
-      </div>
-    </div>
-    <div class="divider"></div>
-    <div>
-      <div class="section-label">Starring (up to 4)</div>
-      <div class="starring-grid">
-        <input type="text" id="s1" placeholder="Name 1" oninput="update()">
-        <input type="text" id="s2" placeholder="Name 2" oninput="update()">
-        <input type="text" id="s3" placeholder="Name 3" oninput="update()">
-        <input type="text" id="s4" placeholder="Name 4" oninput="update()">
-      </div>
-    </div>
-    <div class="divider"></div>
-    <button class="download-btn" onclick="downloadPoster()">↓ Download Poster</button>
-
-    <div class="share-section" id="shareSection">
-      <div class="share-label">Share your poster</div>
-      <button class="share-btn native-btn" id="nativeShareBtn" onclick="doNativeShare()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-        Share Poster Image
-      </button>
-      <div class="share-btns">
-        <a class="share-btn x-btn" id="shareX" href="#" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          Post on X
-        </a>
-        <a class="share-btn whatsapp-btn" id="shareWA" href="#" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          WhatsApp
-        </a>
-        <a class="share-btn facebook-btn" id="shareFB" href="#" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-          Facebook
-        </a>
-        <button class="share-btn copy-btn" id="copyBtn" onclick="copyLink()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-          Copy Link
-        </button>
-      </div>
-    </div>
-
-  </aside>
-
-  <main class="preview-area" id="previewArea">
-    <div class="poster-scaler" id="posterScaler">
-      <div class="poster" id="poster">
-        <div class="p-img-pad">
-          <div class="p-img-box empty" id="imgFrame">
-            <div class="p-placeholder" id="posterPh">
-              <svg width="42" height="42" viewBox="0 0 48 48" fill="none">
-                <rect x="4" y="10" width="40" height="28" rx="2" stroke="#555" stroke-width="1.5"/>
-                <circle cx="16" cy="20" r="4" stroke="#555" stroke-width="1.5"/>
-                <path d="M4 34l10-8 8 6 6-5 16 11" stroke="#555" stroke-width="1.5" stroke-linejoin="round"/>
-              </svg>
-              Upload an image to begin
-            </div>
-            <img id="posterImg" src="" alt="">
-          </div>
-        </div>
-        <div class="p-info">
-          <div class="p-title-row">
-            <span class="p-title" id="pTitle"></span>
-            <span class="p-year"  id="pYear"></span>
-          </div>
-          <div class="p-meta">
-            <div class="p-row" id="rowRuntime"  style="display:none"><span class="p-key">running time</span><span class="p-val" id="pRuntime"></span></div>
-            <div class="p-row" id="rowDirector" style="display:none"><span class="p-key">directed by</span><span class="p-val" id="pDirector"></span></div>
-            <div class="p-row" id="rowProducer" style="display:none"><span class="p-key">produced by</span><span class="p-val" id="pProducer"></span></div>
-          </div>
-          <div class="p-star-row" id="rowStarring" style="display:none">
-            <span class="p-key">starring</span>
-            <span class="p-star-val" id="pStarring"></span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
-</div>
-
-<div class="footer-trigger" id="footerTrigger" onclick="toggleFooter()">
-  <div class="footer-tab" id="footerTab">About ↑</div>
-</div>
-<div class="footer-panel" id="footerPanel">
-  <span class="footer-text">Made with <span class="heart">♥</span> by Mukul &nbsp;·&nbsp; India</span>
-  <div class="footer-sep"></div>
-  <a class="footer-link" href="https://x.com/mklbasist" target="_blank" rel="noopener">
-    <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-    @mklbasist
-  </a>
-</div>
-
-<script>
-// ── Poster real dimensions ─────────────────────────────────────────────────
-const PW = 564, PH = 780;
-const FX = 20,  FY = 20;   // image frame position inside poster
-const FW = 524, FH = 560;  // image frame size
-
-// ── Scale poster preview to fit screen ────────────────────────────────────
-function scalePoster() {
-  const area = document.getElementById('previewArea');
-  const s    = Math.min((area.clientWidth - 32) / PW, (area.clientHeight - 32) / PH, 1);
-  document.getElementById('posterScaler').style.transform = `scale(${s})`;
-}
-window.addEventListener('resize', scalePoster);
-window.addEventListener('load',   scalePoster);
-function getScale() {
-  const t = document.getElementById('posterScaler').style.transform || 'scale(1)';
-  return parseFloat(t.replace('scale(', '')) || 1;
-}
-
-// ── Image pan state ────────────────────────────────────────────────────────
-let natW=0, natH=0, dW=0, dH=0, px=0, py=0;
-let drag=false, dx0=0, dy0=0, px0=0, py0=0;
-
-function initPos() {
-  const s = Math.max(FW/natW, FH/natH);
-  dW = natW*s; dH = natH*s;
-  px = (FW-dW)/2; py = (FH-dH)/2;
-  applyPos();
-}
-function applyPos() {
-  const img = document.getElementById('posterImg');
-  img.style.width=dW+'px'; img.style.height=dH+'px';
-  img.style.left=px+'px';  img.style.top=py+'px';
-}
-function clamp(v,lo,hi){ return Math.max(lo,Math.min(hi,v)); }
-function clampedPos(x,y){
-  return {
-    x: clamp(x, Math.min(0,FW-dW), Math.max(0,FW-dW)),
-    y: clamp(y, Math.min(0,FH-dH), Math.max(0,FH-dH))
-  };
-}
-
-const frame = document.getElementById('imgFrame');
-frame.addEventListener('mousedown', e => {
-  if (!natW) return; e.preventDefault();
-  drag=true; dx0=e.clientX; dy0=e.clientY; px0=px; py0=py;
-  frame.classList.add('drag');
-});
-document.addEventListener('mousemove', e => {
-  if (!drag) return;
-  const sc=getScale(), c=clampedPos(px0+(e.clientX-dx0)/sc, py0+(e.clientY-dy0)/sc);
-  px=c.x; py=c.y; applyPos();
-});
-document.addEventListener('mouseup', () => { drag=false; frame.classList.remove('drag'); });
-frame.addEventListener('touchstart', e => {
-  if (!natW) return;
-  const t=e.touches[0]; drag=true; dx0=t.clientX; dy0=t.clientY; px0=px; py0=py;
-  e.preventDefault();
-}, {passive:false});
-document.addEventListener('touchmove', e => {
-  if (!drag) return;
-  const sc=getScale(), t=e.touches[0];
-  const c=clampedPos(px0+(t.clientX-dx0)/sc, py0+(t.clientY-dy0)/sc);
-  px=c.x; py=c.y; applyPos(); e.preventDefault();
-}, {passive:false});
-document.addEventListener('touchend', () => { drag=false; });
-
-// ── Upload ─────────────────────────────────────────────────────────────────
-function handleUpload(e) {
-  const file = e.target.files[0]; if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    const src = ev.target.result;
-    document.getElementById('uploadThumb').src = src;
-    document.getElementById('uploadThumb').style.display = 'block';
-    document.getElementById('panHint').style.display = 'block';
-    const img = document.getElementById('posterImg');
-    img.onload = () => { natW=img.naturalWidth; natH=img.naturalHeight; initPos(); };
-    img.src = src; img.style.display = 'block';
-    document.getElementById('posterPh').style.display = 'none';
-    frame.classList.remove('empty');
-  };
-  reader.readAsDataURL(file);
-}
-
-// ── Text fields ────────────────────────────────────────────────────────────
-function v(id){ return document.getElementById(id).value.trim(); }
-function setRow(rId, vId, text) {
-  const row = document.getElementById(rId);
-  if (text) { document.getElementById(vId).textContent=text.toUpperCase(); row.style.display='grid'; }
-  else row.style.display='none';
-}
-function update() {
-  document.getElementById('pTitle').textContent = v('fTitle').toUpperCase();
-  document.getElementById('pYear').textContent  = v('fYear');
-  const rt = v('fRuntime'); setRow('rowRuntime', 'pRuntime', rt ? rt + ' MINUTES' : '');
-  setRow('rowDirector', 'pDirector', v('fDirector'));
-  setRow('rowProducer', 'pProducer', v('fProducer'));
-  const names=[v('s1'),v('s2'),v('s3'),v('s4')].filter(Boolean).map(n=>n.toUpperCase());
-  const sr=document.getElementById('rowStarring');
-  if (names.length){ document.getElementById('pStarring').textContent=names.join('   '); sr.style.display='grid'; }
-  else sr.style.display='none';
-}
-
-// ── Download ───────────────────────────────────────────────────────────────
-// Canvas draws at EXACTLY the CSS sizes — no scale factor confusion.
-// Output is 564×846. On screen that looks normal sized (like an A5 image).
-function downloadPoster() {
-  const cv  = document.createElement('canvas');
-  cv.width  = PW;
-  cv.height = PH;
-  const ctx = cv.getContext('2d');
-
-  // 1 — poster background
+  // background
   ctx.fillStyle = '#e8e4de';
   ctx.fillRect(0, 0, PW, PH);
 
-  // 2 — photo clipped to frame
-  const imgEl = document.getElementById('posterImg');
+  // photo
+  var imgEl = document.getElementById('posterImg');
   if (natW > 0 && imgEl.complete) {
     ctx.save();
-    ctx.beginPath(); ctx.rect(FX, FY, FW, FH); ctx.clip();
-    ctx.drawImage(imgEl, FX+px, FY+py, dW, dH);
-
-    // FRAMESET watermark — top left of image, golden, no bg bar
+    ctx.beginPath();
+    ctx.rect(FX, FY, FW, FH);
+    ctx.clip();
+    ctx.drawImage(imgEl, FX + px, FY + py, dW, dH);
+    // watermark
     ctx.font = '700 11px Oswald, sans-serif';
-    ctx.letterSpacing = '3px';
-    ctx.fillStyle = 'rgba(200, 185, 154, 0.55)';
+    ctx.fillStyle = 'rgba(200,185,154,0.55)';
     ctx.fillText('FRAMESET', FX + 12, FY + 22);
-
     ctx.restore();
   }
 
-  // 3 — info background
-  const IY = FY + FH; // top of info section = 600
+  // info background
+  var IY = FY + FH;
   ctx.fillStyle = '#e8e4de';
-  ctx.fillRect(0, IY, PW, PH-IY);
+  ctx.fillRect(0, IY, PW, PH - IY);
 
-  // 4 — text (wait for fonts)
+  // text — wait for fonts
   Promise.all([
     document.fonts.load('700 46px Oswald'),
     document.fonts.load('400 28px Oswald'),
     document.fonts.load('600 15px Oswald'),
-    document.fonts.load('400 12px Inter'),
-  ]).then(() => {
-
-    const titleTxt = v('fTitle').toUpperCase();
-    const yearTxt  = v('fYear');
-
-    // Title + Year — baseline at IY + 18 + 46 = IY + 46
-    let y = IY + 46;
+    document.fonts.load('400 12px Inter')
+  ]).then(function() {
+    var titleTxt = v('fTitle').toUpperCase();
+    var yearTxt  = v('fYear');
+    var y = IY + 46;
     ctx.fillStyle = '#111';
 
     if (titleTxt) {
       ctx.font = '700 46px Oswald, sans-serif';
       ctx.fillText(titleTxt, 22, y);
       if (yearTxt) {
-        const tw = ctx.measureText(titleTxt).width;
+        var tw = ctx.measureText(titleTxt).width;
         ctx.font = '400 28px Oswald, sans-serif';
         ctx.fillText(yearTxt, 22 + tw + 14, y);
       }
@@ -871,14 +440,14 @@ function downloadPoster() {
       ctx.fillText(yearTxt, 22, y);
     }
 
-    // Meta rows — 24px line height
-    const rows = [
-      { key: 'running time', val: v('fRuntime') ? v('fRuntime') + ' MINUTES' : '' },
+    var rt = v('fRuntime');
+    var rows = [
+      { key: 'running time', val: rt ? rt + ' MINUTES' : '' },
       { key: 'directed by',  val: v('fDirector').toUpperCase() },
-      { key: 'produced by',  val: v('fProducer').toUpperCase() },
-    ].filter(r => r.val);
+      { key: 'produced by',  val: v('fProducer').toUpperCase() }
+    ].filter(function(r) { return r.val; });
 
-    rows.forEach(r => {
+    rows.forEach(function(r) {
       y += 24;
       ctx.fillStyle = '#666';
       ctx.font = '400 12px Inter, sans-serif';
@@ -888,8 +457,7 @@ function downloadPoster() {
       ctx.fillText(r.val, 144, y);
     });
 
-    // Starring — extra gap above
-    const names = [v('s1'),v('s2'),v('s3'),v('s4')].filter(Boolean).map(n=>n.toUpperCase());
+    var names = [v('s1'), v('s2'), v('s3'), v('s4')].filter(Boolean).map(function(n) { return n.toUpperCase(); });
     if (names.length) {
       y += 30;
       ctx.fillStyle = '#666';
@@ -900,103 +468,65 @@ function downloadPoster() {
       ctx.fillText(names.join('   '), 144, y);
     }
 
-    // Save
-    cv.toBlob(blob => {
-      const url = URL.createObjectURL(blob);
-      const a   = document.createElement('a');
-      a.download = (v('fTitle')||'poster').replace(/\s+/g,'_').toUpperCase()+'_poster.png';
+    cv.toBlob(function(blob) {
       lastPosterBlob = blob;
-      a.href = url; document.body.appendChild(a); a.click(); showShare(); showGalleryPrompt();
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.download = (v('fTitle') || 'poster').replace(/\s+/g, '_').toUpperCase() + '_poster.png';
+      a.href = url;
+      document.body.appendChild(a);
+      a.click();
       document.body.removeChild(a);
-      setTimeout(()=>URL.revokeObjectURL(url), 2000);
+      setTimeout(function() { URL.revokeObjectURL(url); }, 2000);
+      showShare();
+      showGalleryPrompt();
     }, 'image/png');
   });
 }
 
-// ── Share ──────────────────────────────────────────────────────────────────
-const SITE_URL = 'https://frameset.vercel.app'; // update with your live URL
-
+// ── Share ───────────────────────────────────────────────────────────────────
 function updateShareLinks() {
-  const title = v('fTitle') || 'a film';
-  const text  = `Just made a minimalist poster for "${title}" using FRAMESET — Minimalist Poster Studio. Check it out 🎬`;
-  const url   = SITE_URL;
-
-  // X / Twitter
-  document.getElementById('shareX').href =
-    `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
-
-  // WhatsApp
-  document.getElementById('shareWA').href =
-    `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`;
-
-  // Facebook
-  document.getElementById('shareFB').href =
-    `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`;
-}
-
-// store last rendered blob for native share
-let lastPosterBlob = null;
-
-async function doNativeShare() {
-  if (!lastPosterBlob) return;
-  const title = v('fTitle') || 'My Poster';
-  const file  = new File([lastPosterBlob], 'frameset_poster.png', { type: 'image/png' });
-  try {
-    await navigator.share({
-      files: [file],
-      title: 'FRAMESET Poster',
-      text: `Just made a minimalist poster for "${title}" on FRAMESET — Minimalist Poster Studio 🎬 ${SITE_URL}`
-    });
-  } catch(e) {
-    // user cancelled or error — do nothing
-  }
+  var title = v('fTitle') || 'a film';
+  var text  = 'Just made a minimalist poster for "' + title + '" using FRAMESET \u2014 Minimalist Poster Studio. Check it out \uD83C\uDFAC';
+  document.getElementById('shareX').href  = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(SITE_URL);
+  document.getElementById('shareWA').href = 'https://wa.me/?text=' + encodeURIComponent(text + ' ' + SITE_URL);
+  document.getElementById('shareFB').href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(SITE_URL) + '&quote=' + encodeURIComponent(text);
 }
 
 function showShare() {
   updateShareLinks();
   document.getElementById('shareSection').classList.add('visible');
-  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  var isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   if (isMobile && navigator.canShare) document.getElementById('nativeShareBtn').style.display = 'flex';
-  // smooth scroll to share buttons
   document.getElementById('shareSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 function copyLink() {
-  navigator.clipboard.writeText(SITE_URL).then(() => {
-    const btn = document.getElementById('copyBtn');
+  navigator.clipboard.writeText(SITE_URL).then(function() {
+    var btn = document.getElementById('copyBtn');
     btn.classList.add('copied');
-    btn.querySelector('svg').style.display = 'none';
-    btn.childNodes[btn.childNodes.length - 1].textContent = ' Copied!';
-    setTimeout(() => {
-      btn.classList.remove('copied');
-      btn.querySelector('svg').style.display = '';
-      btn.childNodes[btn.childNodes.length - 1].textContent = ' Copy Link';
-    }, 2500);
+    btn.textContent = ' Copied!';
+    setTimeout(function() { btn.classList.remove('copied'); btn.textContent = ' Copy Link'; }, 2500);
   });
 }
 
-// ── Footer ─────────────────────────────────────────────────────────────────
-function toggleFooter() {
-  const panel=document.getElementById('footerPanel'), tab=document.getElementById('footerTab');
-  const open=panel.classList.toggle('open');
-  tab.textContent = open ? 'Close ↓' : 'About ↑';
+async function doNativeShare() {
+  if (!lastPosterBlob) return;
+  var title = v('fTitle') || 'My Poster';
+  var file  = new File([lastPosterBlob], 'frameset_poster.png', { type: 'image/png' });
+  try {
+    await navigator.share({
+      files: [file],
+      title: 'FRAMESET Poster',
+      text: 'Just made a minimalist poster for "' + title + '" on FRAMESET \uD83C\uDFAC ' + SITE_URL
+    });
+  } catch(e) { /* cancelled */ }
 }
-document.addEventListener('click', e => {
-  const panel=document.getElementById('footerPanel'), trigger=document.getElementById('footerTrigger');
-  if (panel.classList.contains('open') && !panel.contains(e.target) && !trigger.contains(e.target)) {
-    panel.classList.remove('open');
-    document.getElementById('footerTab').textContent='About ↑';
-  }
-});
 
-// ── Gallery submission ────────────────────────────────────────────────────
-// Cloudinary config
-const CLOUDINARY_CLOUD = 'du9uiyufc';
-const CLOUDINARY_PRESET = 'frameset_gallery';
-
+// ── Gallery ─────────────────────────────────────────────────────────────────
 function showGalleryPrompt() {
   document.getElementById('galleryPrompt').classList.add('visible');
-  setTimeout(hideGalleryPrompt, 12000); // auto hide after 12s
+  setTimeout(hideGalleryPrompt, 12000);
 }
 function hideGalleryPrompt() {
   document.getElementById('galleryPrompt').classList.remove('visible');
@@ -1006,324 +536,82 @@ async function submitToGallery() {
   hideGalleryPrompt();
   if (!lastPosterBlob) return;
   showToast('Uploading to gallery...');
-
   try {
-    // 1. Upload image to Cloudinary
-    const formData = new FormData();
+    // 1. Upload to Cloudinary
+    var formData = new FormData();
     formData.append('file', lastPosterBlob, 'poster.png');
-    formData.append('upload_preset', 'frameset_gallery');
-    const res  = await fetch('https://api.cloudinary.com/v1_1/du9uiyufc/image/upload', {
-      method: 'POST', body: formData
-    });
-    const data = await res.json();
+    formData.append('upload_preset', CLOUDINARY_PRESET);
+    var res  = await fetch(CLOUDINARY_URL, { method: 'POST', body: formData });
+    var data = await res.json();
     if (!data.secure_url) throw new Error('Cloudinary upload failed');
-    const imageUrl = data.secure_url;
+    var imageUrl = data.secure_url;
 
-    // 2. Save to Firestore directly
-    const { initializeApp, getApps } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
-    const { getFirestore, collection, addDoc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
-
-    const fbConfig = {
+    // 2. Save to Firestore
+    var fbApp  = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
+    var fbStore = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+    var apps = fbApp.getApps();
+    var app  = apps.length ? apps[0] : fbApp.initializeApp({
       apiKey: "AIzaSyAWwHiFUAmx5xglk8c0srYXG6yuJX3qG8U",
       authDomain: "frameset-3350d.firebaseapp.com",
       projectId: "frameset-3350d",
       storageBucket: "frameset-3350d.firebasestorage.app",
       messagingSenderId: "269498161536",
       appId: "1:269498161536:web:22ff3d52c39d6c91030965"
-    };
-
-    const app = getApps().length ? getApps()[0] : initializeApp(fbConfig);
-    const db  = getFirestore(app);
-
-    await addDoc(collection(db, 'posters'), {
-      imageUrl,
-      title:     v('fTitle')    || '',
-      year:      v('fYear')     || '',
-      director:  v('fDirector') || '',
-      runtime:   v('fRuntime')  || '',
-      createdAt: new Date()
     });
-
-    showToast('Added to the community gallery! 🎬');
-  } catch(e) {
-    console.error('Gallery submission failed:', e);
-    showToast('Could not add to gallery — try again later.');
-  }
-}
-
-function showToast(msg) {
-  const t = document.createElement('div');
-  t.textContent = msg;
-  t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border);color:var(--text);padding:12px 24px;border-radius:20px;font-family:Inter,sans-serif;font-size:12px;z-index:999;backdrop-filter:blur(10px);white-space:nowrap;box-shadow:0 10px 40px rgba(0,0,0,.5)';
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 3500);
-}
-
-function toggleMenu() {
-  document.getElementById('mobileMenu').classList.toggle('open');
-}
-
-// ── Drag & drop file ───────────────────────────────────────────────────────
-const zone=document.getElementById('uploadZone');
-zone.addEventListener('dragover',  e=>{e.preventDefault();zone.style.borderColor='#c8b99a';});
-zone.addEventListener('dragleave', ()=>{zone.style.borderColor='#2e2e2e';});
-zone.addEventListener('drop', e=>{
-  e.preventDefault(); zone.style.borderColor='#2e2e2e';
-  const f=e.dataTransfer.files[0];
-  if (f&&f.type.startsWith('image/')) handleUpload({target:{files:[f]}});
-});
-</script>
-</body>
-</html>
-
-  // 1 — poster background
-  ctx.fillStyle = '#e8e4de';
-  ctx.fillRect(0, 0, PW, PH);
-
-  // 2 — photo clipped to frame
-  const imgEl = document.getElementById('posterImg');
-  if (natW > 0 && imgEl.complete) {
-    ctx.save();
-    ctx.beginPath(); ctx.rect(FX, FY, FW, FH); ctx.clip();
-    ctx.drawImage(imgEl, FX+px, FY+py, dW, dH);
-
-    // FRAMESET watermark — top left of image, golden, no bg bar
-    ctx.font = '700 11px Oswald, sans-serif';
-    ctx.letterSpacing = '3px';
-    ctx.fillStyle = 'rgba(200, 185, 154, 0.55)';
-    ctx.fillText('FRAMESET', FX + 12, FY + 22);
-
-    ctx.restore();
-  }
-
-  // 3 — info background
-  const IY = FY + FH; // top of info section = 600
-  ctx.fillStyle = '#e8e4de';
-  ctx.fillRect(0, IY, PW, PH-IY);
-
-  // 4 — text (wait for fonts)
-  Promise.all([
-    document.fonts.load('700 46px Oswald'),
-    document.fonts.load('400 28px Oswald'),
-    document.fonts.load('600 15px Oswald'),
-    document.fonts.load('400 12px Inter'),
-  ]).then(() => {
-
-    const titleTxt = v('fTitle').toUpperCase();
-    const yearTxt  = v('fYear');
-
-    // Title + Year — baseline at IY + 18 + 46 = IY + 46
-    let y = IY + 46;
-    ctx.fillStyle = '#111';
-
-    if (titleTxt) {
-      ctx.font = '700 46px Oswald, sans-serif';
-      ctx.fillText(titleTxt, 22, y);
-      if (yearTxt) {
-        const tw = ctx.measureText(titleTxt).width;
-        ctx.font = '400 28px Oswald, sans-serif';
-        ctx.fillText(yearTxt, 22 + tw + 14, y);
-      }
-    } else if (yearTxt) {
-      ctx.font = '400 28px Oswald, sans-serif';
-      ctx.fillText(yearTxt, 22, y);
-    }
-
-    // Meta rows — 24px line height
-    const rows = [
-      { key: 'running time', val: v('fRuntime') ? v('fRuntime') + ' MINUTES' : '' },
-      { key: 'directed by',  val: v('fDirector').toUpperCase() },
-      { key: 'produced by',  val: v('fProducer').toUpperCase() },
-    ].filter(r => r.val);
-
-    rows.forEach(r => {
-      y += 24;
-      ctx.fillStyle = '#666';
-      ctx.font = '400 12px Inter, sans-serif';
-      ctx.fillText(r.key, 22, y);
-      ctx.fillStyle = '#111';
-      ctx.font = '600 15px Oswald, sans-serif';
-      ctx.fillText(r.val, 144, y);
-    });
-
-    // Starring — extra gap above
-    const names = [v('s1'),v('s2'),v('s3'),v('s4')].filter(Boolean).map(n=>n.toUpperCase());
-    if (names.length) {
-      y += 30;
-      ctx.fillStyle = '#666';
-      ctx.font = '400 12px Inter, sans-serif';
-      ctx.fillText('starring', 22, y);
-      ctx.fillStyle = '#111';
-      ctx.font = '600 14px Oswald, sans-serif';
-      ctx.fillText(names.join('   '), 144, y);
-    }
-
-    // Save
-    cv.toBlob(blob => {
-      const url = URL.createObjectURL(blob);
-      const a   = document.createElement('a');
-      a.download = (v('fTitle')||'poster').replace(/\s+/g,'_').toUpperCase()+'_poster.png';
-      lastPosterBlob = blob;
-      a.href = url; document.body.appendChild(a); a.click(); showShare(); showGalleryPrompt();
-      document.body.removeChild(a);
-      setTimeout(()=>URL.revokeObjectURL(url), 2000);
-    }, 'image/png');
-  });
-}
-
-// ── Share ──────────────────────────────────────────────────────────────────
-const SITE_URL = 'https://frameset-studio.vercel.app'; 
-
-function updateShareLinks() {
-  const title = v('fTitle') || 'a film';
-  const text  = `Just made a minimalist poster for "${title}" using FRAMESET — Minimalist Poster Studio. Check it out 🎬`;
-  const url   = SITE_URL;
-
-  // X / Twitter
-  document.getElementById('shareX').href =
-    `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
-
-  // WhatsApp
-  document.getElementById('shareWA').href =
-    `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`;
-
-  // Facebook
-  document.getElementById('shareFB').href =
-    `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`;
-}
-
-// store last rendered blob for native share
-let lastPosterBlob = null;
-
-async function doNativeShare() {
-  if (!lastPosterBlob) return;
-  const title = v('fTitle') || 'My Poster';
-  const file  = new File([lastPosterBlob], 'frameset_poster.png', { type: 'image/png' });
-  try {
-    await navigator.share({
-      files: [file],
-      title: 'FRAMESET Poster',
-      text: `Just made a minimalist poster for "${title}" on FRAMESET — Minimalist Poster Studio 🎬 ${SITE_URL}`
-    });
-  } catch(e) {
-    // user cancelled or error — do nothing
-  }
-}
-
-function showShare() {
-  updateShareLinks();
-  document.getElementById('shareSection').classList.add('visible');
-  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  if (isMobile && navigator.canShare) document.getElementById('nativeShareBtn').style.display = 'flex';
-  // smooth scroll to share buttons
-  document.getElementById('shareSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-function copyLink() {
-  navigator.clipboard.writeText(SITE_URL).then(() => {
-    const btn = document.getElementById('copyBtn');
-    btn.classList.add('copied');
-    btn.querySelector('svg').style.display = 'none';
-    btn.childNodes[btn.childNodes.length - 1].textContent = ' Copied!';
-    setTimeout(() => {
-      btn.classList.remove('copied');
-      btn.querySelector('svg').style.display = '';
-      btn.childNodes[btn.childNodes.length - 1].textContent = ' Copy Link';
-    }, 2500);
-  });
-}
-
-// ── Footer ─────────────────────────────────────────────────────────────────
-function toggleFooter() {
-  const panel=document.getElementById('footerPanel'), tab=document.getElementById('footerTab');
-  const open=panel.classList.toggle('open');
-  tab.textContent = open ? 'Close ↓' : 'About ↑';
-}
-document.addEventListener('click', e => {
-  const panel=document.getElementById('footerPanel'), trigger=document.getElementById('footerTrigger');
-  if (panel.classList.contains('open') && !panel.contains(e.target) && !trigger.contains(e.target)) {
-    panel.classList.remove('open');
-    document.getElementById('footerTab').textContent='About ↑';
-  }
-});
-
-// ── Gallery submission ────────────────────────────────────────────────────
-// Cloudinary config
-const CLOUDINARY_CLOUD = 'du9uiyufc';
-const CLOUDINARY_PRESET = 'frameset_gallery';
-
-function showGalleryPrompt() {
-  document.getElementById('galleryPrompt').classList.add('visible');
-  setTimeout(hideGalleryPrompt, 12000); // auto hide after 12s
-}
-function hideGalleryPrompt() {
-  document.getElementById('galleryPrompt').classList.remove('visible');
-}
-
-async function submitToGallery() {
-  hideGalleryPrompt();
-  if (!lastPosterBlob) return;
-
-  // 1. Upload to Cloudinary
-  const formData = new FormData();
-  formData.append('file', lastPosterBlob, 'poster.png');
-  formData.append('upload_preset', 'frameset_gallery');
-  try {
-    const res  = await fetch('https://api.cloudinary.com/v1_1/du9uiyufc/image/upload', {
-      method: 'POST',
-      body: formData
-    });
-    const data = await res.json();
-    if (!data.secure_url) throw new Error('Cloudinary upload failed');
-    const imageUrl = data.secure_url;
-
-    // 2. Save to Firebase via gallery page function (if loaded) or direct
-    const payload = {
-      imageUrl,
-      title:    v('fTitle') || '',
-      year:     v('fYear')  || '',
+    var db = fbStore.getFirestore(app);
+    await fbStore.addDoc(fbStore.collection(db, 'posters'), {
+      imageUrl: imageUrl,
+      title:    v('fTitle')    || '',
+      year:     v('fYear')     || '',
       director: v('fDirector') || '',
       runtime:  v('fRuntime')  || '',
-    };
-
-    // Try calling gallery's addPosterToGallery if available
-    if (window.addPosterToGallery) {
-      await window.addPosterToGallery(payload);
-    } else {
-      // Store in localStorage as fallback — gallery page picks it up
-      const pending = JSON.parse(localStorage.getItem('pendingPosters') || '[]');
-      pending.push({ ...payload, createdAt: new Date().toISOString() });
-      localStorage.setItem('pendingPosters', JSON.stringify(pending));
-    }
-
-    // Show success toast
-    showToast('Added to the community gallery! 🎬');
+      createdAt: new Date()
+    });
+    showToast('Added to the community gallery! \uD83C\uDFAC');
   } catch(e) {
-    console.error('Gallery submission failed:', e);
+    console.error('Gallery error:', e);
     showToast('Could not add to gallery — try again later.');
   }
 }
 
 function showToast(msg) {
-  const t = document.createElement('div');
+  var old = document.getElementById('toast');
+  if (old) old.remove();
+  var t = document.createElement('div');
+  t.id = 'toast';
   t.textContent = msg;
-  t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border);color:var(--text);padding:12px 24px;border-radius:20px;font-family:Inter,sans-serif;font-size:12px;z-index:999;backdrop-filter:blur(10px);white-space:nowrap;box-shadow:0 10px 40px rgba(0,0,0,.5)';
+  t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1a1a1a;border:1px solid #2e2e2e;color:#f0ede8;padding:12px 24px;border-radius:20px;font-family:Inter,sans-serif;font-size:12px;z-index:999;backdrop-filter:blur(10px);white-space:nowrap;box-shadow:0 10px 40px rgba(0,0,0,.5)';
   document.body.appendChild(t);
-  setTimeout(() => t.remove(), 3500);
+  setTimeout(function() { t.remove(); }, 3500);
 }
 
+// ── Footer ──────────────────────────────────────────────────────────────────
+function toggleFooter() {
+  var panel = document.getElementById('footerPanel'), tab = document.getElementById('footerTab');
+  var open = panel.classList.toggle('open');
+  tab.textContent = open ? 'Close \u2193' : 'About \u2191';
+}
+document.addEventListener('click', function(e) {
+  var panel = document.getElementById('footerPanel'), trigger = document.getElementById('footerTrigger');
+  if (panel.classList.contains('open') && !panel.contains(e.target) && !trigger.contains(e.target)) {
+    panel.classList.remove('open');
+    document.getElementById('footerTab').textContent = 'About \u2191';
+  }
+});
+
+// ── Nav ─────────────────────────────────────────────────────────────────────
 function toggleMenu() {
   document.getElementById('mobileMenu').classList.toggle('open');
 }
 
-// ── Drag & drop file ───────────────────────────────────────────────────────
-const zone=document.getElementById('uploadZone');
-zone.addEventListener('dragover',  e=>{e.preventDefault();zone.style.borderColor='#c8b99a';});
-zone.addEventListener('dragleave', ()=>{zone.style.borderColor='#2e2e2e';});
-zone.addEventListener('drop', e=>{
-  e.preventDefault(); zone.style.borderColor='#2e2e2e';
-  const f=e.dataTransfer.files[0];
-  if (f&&f.type.startsWith('image/')) handleUpload({target:{files:[f]}});
+// ── Drag & drop file ────────────────────────────────────────────────────────
+var zone = document.getElementById('uploadZone');
+zone.addEventListener('dragover', function(e) { e.preventDefault(); zone.style.borderColor = '#c8b99a'; });
+zone.addEventListener('dragleave', function() { zone.style.borderColor = '#2e2e2e'; });
+zone.addEventListener('drop', function(e) {
+  e.preventDefault(); zone.style.borderColor = '#2e2e2e';
+  var f = e.dataTransfer.files[0];
+  if (f && f.type.startsWith('image/')) handleUpload({ target: { files: [f] } });
 });
 </script>
 </body>
