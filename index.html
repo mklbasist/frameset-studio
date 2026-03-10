@@ -63,6 +63,7 @@ input::placeholder { color: #383838; }
 .share-btn.facebook-btn { background: #1877F2; color: #fff; }
 .share-btn.copy-btn     { background: var(--border); color: var(--text); }
 .copy-btn.copied        { background: #2a6e3f; color: #fff; }
+.share-btn.native-btn   { background: #222; color: #fff; grid-column: span 2; display: none; }
 
 /* PREVIEW */
 .preview-area { flex: 1; display: flex; align-items: center; justify-content: center; background: #080808; position: relative; overflow: hidden; }
@@ -181,6 +182,10 @@ input::placeholder { color: #383838; }
 
     <div class="share-section" id="shareSection">
       <div class="share-label">Share your poster</div>
+      <button class="share-btn native-btn" id="nativeShareBtn" onclick="doNativeShare()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+        Share Poster Image
+      </button>
       <div class="share-btns">
         <a class="share-btn x-btn" id="shareX" href="#" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -451,6 +456,7 @@ function downloadPoster() {
       const url = URL.createObjectURL(blob);
       const a   = document.createElement('a');
       a.download = (v('fTitle')||'poster').replace(/\s+/g,'_').toUpperCase()+'_poster.png';
+      lastPosterBlob = blob;
       a.href = url; document.body.appendChild(a); a.click(); showShare();
       document.body.removeChild(a);
       setTimeout(()=>URL.revokeObjectURL(url), 2000);
@@ -459,7 +465,7 @@ function downloadPoster() {
 }
 
 // ── Share ──────────────────────────────────────────────────────────────────
-const SITE_URL = 'https://frameset-studio.vercel.app'; 
+const SITE_URL = 'https://frameset-studio.vercel.app';
 
 function updateShareLinks() {
   const title = v('fTitle') || 'a film';
@@ -479,9 +485,29 @@ function updateShareLinks() {
     `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`;
 }
 
+// store last rendered blob for native share
+let lastPosterBlob = null;
+
+async function doNativeShare() {
+  if (!lastPosterBlob) return;
+  const title = v('fTitle') || 'My Poster';
+  const file  = new File([lastPosterBlob], 'frameset_poster.png', { type: 'image/png' });
+  try {
+    await navigator.share({
+      files: [file],
+      title: 'FRAMESET Poster',
+      text: `Just made a minimalist poster for "${title}" on FRAMESET — Minimalist Poster Studio 🎬 ${SITE_URL}`
+    });
+  } catch(e) {
+    // user cancelled or error — do nothing
+  }
+}
+
 function showShare() {
   updateShareLinks();
   document.getElementById('shareSection').classList.add('visible');
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if (isMobile && navigator.canShare) document.getElementById('nativeShareBtn').style.display = 'flex';
   // smooth scroll to share buttons
   document.getElementById('shareSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
