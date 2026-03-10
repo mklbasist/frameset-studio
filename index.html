@@ -364,10 +364,12 @@ function update() {
 // Canvas draws at EXACTLY the CSS sizes — no scale factor confusion.
 // Output is 564×846. On screen that looks normal sized (like an A5 image).
 function downloadPoster() {
-  const cv  = document.createElement('canvas');
-  cv.width  = PW;
-  cv.height = PH;
+  const cv = document.createElement('canvas');
+  const EX = 4; // 4× = 2256×3120px high res
+  cv.width  = PW * EX;
+  cv.height = PH * EX;
   const ctx = cv.getContext('2d');
+  ctx.scale(EX, EX);
 
   // 1 — poster background
   ctx.fillStyle = '#e8e4de';
