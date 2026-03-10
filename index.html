@@ -14,7 +14,28 @@
 html, body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100%; }
 
 /* HEADER */
-header { padding: 15px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--bg); position: sticky; top: 0; z-index: 40; }
+header { padding: 0 24px; height: 53px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--bg); position: sticky; top: 0; z-index: 40; }
+.nav-links { display: flex; align-items: center; gap: 20px; }
+.nav-links a { font-family:'Oswald',sans-serif; font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); text-decoration:none; transition:color .2s; }
+.nav-links a:hover { color:var(--accent); }
+.nav-links .gallery-btn { border:1px solid var(--border); padding:6px 14px; border-radius:2px; }
+.nav-links .gallery-btn:hover { border-color:var(--accent); color:var(--accent); }
+.hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; }
+.hamburger span { width:22px; height:1.5px; background:var(--text); display:block; transition:all .3s; }
+.mobile-menu { display:none; position:fixed; inset:53px 0 0; background:rgba(10,10,10,0.97); backdrop-filter:blur(20px); z-index:99; flex-direction:column; align-items:center; justify-content:center; gap:32px; }
+.mobile-menu.open { display:flex; }
+.mobile-menu a { font-family:'Oswald',sans-serif; font-size:22px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:var(--text); text-decoration:none; transition:color .2s; }
+.mobile-menu a:hover { color:var(--accent); }
+/* Gallery prompt pill */
+.gallery-prompt { display:none; position:fixed; bottom:24px; left:50%; transform:translateX(-50%); z-index:150; }
+.gallery-prompt.visible { display:flex; }
+.gallery-pill { display:flex; align-items:center; gap:14px; background:var(--surface); border:1px solid var(--border); border-radius:40px; padding:12px 20px; box-shadow:0 20px 60px rgba(0,0,0,.6); backdrop-filter:blur(10px); white-space:nowrap; }
+.gallery-pill-text { font-size:13px; color:var(--muted); font-family:'Inter',sans-serif; }
+.gallery-pill-text strong { color:var(--accent); font-family:'Oswald',sans-serif; font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-style:normal; }
+.gpill-yes { background:var(--accent); color:#111; border:none; padding:8px 20px; border-radius:20px; cursor:pointer; font-family:'Oswald',sans-serif; font-size:11px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; transition:background .2s; }
+.gpill-yes:hover { background:#d9c9ac; }
+.gpill-no { background:transparent; color:var(--muted); border:none; padding:8px 14px; cursor:pointer; font-size:12px; transition:color .2s; font-family:'Inter',sans-serif; }
+.gpill-no:hover { color:var(--text); }
 .logo { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: .3em; }
 .logo span { color: var(--accent); }
 .tagline { font-size: 10px; color: var(--muted); letter-spacing: .15em; text-transform: uppercase; }
@@ -126,6 +147,8 @@ input::placeholder { color: #383838; }
 /* MOBILE */
 @media (max-width: 700px) {
   .tagline { display: none; }
+  .nav-links .gallery-btn { display: none; }
+  .hamburger { display: flex; }
   .studio-layout { flex-direction: column; height: auto; min-height: calc(100vh - 53px); }
   .controls { width: 100%; border-right: none; border-bottom: 1px solid var(--border); overflow-y: visible; height: auto; }
   .preview-area { width: 100%; height: 75vw; min-height: 280px; flex-shrink: 0; }
@@ -140,9 +163,25 @@ input::placeholder { color: #383838; }
 <body>
 
 <header>
-  <div class="logo">FRAME<span>SET</span></div>
-  <div class="tagline">Minimalist Poster Studio</div>
+  <a class="logo" href="index.html" style="text-decoration:none;color:var(--text)">FRAME<span>SET</span></a>
+  <div class="nav-links">
+    <a href="gallery.html" class="gallery-btn">Gallery</a>
+    <div class="tagline">Minimalist Poster Studio</div>
+  </div>
+  <div class="hamburger" onclick="toggleMenu()" id="hamburger"><span></span><span></span><span></span></div>
 </header>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html" onclick="toggleMenu()">Create</a>
+  <a href="gallery.html" onclick="toggleMenu()">Community Gallery</a>
+</div>
+<!-- Gallery prompt -->
+<div class="gallery-prompt" id="galleryPrompt">
+  <div class="gallery-pill">
+    <span class="gallery-pill-text">Add to <strong>Community Gallery?</strong></span>
+    <button class="gpill-yes" onclick="submitToGallery()">Yes, Add It</button>
+    <button class="gpill-no" onclick="hideGalleryPrompt()">No thanks</button>
+  </div>
+</div>
 
 <div class="studio-layout">
   <aside class="controls">
@@ -364,12 +403,12 @@ function update() {
 // Canvas draws at EXACTLY the CSS sizes — no scale factor confusion.
 // Output is 564×846. On screen that looks normal sized (like an A5 image).
 function downloadPoster() {
-  const cv = document.createElement('canvas');
-  const EX = 4; // 4× = 2256×3120px high res
-  cv.width  = PW * EX;
-  cv.height = PH * EX;
-  const ctx = cv.getContext('2d');
-  ctx.scale(EX, EX);
+const cv = document.createElement('canvas');
+const EX = 4; // 4× = 2256×3120px high res
+cv.width  = PW * EX;
+cv.height = PH * EX;
+const ctx = cv.getContext('2d');
+ctx.scale(EX, EX);
 
   // 1 — poster background
   ctx.fillStyle = '#e8e4de';
@@ -459,7 +498,7 @@ function downloadPoster() {
       const a   = document.createElement('a');
       a.download = (v('fTitle')||'poster').replace(/\s+/g,'_').toUpperCase()+'_poster.png';
       lastPosterBlob = blob;
-      a.href = url; document.body.appendChild(a); a.click(); showShare();
+      a.href = url; document.body.appendChild(a); a.click(); showShare(); showGalleryPrompt();
       document.body.removeChild(a);
       setTimeout(()=>URL.revokeObjectURL(url), 2000);
     }, 'image/png');
@@ -467,7 +506,7 @@ function downloadPoster() {
 }
 
 // ── Share ──────────────────────────────────────────────────────────────────
-const SITE_URL = 'https://frameset-studio.vercel.app';
+const SITE_URL = 'https://frameset-studio.vercel.app'; 
 
 function updateShareLinks() {
   const title = v('fTitle') || 'a film';
@@ -541,6 +580,75 @@ document.addEventListener('click', e => {
     document.getElementById('footerTab').textContent='About ↑';
   }
 });
+
+// ── Gallery submission ────────────────────────────────────────────────────
+// Cloudinary config
+const CLOUDINARY_CLOUD = 'du9uiyufc';
+const CLOUDINARY_PRESET = 'frameset_gallery';
+
+function showGalleryPrompt() {
+  document.getElementById('galleryPrompt').classList.add('visible');
+  setTimeout(hideGalleryPrompt, 12000); // auto hide after 12s
+}
+function hideGalleryPrompt() {
+  document.getElementById('galleryPrompt').classList.remove('visible');
+}
+
+async function submitToGallery() {
+  hideGalleryPrompt();
+  if (!lastPosterBlob) return;
+
+  // 1. Upload to Cloudinary
+  const formData = new FormData();
+  formData.append('file', lastPosterBlob, 'poster.png');
+  formData.append('upload_preset', 'frameset_gallery');
+  try {
+    const res  = await fetch('https://api.cloudinary.com/v1_1/du9uiyufc/image/upload', {
+      method: 'POST',
+      body: formData
+    });
+    const data = await res.json();
+    if (!data.secure_url) throw new Error('Cloudinary upload failed');
+    const imageUrl = data.secure_url;
+
+    // 2. Save to Firebase via gallery page function (if loaded) or direct
+    const payload = {
+      imageUrl,
+      title:    v('fTitle') || '',
+      year:     v('fYear')  || '',
+      director: v('fDirector') || '',
+      runtime:  v('fRuntime')  || '',
+    };
+
+    // Try calling gallery's addPosterToGallery if available
+    if (window.addPosterToGallery) {
+      await window.addPosterToGallery(payload);
+    } else {
+      // Store in localStorage as fallback — gallery page picks it up
+      const pending = JSON.parse(localStorage.getItem('pendingPosters') || '[]');
+      pending.push({ ...payload, createdAt: new Date().toISOString() });
+      localStorage.setItem('pendingPosters', JSON.stringify(pending));
+    }
+
+    // Show success toast
+    showToast('Added to the community gallery! 🎬');
+  } catch(e) {
+    console.error('Gallery submission failed:', e);
+    showToast('Could not add to gallery — try again later.');
+  }
+}
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border);color:var(--text);padding:12px 24px;border-radius:20px;font-family:Inter,sans-serif;font-size:12px;z-index:999;backdrop-filter:blur(10px);white-space:nowrap;box-shadow:0 10px 40px rgba(0,0,0,.5)';
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
 
 // ── Drag & drop file ───────────────────────────────────────────────────────
 const zone=document.getElementById('uploadZone');
