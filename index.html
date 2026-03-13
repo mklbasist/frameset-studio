@@ -718,14 +718,50 @@ function ampDownload() {
     var bgW = ai.naturalWidth * bgS, bgH = ai.naturalHeight * bgS;
     srcCtx.drawImage(ai, (srcCV.width - bgW) / 2, (srcCV.height - bgH) / 2, bgW, bgH);
 
-    // 2. Blur canvas — filter in physical pixels so blur(144px) = CSS blur(48px) at 3x
+    // 2. Blur — use ctx.filter with fallback stack-blur for mobile (iOS Safari)
     var blurCV = document.createElement('canvas');
     blurCV.width  = W * EX;
     blurCV.height = H * EX;
     var blurCtx = blurCV.getContext('2d');
-    blurCtx.filter = 'blur(' + (48 * EX) + 'px) saturate(220%) brightness(0.45)';
-    blurCtx.drawImage(srcCV, -PAD, -PAD, srcCV.width, srcCV.height);
-    blurCtx.filter = 'none';
+
+    // Test if ctx.filter is supported (not on older iOS Safari)
+    var filterSupported = (typeof blurCtx.filter === 'string');
+    if (filterSupported) {
+      blurCtx.filter = 'blur(' + (48 * EX) + 'px) saturate(220%) brightness(0.45)';
+      blurCtx.drawImage(srcCV, -PAD, -PAD, srcCV.width, srcCV.height);
+      blurCtx.filter = 'none';
+    } else {
+      // Mobile fallback: repeated downscale/upscale = cheap strong blur
+      // Step 1: draw source at tiny size (loses detail = blur effect)
+      var SMALL = 6; // divisor — bigger = more blur
+      var tmpA = document.createElement('canvas');
+      tmpA.width  = Math.ceil(blurCV.width  / SMALL);
+      tmpA.height = Math.ceil(blurCV.height / SMALL);
+      var ctxA = tmpA.getContext('2d');
+      ctxA.drawImage(srcCV, -PAD/SMALL, -PAD/SMALL, srcCV.width/SMALL, srcCV.height/SMALL);
+      // Step 2: ping-pong upscale/downscale 4 times to smooth edges
+      var tmpB = document.createElement('canvas');
+      tmpB.width = tmpA.width; tmpB.height = tmpA.height;
+      var ctxB = tmpB.getContext('2d');
+      for (var bp = 0; bp < 4; bp++) {
+        ctxB.clearRect(0, 0, tmpB.width, tmpB.height);
+        ctxB.drawImage(tmpA, 1, 1, tmpA.width - 2, tmpA.height - 2);
+        ctxA.clearRect(0, 0, tmpA.width, tmpA.height);
+        ctxA.drawImage(tmpB, 0, 0, tmpA.width, tmpA.height);
+      }
+      // Step 3: scale back up to full size — interpolation smooths it further
+      blurCtx.drawImage(tmpA, 0, 0, blurCV.width, blurCV.height);
+      // Step 4: brightness+saturation via composite (approximates CSS values)
+      blurCtx.globalCompositeOperation = 'multiply';
+      blurCtx.fillStyle = 'rgba(100,100,100,0.55)'; // darkens to ~brightness(0.45)
+      blurCtx.fillRect(0, 0, blurCV.width, blurCV.height);
+      blurCtx.globalCompositeOperation = 'source-over';
+      // boost saturation by overlaying a soft color layer
+      blurCtx.globalCompositeOperation = 'saturation';
+      blurCtx.fillStyle = 'rgba(128,0,128,0.4)';
+      blurCtx.fillRect(0, 0, blurCV.width, blurCV.height);
+      blurCtx.globalCompositeOperation = 'source-over';
+    }
     // dark overlay matching CSS .amp-bg::after rgba(0,0,0,.32)
     blurCtx.fillStyle = 'rgba(0,0,0,0.32)';
     blurCtx.fillRect(0, 0, blurCV.width, blurCV.height);
