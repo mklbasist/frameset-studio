@@ -700,25 +700,61 @@ function ampDownload() {
   var cv = document.createElement('canvas');
   cv.width = W * EX; cv.height = H * EX;
   var ctx = cv.getContext('2d');
-  ctx.scale(EX, EX);
+  // rr works in logical (pre-scale) coordinates
   function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
   var ai = document.getElementById('ampImg');
-  // blurred bg — ctx.filter matches CSS exactly: blur(48px) saturate(220%) brightness(0.45)
+
+  // ── Blurred background ────────────────────────────────────────────────────
+  // Must be done BEFORE ctx.scale() so ctx.filter blur is in physical pixels.
+  // We render the blurred bg to a separate full-res canvas, then stamp it in.
   if (ai.naturalWidth) {
-    var bgCV = document.createElement('canvas');
-    bgCV.width = W + 120; bgCV.height = H + 120;
-    var bgCtx = bgCV.getContext('2d');
-    var bgS = Math.max(bgCV.width / ai.naturalWidth, bgCV.height / ai.naturalHeight);
+    // 1. Draw image onto an oversized source canvas (physical pixels, no scale)
+    var PAD = 120 * EX;
+    var srcCV = document.createElement('canvas');
+    srcCV.width  = W * EX + PAD * 2;
+    srcCV.height = H * EX + PAD * 2;
+    var srcCtx = srcCV.getContext('2d');
+    var bgS = Math.max(srcCV.width / ai.naturalWidth, srcCV.height / ai.naturalHeight);
     var bgW = ai.naturalWidth * bgS, bgH = ai.naturalHeight * bgS;
-    bgCtx.drawImage(ai, (bgCV.width - bgW) / 2, (bgCV.height - bgH) / 2, bgW, bgH);
+    srcCtx.drawImage(ai, (srcCV.width - bgW) / 2, (srcCV.height - bgH) / 2, bgW, bgH);
+
+    // 2. Blur canvas — filter in physical pixels so blur(144px) = CSS blur(48px) at 3x
+    var blurCV = document.createElement('canvas');
+    blurCV.width  = W * EX;
+    blurCV.height = H * EX;
+    var blurCtx = blurCV.getContext('2d');
+    blurCtx.filter = 'blur(' + (48 * EX) + 'px) saturate(220%) brightness(0.45)';
+    blurCtx.drawImage(srcCV, -PAD, -PAD, srcCV.width, srcCV.height);
+    blurCtx.filter = 'none';
+    // dark overlay matching CSS .amp-bg::after rgba(0,0,0,.32)
+    blurCtx.fillStyle = 'rgba(0,0,0,0.32)';
+    blurCtx.fillRect(0, 0, blurCV.width, blurCV.height);
+
+    // 3. Stamp the blurred canvas onto main canvas with rounded clip (pre-scale coords)
     ctx.save();
-    rr(0, 0, W, H, 28); ctx.clip();
-    ctx.filter = 'blur(48px) saturate(220%) brightness(0.45)';
-    ctx.drawImage(bgCV, -60, -60, W + 120, H + 120);
-    ctx.filter = 'none';
-    ctx.fillStyle = 'rgba(0,0,0,0.32)'; ctx.fillRect(0, 0, W, H);
+    // clip in physical pixels (no scale applied yet)
+    var R = 28 * EX;
+    ctx.beginPath();
+    ctx.moveTo(R, 0); ctx.lineTo(W*EX-R, 0);
+    ctx.quadraticCurveTo(W*EX, 0, W*EX, R);
+    ctx.lineTo(W*EX, H*EX-R); ctx.quadraticCurveTo(W*EX, H*EX, W*EX-R, H*EX);
+    ctx.lineTo(R, H*EX); ctx.quadraticCurveTo(0, H*EX, 0, H*EX-R);
+    ctx.lineTo(0, R); ctx.quadraticCurveTo(0, 0, R, 0);
+    ctx.closePath(); ctx.clip();
+    ctx.drawImage(blurCV, 0, 0);
     ctx.restore();
-  } else { ctx.fillStyle = '#111'; rr(0,0,W,H,28); ctx.fill(); }
+  } else {
+    ctx.fillStyle = '#111';
+    var R0 = 28 * EX;
+    ctx.beginPath();
+    ctx.moveTo(R0,0); ctx.lineTo(W*EX-R0,0); ctx.quadraticCurveTo(W*EX,0,W*EX,R0);
+    ctx.lineTo(W*EX,H*EX-R0); ctx.quadraticCurveTo(W*EX,H*EX,W*EX-R0,H*EX);
+    ctx.lineTo(R0,H*EX); ctx.quadraticCurveTo(0,H*EX,0,H*EX-R0);
+    ctx.lineTo(0,R0); ctx.quadraticCurveTo(0,0,R0,0); ctx.closePath(); ctx.fill();
+  }
+
+  // Now apply scale for all remaining drawing
+  ctx.scale(EX, EX);
   // artwork
   var AS = W-52, AX = 26, AY = 26;
   ctx.save(); rr(AX,AY,AS,AS,14); ctx.clip();
