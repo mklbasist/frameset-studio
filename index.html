@@ -117,7 +117,9 @@ input::placeholder { color: #383838; }
 .amp-bg::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,.32); }
 .amp-body { position: relative; z-index: 1; padding: 26px 24px 22px; display: flex; flex-direction: column; height: 100%; }
 .amp-art { width: 100%; aspect-ratio: 1/1; border-radius: 14px; overflow: hidden; background: #1c1c1e; margin-bottom: 22px; flex-shrink: 0; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,.65), 0 0 0 0.5px rgba(255,255,255,.08); }
-.amp-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+#ampImg { position: absolute; display: none; user-select: none; -webkit-user-drag: none; pointer-events: none; }
+.amp-art.drag { cursor: grabbing; }
+.amp-art { cursor: grab; }
 .amp-art-ph { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: rgba(255,255,255,.2); font-family: var(--sf); font-size: 11px; letter-spacing: .05em; }
 .amp-art-ph svg { opacity: .22; }
 .amp-year-pill { position: absolute; top: 11px; right: 11px; background: rgba(0,0,0,.52); backdrop-filter: blur(12px); border: 0.5px solid rgba(255,255,255,.12); border-radius: 7px; padding: 3px 9px; font-family: var(--sf); font-size: 12px; font-weight: 600; color: rgba(255,255,255,.7); letter-spacing: .02em; }
@@ -326,7 +328,7 @@ input::placeholder { color: #383838; }
       <div class="amp-poster" id="posterAmp">
         <div class="amp-bg" id="ampBg"></div>
         <div class="amp-body">
-          <div class="amp-art">
+          <div class="amp-art" id="ampArtFrame">
             <div class="amp-art-ph" id="ampArtPh">
               <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
                 <rect x="3" y="3" width="18" height="18" rx="3"/>
@@ -433,6 +435,7 @@ function switchStyle(val) {
   ['rowRuntime','rowDirector','rowProducer','rowStarring'].forEach(function(id){ document.getElementById(id).style.display='none'; });
   natW = 0; natH = 0; dW = 0; dH = 0; px = 0; py = 0;
   // Clear AMP poster
+  ampNatW = 0; ampNatH = 0; ampDW = 0; ampDH = 0; ampPx = 0; ampPy = 0;
   document.getElementById('ampImg').src = ''; document.getElementById('ampImg').style.display = 'none';
   document.getElementById('ampArtPh').style.display = 'flex';
   document.getElementById('ampBg').style.backgroundImage = '';
@@ -444,6 +447,7 @@ function switchStyle(val) {
   lastPosterBlob = null;
   // ─────────────────────────────────────────────────────────────────────────
 
+  if (!isMini && ampNatW) initAmpPos();
   document.getElementById('posterMini').style.display = isMini ? 'flex' : 'none';
   document.getElementById('posterAmp').classList.toggle('active', !isMini);
   document.getElementById('miniFields').style.display = isMini ? 'block' : 'none';
@@ -513,6 +517,56 @@ document.addEventListener('touchmove', function(e) {
 }, { passive: false });
 document.addEventListener('touchend', function() { drag = false; });
 
+// ── AMP image pan ───────────────────────────────────────────────────────────────
+var ampNatW = 0, ampNatH = 0, ampDW = 0, ampDH = 0, ampPx = 0, ampPy = 0;
+var ampDrag = false, ampDx0 = 0, ampDy0 = 0, ampPx0 = 0, ampPy0 = 0;
+
+function initAmpPos() {
+  var box = document.getElementById('ampArtFrame');
+  var AW = box.offsetWidth, AH = box.offsetHeight;
+  var s = Math.max(AW / ampNatW, AH / ampNatH);
+  ampDW = ampNatW * s; ampDH = ampNatH * s;
+  ampPx = (AW - ampDW) / 2; ampPy = (AH - ampDH) / 2;
+  applyAmpPos();
+}
+function applyAmpPos() {
+  var img = document.getElementById('ampImg');
+  img.style.width = ampDW + 'px'; img.style.height = ampDH + 'px';
+  img.style.left = ampPx + 'px'; img.style.top = ampPy + 'px';
+}
+function clampAmpPos(x, y) {
+  var box = document.getElementById('ampArtFrame');
+  var AW = box.offsetWidth, AH = box.offsetHeight;
+  return {
+    x: clamp(x, Math.min(0, AW - ampDW), Math.max(0, AW - ampDW)),
+    y: clamp(y, Math.min(0, AH - ampDH), Math.max(0, AH - ampDH))
+  };
+}
+var ampFrame = document.getElementById('ampArtFrame');
+ampFrame.addEventListener('mousedown', function(e) {
+  if (!ampNatW) return; e.preventDefault();
+  ampDrag = true; ampDx0 = e.clientX; ampDy0 = e.clientY; ampPx0 = ampPx; ampPy0 = ampPy;
+  ampFrame.classList.add('drag');
+});
+document.addEventListener('mousemove', function(e) {
+  if (!ampDrag) return;
+  var sc = getScale(), c2 = clampAmpPos(ampPx0 + (e.clientX - ampDx0) / sc, ampPy0 + (e.clientY - ampDy0) / sc);
+  ampPx = c2.x; ampPy = c2.y; applyAmpPos();
+});
+document.addEventListener('mouseup', function() { if (ampDrag) { ampDrag = false; ampFrame.classList.remove('drag'); } });
+ampFrame.addEventListener('touchstart', function(e) {
+  if (!ampNatW) return;
+  var t = e.touches[0]; ampDrag = true; ampDx0 = t.clientX; ampDy0 = t.clientY; ampPx0 = ampPx; ampPy0 = ampPy;
+  e.preventDefault();
+}, { passive: false });
+document.addEventListener('touchmove', function(e) {
+  if (!ampDrag) return;
+  var sc = getScale(), t = e.touches[0];
+  var c2 = clampAmpPos(ampPx0 + (t.clientX - ampDx0) / sc, ampPy0 + (t.clientY - ampDy0) / sc);
+  ampPx = c2.x; ampPy = c2.y; applyAmpPos(); e.preventDefault();
+}, { passive: false });
+document.addEventListener('touchend', function() { if (ampDrag) ampDrag = false; });
+
 // ── Upload — one FileReader, feeds both posters independently ────────────────
 function handleUpload(e) {
   var file = e.target.files[0]; if (!file) return;
@@ -528,10 +582,14 @@ function handleUpload(e) {
     img.src = src; img.style.display = 'block';
     document.getElementById('posterPh').style.display = 'none';
     frame.classList.remove('empty');
-    if (currentStyle === 'minimalist') document.getElementById('panHint').style.display = 'block';
+    document.getElementById('panHint').style.display = 'block';
     // apple music
-    document.getElementById('ampImg').src = src;
-    document.getElementById('ampImg').style.display = 'block';
+    var ampImgEl = document.getElementById('ampImg');
+    ampImgEl.onload = function() {
+      ampNatW = ampImgEl.naturalWidth; ampNatH = ampImgEl.naturalHeight;
+      if (currentStyle === 'applemusic') initAmpPos();
+    };
+    ampImgEl.src = src; ampImgEl.style.display = 'block';
     document.getElementById('ampArtPh').style.display = 'none';
     document.getElementById('ampBg').style.backgroundImage = 'url(' + src + ')';
   };
@@ -665,8 +723,11 @@ function ampDownload() {
   var AS = W-52, AX = 26, AY = 26;
   ctx.save(); rr(AX,AY,AS,AS,14); ctx.clip();
   if (ai.naturalWidth) {
-    var sc = Math.max(AS/ai.naturalWidth, AS/ai.naturalHeight);
-    ctx.drawImage(ai, AX+(AS-ai.naturalWidth*sc)/2, AY+(AS-ai.naturalHeight*sc)/2, ai.naturalWidth*sc, ai.naturalHeight*sc);
+    var sc = Math.max(AS/ampNatW, AS/ampNatH);
+    var aDW = ampNatW*sc, aDH = ampNatH*sc;
+    var box = document.getElementById('ampArtFrame');
+    var ratio = AS / box.offsetWidth;
+    ctx.drawImage(ai, AX + ampPx*ratio, AY + ampPy*ratio, aDW*ratio, aDH*ratio);
   } else { ctx.fillStyle='#1c1c1e'; ctx.fillRect(AX,AY,AS,AS); }
   // watermark — same style as minimalist, inside artwork clip
   ctx.font = '700 11px Oswald, sans-serif';
