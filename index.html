@@ -721,7 +721,7 @@ function ampDownload() {
     // 2. Pure pixel blur — works on ALL browsers including iOS Safari (no ctx.filter)
     // Strategy: work at a small size (fast + strong blur), then scale up.
     // 3 passes of box blur at small size ≈ Gaussian. Then darken + desaturate.
-    var BSCALE = 16; // work at 1/8th size — gives strong blur when scaled up
+    var BSCALE = 24; // work at 1/8th size — gives strong blur when scaled up
     var bW = Math.ceil((W * EX) / BSCALE);
     var bH = Math.ceil((H * EX) / BSCALE);
 
