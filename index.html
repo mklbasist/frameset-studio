@@ -404,7 +404,7 @@ input::placeholder { color: #383838; }
 <script>
 // ── Constants ────────────────────────────────────────────────────────────────
 const PW = 564, PH = 780, FX = 20, FY = 20, FW = 524, FH = 560;
-const SITE_URL = 'https://frameset.vercel.app';
+const SITE_URL = 'https://frameset-studio.vercel.app';
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/du9uiyufc/image/upload';
 const CLOUDINARY_PRESET = 'frameset_gallery';
 
@@ -718,53 +718,99 @@ function ampDownload() {
     var bgW = ai.naturalWidth * bgS, bgH = ai.naturalHeight * bgS;
     srcCtx.drawImage(ai, (srcCV.width - bgW) / 2, (srcCV.height - bgH) / 2, bgW, bgH);
 
-    // 2. Blur — use ctx.filter with fallback stack-blur for mobile (iOS Safari)
+    // 2. Pure pixel blur — works on ALL browsers including iOS Safari (no ctx.filter)
+    // Strategy: work at a small size (fast + strong blur), then scale up.
+    // 3 passes of box blur at small size ≈ Gaussian. Then darken + desaturate.
+    var BSCALE = 8; // work at 1/8th size — gives strong blur when scaled up
+    var bW = Math.ceil((W * EX) / BSCALE);
+    var bH = Math.ceil((H * EX) / BSCALE);
+
     var blurCV = document.createElement('canvas');
-    blurCV.width  = W * EX;
-    blurCV.height = H * EX;
+    blurCV.width = bW; blurCV.height = bH;
     var blurCtx = blurCV.getContext('2d');
 
-    // Test if ctx.filter is supported (not on older iOS Safari)
-    var filterSupported = (typeof blurCtx.filter === 'string');
-    if (filterSupported) {
-      blurCtx.filter = 'blur(' + (48 * EX) + 'px) saturate(220%) brightness(0.45)';
-      blurCtx.drawImage(srcCV, -PAD, -PAD, srcCV.width, srcCV.height);
-      blurCtx.filter = 'none';
-    } else {
-      // Mobile fallback: repeated downscale/upscale = cheap strong blur
-      // Step 1: draw source at tiny size (loses detail = blur effect)
-      var SMALL = 6; // divisor — bigger = more blur
-      var tmpA = document.createElement('canvas');
-      tmpA.width  = Math.ceil(blurCV.width  / SMALL);
-      tmpA.height = Math.ceil(blurCV.height / SMALL);
-      var ctxA = tmpA.getContext('2d');
-      ctxA.drawImage(srcCV, -PAD/SMALL, -PAD/SMALL, srcCV.width/SMALL, srcCV.height/SMALL);
-      // Step 2: ping-pong upscale/downscale 4 times to smooth edges
-      var tmpB = document.createElement('canvas');
-      tmpB.width = tmpA.width; tmpB.height = tmpA.height;
-      var ctxB = tmpB.getContext('2d');
-      for (var bp = 0; bp < 4; bp++) {
-        ctxB.clearRect(0, 0, tmpB.width, tmpB.height);
-        ctxB.drawImage(tmpA, 1, 1, tmpA.width - 2, tmpA.height - 2);
-        ctxA.clearRect(0, 0, tmpA.width, tmpA.height);
-        ctxA.drawImage(tmpB, 0, 0, tmpA.width, tmpA.height);
+    // Draw source (already oversized with padding) scaled down to tiny size
+    blurCtx.drawImage(srcCV, -PAD/BSCALE, -PAD/BSCALE, srcCV.width/BSCALE, srcCV.height/BSCALE);
+
+    // 3-pass box blur on pixels (horizontal then vertical each pass)
+    function boxBlurPixels(ctx, w, h, radius) {
+      var id = ctx.getImageData(0, 0, w, h);
+      var src = id.data;
+      var tmp = new Uint8ClampedArray(src.length);
+      var r = Math.min(radius, w - 1, h - 1);
+      // horizontal pass
+      for (var y = 0; y < h; y++) {
+        var rSum = 0, gSum = 0, bSum = 0, count = 0;
+        for (var x = -r; x <= r; x++) {
+          var xi = Math.max(0, Math.min(w-1, x));
+          var idx = (y * w + xi) * 4;
+          rSum += src[idx]; gSum += src[idx+1]; bSum += src[idx+2];
+          count++;
+        }
+        for (var x = 0; x < w; x++) {
+          var oi = (y * w + x) * 4;
+          tmp[oi] = rSum/count; tmp[oi+1] = gSum/count; tmp[oi+2] = bSum/count; tmp[oi+3] = src[oi+3];
+          // slide window
+          var addX = Math.min(x + r + 1, w - 1), remX = Math.max(x - r, 0);
+          var ai2 = (y * w + addX) * 4, ri2 = (y * w + remX) * 4;
+          rSum += src[ai2] - src[ri2]; gSum += src[ai2+1] - src[ri2+1]; bSum += src[ai2+2] - src[ri2+2];
+        }
       }
-      // Step 3: scale back up to full size — interpolation smooths it further
-      blurCtx.drawImage(tmpA, 0, 0, blurCV.width, blurCV.height);
-      // Step 4: brightness+saturation via composite (approximates CSS values)
-      blurCtx.globalCompositeOperation = 'multiply';
-      blurCtx.fillStyle = 'rgba(100,100,100,0.55)'; // darkens to ~brightness(0.45)
-      blurCtx.fillRect(0, 0, blurCV.width, blurCV.height);
-      blurCtx.globalCompositeOperation = 'source-over';
-      // boost saturation by overlaying a soft color layer
-      blurCtx.globalCompositeOperation = 'saturation';
-      blurCtx.fillStyle = 'rgba(128,0,128,0.4)';
-      blurCtx.fillRect(0, 0, blurCV.width, blurCV.height);
-      blurCtx.globalCompositeOperation = 'source-over';
+      // vertical pass
+      var out = new Uint8ClampedArray(src.length);
+      for (var x = 0; x < w; x++) {
+        var rSum = 0, gSum = 0, bSum = 0, count = 0;
+        for (var y = -r; y <= r; y++) {
+          var yi = Math.max(0, Math.min(h-1, y));
+          var idx = (yi * w + x) * 4;
+          rSum += tmp[idx]; gSum += tmp[idx+1]; bSum += tmp[idx+2];
+          count++;
+        }
+        for (var y = 0; y < h; y++) {
+          var oi = (y * w + x) * 4;
+          out[oi] = rSum/count; out[oi+1] = gSum/count; out[oi+2] = bSum/count; out[oi+3] = tmp[oi+3];
+          var addY = Math.min(y + r + 1, h - 1), remY = Math.max(y - r, 0);
+          var ai2 = (addY * w + x) * 4, ri2 = (remY * w + x) * 4;
+          rSum += tmp[ai2] - tmp[ri2]; gSum += tmp[ai2+1] - tmp[ri2+1]; bSum += tmp[ai2+2] - tmp[ri2+2];
+        }
+      }
+      id.data.set(out);
+      ctx.putImageData(id, 0, 0);
     }
+
+    // 3 passes at radius 3 on the tiny canvas = very smooth blur
+    boxBlurPixels(blurCtx, bW, bH, 3);
+    boxBlurPixels(blurCtx, bW, bH, 3);
+    boxBlurPixels(blurCtx, bW, bH, 3);
+
+    // Apply brightness(0.45) + saturation boost directly on pixels
+    var id2 = blurCtx.getImageData(0, 0, bW, bH);
+    var px2 = id2.data;
+    for (var i = 0; i < px2.length; i += 4) {
+      var rr2 = px2[i], gg = px2[i+1], bb = px2[i+2];
+      // brightness 0.45
+      rr2 *= 0.45; gg *= 0.45; bb *= 0.45;
+      // saturation boost (220% = multiply saturation by 2.2)
+      var avg = (rr2 + gg + bb) / 3;
+      rr2 = avg + (rr2 - avg) * 2.2;
+      gg  = avg + (gg  - avg) * 2.2;
+      bb  = avg + (bb  - avg) * 2.2;
+      px2[i]   = Math.min(255, Math.max(0, rr2));
+      px2[i+1] = Math.min(255, Math.max(0, gg));
+      px2[i+2] = Math.min(255, Math.max(0, bb));
+    }
+    blurCtx.putImageData(id2, 0, 0);
+
+    // Scale back up to full output size (interpolation adds extra smoothness)
+    var fullBlurCV = document.createElement('canvas');
+    fullBlurCV.width = W * EX; fullBlurCV.height = H * EX;
+    var fullBlurCtx = fullBlurCV.getContext('2d');
+    fullBlurCtx.drawImage(blurCV, 0, 0, W * EX, H * EX);
     // dark overlay matching CSS .amp-bg::after rgba(0,0,0,.32)
-    blurCtx.fillStyle = 'rgba(0,0,0,0.32)';
-    blurCtx.fillRect(0, 0, blurCV.width, blurCV.height);
+    fullBlurCtx.fillStyle = 'rgba(0,0,0,0.32)';
+    fullBlurCtx.fillRect(0, 0, W * EX, H * EX);
+    // replace blurCV ref so stamp step below still works
+    blurCV = fullBlurCV;
 
     // 3. Stamp the blurred canvas onto main canvas with rounded clip (pre-scale coords)
     ctx.save();
