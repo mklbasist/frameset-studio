@@ -11,16 +11,12 @@
 :root {
   --bg: #0f0f0f; --surface: #1a1a1a; --border: #2e2e2e;
   --text: #f0ede8; --muted: #777; --accent: #c8b99a;
+  --sf: -apple-system, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
 }
 html, body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100%; }
 
 /* HEADER */
-header {
-  padding: 0 24px; height: 53px;
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-  background: var(--bg); position: sticky; top: 0; z-index: 40;
-}
+header { padding: 0 24px; height: 53px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--bg); position: sticky; top: 0; z-index: 40; }
 .logo { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: .3em; text-decoration: none; color: var(--text); }
 .logo span { color: var(--accent); }
 .nav-links { display: flex; align-items: center; gap: 20px; }
@@ -60,6 +56,11 @@ input::placeholder { color: #383838; }
 .download-btn:hover { background: #d9c9ac; }
 .download-btn:active { background: #b8a589; }
 
+/* STYLE SWITCHER */
+.style-switcher { display: flex; flex-direction: column; gap: 6px; }
+.style-select { background: #111; border: 1px solid var(--border); color: var(--text); padding: 8px 30px 8px 11px; font-size: 11px; font-family: 'Inter', sans-serif; border-radius: 3px; outline: none; cursor: pointer; width: 100%; transition: border-color .2s; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23777' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 11px center; }
+.style-select:focus { border-color: var(--accent); }
+
 /* SHARE */
 .share-section { display: none; flex-direction: column; gap: 8px; }
 .share-section.visible { display: flex; }
@@ -90,7 +91,7 @@ input::placeholder { color: #383838; }
 .preview-area::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 60% 40%, #1d1b18 0%, #080808 70%); pointer-events: none; }
 .poster-scaler { position: relative; z-index: 1; transform-origin: center center; }
 
-/* POSTER — 564×780px */
+/* MINIMALIST POSTER — 564x780 */
 .poster { width: 564px; height: 780px; background: #e8e4de; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 40px 120px rgba(0,0,0,.95), 0 0 0 1px rgba(255,255,255,.05); flex-shrink: 0; }
 .p-img-pad { padding: 20px 20px 0; background: #e8e4de; flex-shrink: 0; }
 .p-img-box { width: 100%; height: 560px; overflow: hidden; background: #1a1a1a; position: relative; cursor: grab; }
@@ -108,6 +109,43 @@ input::placeholder { color: #383838; }
 .p-val { font-family: 'Oswald', sans-serif; font-size: 15px; font-weight: 600; text-transform: uppercase; color: #111; letter-spacing: .08em; }
 .p-star-row { display: grid; grid-template-columns: 120px 1fr; align-items: baseline; margin-top: 14px; }
 .p-star-val { font-family: 'Oswald', sans-serif; font-size: 14px; font-weight: 600; text-transform: uppercase; color: #111; letter-spacing: .1em; line-height: 1.6; }
+
+/* APPLE MUSIC POSTER — 390x650 */
+.amp-poster { width: 390px; height: 650px; border-radius: 28px; overflow: hidden; position: relative; flex-shrink: 0; display: none; box-shadow: 0 40px 120px rgba(0,0,0,.95), 0 0 0 0.5px rgba(255,255,255,.08); }
+.amp-poster.active { display: block; }
+.amp-bg { position: absolute; inset: -60px; background-size: cover; background-position: center; filter: blur(48px) saturate(220%) brightness(0.45); z-index: 0; }
+.amp-bg::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,.32); }
+.amp-body { position: relative; z-index: 1; padding: 26px 24px 22px; display: flex; flex-direction: column; height: 100%; }
+.amp-art { width: 100%; aspect-ratio: 1/1; border-radius: 14px; overflow: hidden; background: #1c1c1e; margin-bottom: 22px; flex-shrink: 0; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,.65), 0 0 0 0.5px rgba(255,255,255,.08); }
+.amp-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.amp-art-ph { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: rgba(255,255,255,.2); font-family: var(--sf); font-size: 11px; letter-spacing: .05em; }
+.amp-art-ph svg { opacity: .22; }
+.amp-year-pill { position: absolute; top: 11px; right: 11px; background: rgba(0,0,0,.52); backdrop-filter: blur(12px); border: 0.5px solid rgba(255,255,255,.12); border-radius: 7px; padding: 3px 9px; font-family: var(--sf); font-size: 12px; font-weight: 600; color: rgba(255,255,255,.7); letter-spacing: .02em; }
+.amp-track { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; flex-shrink: 0; }
+.amp-track-text { flex: 1; min-width: 0; }
+.amp-song { font-family: var(--sf); font-weight: 600; font-size: 20px; color: #fff; letter-spacing: -.3px; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.amp-artist { font-family: var(--sf); font-weight: 400; font-size: 15px; color: #fc3c44; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.amp-heart { flex-shrink: 0; margin-left: 12px; cursor: pointer; padding: 4px; transition: transform .12s; }
+.amp-heart:active { transform: scale(.82); }
+.amp-heart svg { width: 22px; height: 22px; fill: none; stroke: rgba(255,255,255,.35); stroke-width: 1.8; transition: all .2s; }
+.amp-heart.liked svg { fill: #fc3c44; stroke: #fc3c44; }
+.amp-scrub { flex-shrink: 0; margin-bottom: 16px; }
+.amp-bar { height: 4px; background: rgba(255,255,255,.2); border-radius: 2px; cursor: pointer; position: relative; }
+.amp-fill { height: 100%; border-radius: 2px; background: #fff; pointer-events: none; position: relative; }
+.amp-fill::after { content: ''; position: absolute; right: -5px; top: 50%; transform: translateY(-50%); width: 12px; height: 12px; background: #fff; border-radius: 50%; box-shadow: 0 1px 4px rgba(0,0,0,.4); opacity: 0; transition: opacity .15s; }
+.amp-bar:hover .amp-fill::after, .amp-bar.scrubbing .amp-fill::after { opacity: 1; }
+.amp-times { display: flex; justify-content: space-between; margin-top: 5px; font-family: var(--sf); font-size: 11px; font-weight: 500; color: rgba(255,255,255,.38); font-variant-numeric: tabular-nums; }
+.amp-controls { display: flex; align-items: center; justify-content: space-between; padding: 0 4px; flex-shrink: 0; margin-bottom: 18px; }
+.amp-btn { background: none; border: none; cursor: pointer; color: rgba(255,255,255,.75); padding: 6px; display: flex; align-items: center; justify-content: center; transition: color .15s, transform .12s; }
+.amp-btn:active { transform: scale(.86); color: #fff; }
+.amp-btn svg { width: 26px; height: 26px; fill: currentColor; }
+.amp-play { width: 58px; height: 58px; border-radius: 50%; background: rgba(255,255,255,.15); backdrop-filter: blur(10px); border: none; cursor: pointer; color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,.3); transition: transform .12s; }
+.amp-play:active { transform: scale(.9); }
+.amp-play svg { width: 28px; height: 28px; fill: #fff; }
+.amp-vol { display: flex; align-items: center; gap: 9px; padding: 0 2px; flex-shrink: 0; }
+.amp-vol svg { flex-shrink: 0; fill: rgba(255,255,255,.4); }
+.amp-vol-bar { flex: 1; height: 4px; background: rgba(255,255,255,.2); border-radius: 2px; cursor: pointer; }
+.amp-vol-fill { height: 100%; background: rgba(255,255,255,.65); border-radius: 2px; }
 
 /* FOOTER */
 .footer-trigger { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); z-index: 100; cursor: pointer; }
@@ -165,6 +203,18 @@ input::placeholder { color: #383838; }
 
 <div class="studio-layout">
   <aside class="controls">
+
+    <!-- Style Switcher -->
+    <div class="style-switcher">
+      <div class="section-label">Poster Style</div>
+      <select class="style-select" id="styleSelect" onchange="switchStyle(this.value)">
+        <option value="minimalist">Minimalist — Classic Film Poster</option>
+        <option value="applemusic">Apple Music — Now Playing Card</option>
+      </select>
+    </div>
+    <div class="divider"></div>
+
+    <!-- Upload (shared) -->
     <div>
       <div class="section-label">Upload Image</div>
       <div class="upload-zone" id="uploadZone">
@@ -176,28 +226,40 @@ input::placeholder { color: #383838; }
       <div class="pan-hint" id="panHint">✦ Drag image to reposition</div>
     </div>
     <div class="divider"></div>
-    <div>
+
+    <!-- Minimalist fields -->
+    <div id="miniFields">
       <div class="section-label">Film Details</div>
       <div class="field-group">
-        <div class="field"><label>Movie Title</label><input type="text" id="fTitle" placeholder="Enter movie title" oninput="update()"></div>
-        <div class="field"><label>Year</label><input type="number" id="fYear" placeholder="Enter year" oninput="update()"></div>
-        <div class="field"><label>Running Time (mins)</label><input type="number" id="fRuntime" placeholder="e.g. 175" min="1" max="999" oninput="update()"></div>
-        <div class="field"><label>Directed By</label><input type="text" id="fDirector" placeholder="Enter director" oninput="update()"></div>
-        <div class="field"><label>Produced By</label><input type="text" id="fProducer" placeholder="Enter producer" oninput="update()"></div>
+        <div class="field"><label>Movie Title</label><input type="text" id="mTitle" placeholder="Enter movie title" oninput="updateMini()"></div>
+        <div class="field"><label>Year</label><input type="number" id="mYear" placeholder="Enter year" oninput="updateMini()"></div>
+        <div class="field"><label>Running Time (mins)</label><input type="number" id="mRuntime" placeholder="e.g. 175" min="1" max="999" oninput="updateMini()"></div>
+        <div class="field"><label>Directed By</label><input type="text" id="mDirector" placeholder="Enter director" oninput="updateMini()"></div>
+        <div class="field"><label>Produced By</label><input type="text" id="mProducer" placeholder="Enter producer" oninput="updateMini()"></div>
       </div>
-    </div>
-    <div class="divider"></div>
-    <div>
+      <div style="height:18px"></div>
       <div class="section-label">Starring (up to 4)</div>
       <div class="starring-grid">
-        <input type="text" id="s1" placeholder="Name 1" oninput="update()">
-        <input type="text" id="s2" placeholder="Name 2" oninput="update()">
-        <input type="text" id="s3" placeholder="Name 3" oninput="update()">
-        <input type="text" id="s4" placeholder="Name 4" oninput="update()">
+        <input type="text" id="s1" placeholder="Name 1" oninput="updateMini()">
+        <input type="text" id="s2" placeholder="Name 2" oninput="updateMini()">
+        <input type="text" id="s3" placeholder="Name 3" oninput="updateMini()">
+        <input type="text" id="s4" placeholder="Name 4" oninput="updateMini()">
       </div>
     </div>
+
+    <!-- Apple Music fields -->
+    <div id="ampFields" style="display:none">
+      <div class="section-label">Track Details</div>
+      <div class="field-group">
+        <div class="field"><label>Movie Title</label><input type="text" id="aTitle" placeholder="Enter movie title" oninput="updateAmp()"></div>
+        <div class="field"><label>Year</label><input type="number" id="aYear" placeholder="Enter year" oninput="updateAmp()"></div>
+        <div class="field"><label>Running Time (mins)</label><input type="number" id="aRuntime" placeholder="e.g. 175" min="1" max="999" oninput="updateAmp()"></div>
+        <div class="field"><label>Directed By</label><input type="text" id="aDirector" placeholder="Enter director" oninput="updateAmp()"></div>
+      </div>
+    </div>
+
     <div class="divider"></div>
-    <button class="download-btn" onclick="downloadPoster()">↓ Download Poster</button>
+    <button class="download-btn" onclick="downloadPoster()">&#x2193; Download Poster</button>
     <div class="share-section" id="shareSection">
       <div class="share-label">Share your poster</div>
       <button class="share-btn native-btn" id="nativeShareBtn" onclick="doNativeShare()">
@@ -227,7 +289,9 @@ input::placeholder { color: #383838; }
 
   <main class="preview-area" id="previewArea">
     <div class="poster-scaler" id="posterScaler">
-      <div class="poster">
+
+      <!-- Minimalist Poster -->
+      <div class="poster" id="posterMini">
         <div class="p-img-pad">
           <div class="p-img-box empty" id="imgFrame">
             <div class="p-placeholder" id="posterPh">
@@ -244,10 +308,10 @@ input::placeholder { color: #383838; }
         <div class="p-info">
           <div class="p-title-row">
             <span class="p-title" id="pTitle"></span>
-            <span class="p-year"  id="pYear"></span>
+            <span class="p-year" id="pYear"></span>
           </div>
           <div class="p-meta">
-            <div class="p-row" id="rowRuntime"  style="display:none"><span class="p-key">running time</span><span class="p-val" id="pRuntime"></span></div>
+            <div class="p-row" id="rowRuntime" style="display:none"><span class="p-key">running time</span><span class="p-val" id="pRuntime"></span></div>
             <div class="p-row" id="rowDirector" style="display:none"><span class="p-key">directed by</span><span class="p-val" id="pDirector"></span></div>
             <div class="p-row" id="rowProducer" style="display:none"><span class="p-key">produced by</span><span class="p-val" id="pProducer"></span></div>
           </div>
@@ -257,15 +321,77 @@ input::placeholder { color: #383838; }
           </div>
         </div>
       </div>
+
+      <!-- Apple Music Poster -->
+      <div class="amp-poster" id="posterAmp">
+        <div class="amp-bg" id="ampBg"></div>
+        <div class="amp-body">
+          <div class="amp-art">
+            <div class="amp-art-ph" id="ampArtPh">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+                <rect x="3" y="3" width="18" height="18" rx="3"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <path d="M21 15l-5-5L5 21"/>
+              </svg>
+              Upload an image to begin
+            </div>
+            <img id="ampImg" src="" alt="" style="display:none">
+            <div class="amp-year-pill" id="ampYearPill" style="display:none"></div>
+          </div>
+          <div class="amp-track">
+            <div class="amp-track-text">
+              <div class="amp-song" id="ampSong">Movie Title</div>
+              <div class="amp-artist" id="ampArtist">Director Name</div>
+            </div>
+            <div class="amp-heart" id="ampHeart" onclick="ampToggleHeart()">
+              <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </div>
+          </div>
+          <div class="amp-scrub">
+            <div class="amp-bar" id="ampBar">
+              <div class="amp-fill" id="ampFill" style="width:37%"></div>
+            </div>
+            <div class="amp-times">
+              <span id="ampElapsed">0:00</span>
+              <span id="ampRemain">-0:00</span>
+            </div>
+          </div>
+          <div class="amp-controls">
+            <button class="amp-btn" id="ampShuffleBtn" onclick="ampToggleMode(this,'#fc3c44')">
+              <svg viewBox="0 0 24 24"><path d="M16 3l4 4-4 4M20 7H4M16 17l4-4-4-4M20 13H8l-4 4"/></svg>
+            </button>
+            <button class="amp-btn" onclick="ampSkip(-5)">
+              <svg viewBox="0 0 24 24"><path d="M19 20L9 12l10-8v16zM5 4h2v16H5z"/></svg>
+            </button>
+            <button class="amp-play" id="ampPlayBtn" onclick="ampTogglePlay()">
+              <svg id="ampPlayIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <button class="amp-btn" onclick="ampSkip(5)">
+              <svg viewBox="0 0 24 24"><path d="M5 4l10 8-10 8V4zM17 4h2v16h-2z"/></svg>
+            </button>
+            <button class="amp-btn" id="ampRepeatBtn" onclick="ampToggleMode(this,'#fc3c44')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+            </button>
+          </div>
+          <div class="amp-vol">
+            <svg width="13" height="13" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/></svg>
+            <div class="amp-vol-bar" id="ampVolBar" onclick="ampSetVol(event)">
+              <div class="amp-vol-fill" id="ampVolFill" style="width:68%"></div>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>
+          </div>
+        </div>
+      </div>
+
     </div>
   </main>
 </div>
 
 <div class="footer-trigger" id="footerTrigger" onclick="toggleFooter()">
-  <div class="footer-tab" id="footerTab">About ↑</div>
+  <div class="footer-tab" id="footerTab">About &#x2191;</div>
 </div>
 <div class="footer-panel" id="footerPanel">
-  <span class="footer-text">Made with <span class="heart">♥</span> by Mukul · India</span>
+  <span class="footer-text">Made with <span class="heart">&#x2665;</span> by Mukul &middot; India</span>
   <div class="footer-sep"></div>
   <a class="footer-link" href="https://x.com/mklbasist" target="_blank" rel="noopener">
     <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -274,51 +400,95 @@ input::placeholder { color: #383838; }
 </div>
 
 <script>
-// ── Constants ───────────────────────────────────────────────────────────────
-const PW = 564, PH = 780;
-const FX = 20,  FY = 20;
-const FW = 524, FH = 560;
+// ── Constants ────────────────────────────────────────────────────────────────
+const PW = 564, PH = 780, FX = 20, FY = 20, FW = 524, FH = 560;
 const SITE_URL = 'https://frameset.vercel.app';
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/du9uiyufc/image/upload';
 const CLOUDINARY_PRESET = 'frameset_gallery';
 
-// ── Scale poster preview ────────────────────────────────────────────────────
+// ── Current style ────────────────────────────────────────────────────────────
+var currentStyle = 'minimalist';
+
+// ── Style switcher ───────────────────────────────────────────────────────────
+function switchStyle(val) {
+  currentStyle = val;
+  var isMini = val === 'minimalist';
+
+  // ── Reset everything ──────────────────────────────────────────────────────
+  // Clear all input fields
+  ['mTitle','mYear','mRuntime','mDirector','mProducer','s1','s2','s3','s4',
+   'aTitle','aYear','aRuntime','aDirector'].forEach(function(id) {
+    var el = document.getElementById(id); if (el) el.value = '';
+  });
+  // Clear upload thumb + pan hint
+  var thumb = document.getElementById('uploadThumb');
+  thumb.src = ''; thumb.style.display = 'none';
+  document.getElementById('panHint').style.display = 'none';
+  document.getElementById('imgInput').value = '';
+  // Clear minimalist poster
+  document.getElementById('posterImg').src = ''; document.getElementById('posterImg').style.display = 'none';
+  document.getElementById('posterPh').style.display = 'flex';
+  document.getElementById('imgFrame').classList.add('empty');
+  document.getElementById('pTitle').textContent = ''; document.getElementById('pYear').textContent = '';
+  ['rowRuntime','rowDirector','rowProducer','rowStarring'].forEach(function(id){ document.getElementById(id).style.display='none'; });
+  natW = 0; natH = 0; dW = 0; dH = 0; px = 0; py = 0;
+  // Clear AMP poster
+  document.getElementById('ampImg').src = ''; document.getElementById('ampImg').style.display = 'none';
+  document.getElementById('ampArtPh').style.display = 'flex';
+  document.getElementById('ampBg').style.backgroundImage = '';
+  document.getElementById('ampSong').textContent = 'Movie Title';
+  document.getElementById('ampArtist').textContent = 'Director Name';
+  document.getElementById('ampYearPill').style.display = 'none';
+  // Clear share section
+  document.getElementById('shareSection').classList.remove('visible');
+  lastPosterBlob = null;
+  // ─────────────────────────────────────────────────────────────────────────
+
+  document.getElementById('posterMini').style.display = isMini ? 'flex' : 'none';
+  document.getElementById('posterAmp').classList.toggle('active', !isMini);
+  document.getElementById('miniFields').style.display = isMini ? 'block' : 'none';
+  document.getElementById('ampFields').style.display  = isMini ? 'none'  : 'block';
+  if (isMini) scalePoster(); else scaleAmp();
+}
+
+// ── Scale ────────────────────────────────────────────────────────────────────
 function scalePoster() {
-  const area = document.getElementById('previewArea');
-  const s = Math.min((area.clientWidth - 32) / PW, (area.clientHeight - 32) / PH, 1);
+  var area = document.getElementById('previewArea');
+  var s = Math.min((area.clientWidth - 32) / PW, (area.clientHeight - 32) / PH, 1);
   document.getElementById('posterScaler').style.transform = 'scale(' + s + ')';
 }
-window.addEventListener('resize', scalePoster);
-window.addEventListener('load', scalePoster);
+function scaleAmp() {
+  var area = document.getElementById('previewArea');
+  var s = Math.min((area.clientWidth - 32) / 390, (area.clientHeight - 32) / 650, 1);
+  document.getElementById('posterScaler').style.transform = 'scale(' + s + ')';
+}
+function rescale() { currentStyle === 'minimalist' ? scalePoster() : scaleAmp(); }
+window.addEventListener('resize', rescale);
+window.addEventListener('load', rescale);
 function getScale() {
-  const t = document.getElementById('posterScaler').style.transform || 'scale(1)';
+  var t = document.getElementById('posterScaler').style.transform || 'scale(1)';
   return parseFloat(t.replace('scale(', '')) || 1;
 }
 
-// ── Image pan ───────────────────────────────────────────────────────────────
-let natW = 0, natH = 0, dW = 0, dH = 0, px = 0, py = 0;
-let drag = false, dx0 = 0, dy0 = 0, px0 = 0, py0 = 0;
-
+// ── Image pan (minimalist only) ──────────────────────────────────────────────
+var natW = 0, natH = 0, dW = 0, dH = 0, px = 0, py = 0;
+var drag = false, dx0 = 0, dy0 = 0, px0 = 0, py0 = 0;
 function initPos() {
-  const s = Math.max(FW / natW, FH / natH);
+  var s = Math.max(FW / natW, FH / natH);
   dW = natW * s; dH = natH * s;
   px = (FW - dW) / 2; py = (FH - dH) / 2;
   applyPos();
 }
 function applyPos() {
-  const img = document.getElementById('posterImg');
+  var img = document.getElementById('posterImg');
   img.style.width = dW + 'px'; img.style.height = dH + 'px';
   img.style.left = px + 'px'; img.style.top = py + 'px';
 }
 function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 function clampedPos(x, y) {
-  return {
-    x: clamp(x, Math.min(0, FW - dW), Math.max(0, FW - dW)),
-    y: clamp(y, Math.min(0, FH - dH), Math.max(0, FH - dH))
-  };
+  return { x: clamp(x, Math.min(0, FW-dW), Math.max(0, FW-dW)), y: clamp(y, Math.min(0, FH-dH), Math.max(0, FH-dH)) };
 }
-
-const frame = document.getElementById('imgFrame');
+var frame = document.getElementById('imgFrame');
 frame.addEventListener('mousedown', function(e) {
   if (!natW) return; e.preventDefault();
   drag = true; dx0 = e.clientX; dy0 = e.clientY; px0 = px; py0 = py;
@@ -326,173 +496,247 @@ frame.addEventListener('mousedown', function(e) {
 });
 document.addEventListener('mousemove', function(e) {
   if (!drag) return;
-  const sc = getScale(), c = clampedPos(px0 + (e.clientX - dx0) / sc, py0 + (e.clientY - dy0) / sc);
+  var sc = getScale(), c = clampedPos(px0 + (e.clientX-dx0)/sc, py0 + (e.clientY-dy0)/sc);
   px = c.x; py = c.y; applyPos();
 });
 document.addEventListener('mouseup', function() { drag = false; frame.classList.remove('drag'); });
 frame.addEventListener('touchstart', function(e) {
   if (!natW) return;
-  const t = e.touches[0]; drag = true; dx0 = t.clientX; dy0 = t.clientY; px0 = px; py0 = py;
+  var t = e.touches[0]; drag = true; dx0 = t.clientX; dy0 = t.clientY; px0 = px; py0 = py;
   e.preventDefault();
 }, { passive: false });
 document.addEventListener('touchmove', function(e) {
   if (!drag) return;
-  const sc = getScale(), t = e.touches[0];
-  const c = clampedPos(px0 + (t.clientX - dx0) / sc, py0 + (t.clientY - dy0) / sc);
+  var sc = getScale(), t = e.touches[0];
+  var c = clampedPos(px0 + (t.clientX-dx0)/sc, py0 + (t.clientY-dy0)/sc);
   px = c.x; py = c.y; applyPos(); e.preventDefault();
 }, { passive: false });
 document.addEventListener('touchend', function() { drag = false; });
 
-// ── Upload ──────────────────────────────────────────────────────────────────
+// ── Upload — one FileReader, feeds both posters independently ────────────────
 function handleUpload(e) {
-  const file = e.target.files[0]; if (!file) return;
-  const reader = new FileReader();
+  var file = e.target.files[0]; if (!file) return;
+  var reader = new FileReader();
   reader.onload = function(ev) {
-    const src = ev.target.result;
+    var src = ev.target.result;
+    // sidebar thumb
     document.getElementById('uploadThumb').src = src;
     document.getElementById('uploadThumb').style.display = 'block';
-    document.getElementById('panHint').style.display = 'block';
-    const img = document.getElementById('posterImg');
+    // minimalist
+    var img = document.getElementById('posterImg');
     img.onload = function() { natW = img.naturalWidth; natH = img.naturalHeight; initPos(); };
     img.src = src; img.style.display = 'block';
     document.getElementById('posterPh').style.display = 'none';
     frame.classList.remove('empty');
+    if (currentStyle === 'minimalist') document.getElementById('panHint').style.display = 'block';
+    // apple music
+    document.getElementById('ampImg').src = src;
+    document.getElementById('ampImg').style.display = 'block';
+    document.getElementById('ampArtPh').style.display = 'none';
+    document.getElementById('ampBg').style.backgroundImage = 'url(' + src + ')';
   };
   reader.readAsDataURL(file);
 }
 
-// ── Text fields ─────────────────────────────────────────────────────────────
-function v(id) { return document.getElementById(id).value.trim(); }
+// ── Minimalist update — only touches minimalist poster DOM ───────────────────
+function vm(id) { return document.getElementById(id).value.trim(); }
 function setRow(rId, vId, text) {
-  const row = document.getElementById(rId);
+  var row = document.getElementById(rId);
   if (text) { document.getElementById(vId).textContent = text.toUpperCase(); row.style.display = 'grid'; }
   else row.style.display = 'none';
 }
-function update() {
-  document.getElementById('pTitle').textContent = v('fTitle').toUpperCase();
-  document.getElementById('pYear').textContent  = v('fYear');
-  var rt = v('fRuntime'); setRow('rowRuntime', 'pRuntime', rt ? rt + ' MINUTES' : '');
-  setRow('rowDirector', 'pDirector', v('fDirector'));
-  setRow('rowProducer', 'pProducer', v('fProducer'));
-  var names = [v('s1'), v('s2'), v('s3'), v('s4')].filter(Boolean).map(function(n) { return n.toUpperCase(); });
+function updateMini() {
+  document.getElementById('pTitle').textContent = vm('mTitle').toUpperCase();
+  document.getElementById('pYear').textContent  = vm('mYear');
+  var rt = vm('mRuntime'); setRow('rowRuntime', 'pRuntime', rt ? rt + ' MINUTES' : '');
+  setRow('rowDirector', 'pDirector', vm('mDirector'));
+  setRow('rowProducer', 'pProducer', vm('mProducer'));
+  var names = [vm('s1'), vm('s2'), vm('s3'), vm('s4')].filter(Boolean).map(function(n) { return n.toUpperCase(); });
   var sr = document.getElementById('rowStarring');
   if (names.length) { document.getElementById('pStarring').textContent = names.join('   '); sr.style.display = 'grid'; }
   else sr.style.display = 'none';
 }
 
-// ── Download ────────────────────────────────────────────────────────────────
-var lastPosterBlob = null;
+// ── Apple Music update — only touches AMP poster DOM ────────────────────────
+function va(id) { return document.getElementById(id).value.trim(); }
+function updateAmp() {
+  var title = va('aTitle'), year = va('aYear'), dir = va('aDirector'), rt = va('aRuntime');
+  document.getElementById('ampSong').textContent   = title || 'Movie Title';
+  document.getElementById('ampArtist').textContent = dir   || 'Director Name';
+  var pill = document.getElementById('ampYearPill');
+  if (year) { pill.textContent = year; pill.style.display = 'block'; }
+  else { pill.style.display = 'none'; }
+  if (rt) { ampTotalMins = parseInt(rt) || 116; ampRenderTimes(ampProgress); }
+}
 
+// ── Download — routes to correct downloader ──────────────────────────────────
+var lastPosterBlob = null;
 function downloadPoster() {
+  if (currentStyle === 'applemusic') { ampDownload(); return; }
+  // Minimalist download
   var EX = 4;
   var cv = document.createElement('canvas');
-  cv.width  = PW * EX;
-  cv.height = PH * EX;
+  cv.width = PW * EX; cv.height = PH * EX;
   var ctx = cv.getContext('2d');
   ctx.scale(EX, EX);
-
-  // background
   ctx.fillStyle = '#e8e4de';
   ctx.fillRect(0, 0, PW, PH);
-
-  // photo
   var imgEl = document.getElementById('posterImg');
   if (natW > 0 && imgEl.complete) {
     ctx.save();
-    ctx.beginPath();
-    ctx.rect(FX, FY, FW, FH);
-    ctx.clip();
+    ctx.beginPath(); ctx.rect(FX, FY, FW, FH); ctx.clip();
     ctx.drawImage(imgEl, FX + px, FY + py, dW, dH);
-    // watermark
     ctx.font = '700 11px Oswald, sans-serif';
     ctx.fillStyle = 'rgba(200,185,154,0.55)';
     ctx.fillText('FRAMESET', FX + 12, FY + 22);
     ctx.restore();
   }
-
-  // info background
   var IY = FY + FH;
-  ctx.fillStyle = '#e8e4de';
-  ctx.fillRect(0, IY, PW, PH - IY);
-
-  // text — wait for fonts
+  ctx.fillStyle = '#e8e4de'; ctx.fillRect(0, IY, PW, PH - IY);
   Promise.all([
     document.fonts.load('700 46px Oswald'),
     document.fonts.load('400 28px Oswald'),
     document.fonts.load('600 15px Oswald'),
     document.fonts.load('400 12px Inter')
   ]).then(function() {
-    var titleTxt = v('fTitle').toUpperCase();
-    var yearTxt  = v('fYear');
+    var titleTxt = vm('mTitle').toUpperCase();
+    var yearTxt  = vm('mYear');
     var y = IY + 46;
     ctx.fillStyle = '#111';
-
     if (titleTxt) {
-      ctx.font = '700 46px Oswald, sans-serif';
-      ctx.fillText(titleTxt, 22, y);
-      if (yearTxt) {
-        var tw = ctx.measureText(titleTxt).width;
-        ctx.font = '400 28px Oswald, sans-serif';
-        ctx.fillText(yearTxt, 22 + tw + 14, y);
-      }
-    } else if (yearTxt) {
-      ctx.font = '400 28px Oswald, sans-serif';
-      ctx.fillText(yearTxt, 22, y);
-    }
-
-    var rt = v('fRuntime');
+      ctx.font = '700 46px Oswald, sans-serif'; ctx.fillText(titleTxt, 22, y);
+      if (yearTxt) { var tw = ctx.measureText(titleTxt).width; ctx.font = '400 28px Oswald, sans-serif'; ctx.fillText(yearTxt, 22 + tw + 14, y); }
+    } else if (yearTxt) { ctx.font = '400 28px Oswald, sans-serif'; ctx.fillText(yearTxt, 22, y); }
+    var rt = vm('mRuntime');
     var rows = [
       { key: 'running time', val: rt ? rt + ' MINUTES' : '' },
-      { key: 'directed by',  val: v('fDirector').toUpperCase() },
-      { key: 'produced by',  val: v('fProducer').toUpperCase() }
+      { key: 'directed by',  val: vm('mDirector').toUpperCase() },
+      { key: 'produced by',  val: vm('mProducer').toUpperCase() }
     ].filter(function(r) { return r.val; });
-
     rows.forEach(function(r) {
       y += 24;
-      ctx.fillStyle = '#666';
-      ctx.font = '400 12px Inter, sans-serif';
-      ctx.fillText(r.key, 22, y);
-      ctx.fillStyle = '#111';
-      ctx.font = '600 15px Oswald, sans-serif';
-      ctx.fillText(r.val, 144, y);
+      ctx.fillStyle = '#666'; ctx.font = '400 12px Inter, sans-serif'; ctx.fillText(r.key, 22, y);
+      ctx.fillStyle = '#111'; ctx.font = '600 15px Oswald, sans-serif'; ctx.fillText(r.val, 144, y);
     });
-
-    var names = [v('s1'), v('s2'), v('s3'), v('s4')].filter(Boolean).map(function(n) { return n.toUpperCase(); });
+    var names = [vm('s1'), vm('s2'), vm('s3'), vm('s4')].filter(Boolean).map(function(n) { return n.toUpperCase(); });
     if (names.length) {
       y += 30;
-      ctx.fillStyle = '#666';
-      ctx.font = '400 12px Inter, sans-serif';
-      ctx.fillText('starring', 22, y);
-      ctx.fillStyle = '#111';
-      ctx.font = '600 14px Oswald, sans-serif';
-      ctx.fillText(names.join('   '), 144, y);
+      ctx.fillStyle = '#666'; ctx.font = '400 12px Inter, sans-serif'; ctx.fillText('starring', 22, y);
+      ctx.fillStyle = '#111'; ctx.font = '600 14px Oswald, sans-serif'; ctx.fillText(names.join('   '), 144, y);
     }
-
     cv.toBlob(function(blob) {
       lastPosterBlob = blob;
       var url = URL.createObjectURL(blob);
       var a = document.createElement('a');
-      a.download = (v('fTitle') || 'poster').replace(/\s+/g, '_').toUpperCase() + '_poster.png';
-      a.href = url;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      a.download = (vm('mTitle') || 'poster').replace(/\s+/g, '_').toUpperCase() + '_poster.png';
+      a.href = url; document.body.appendChild(a); a.click(); document.body.removeChild(a);
       setTimeout(function() { URL.revokeObjectURL(url); }, 2000);
-      showShare();
-      showGalleryPrompt();
+      showShare(); showGalleryPrompt();
     }, 'image/png');
   });
 }
 
-// ── Share ───────────────────────────────────────────────────────────────────
+// ── Apple Music download ─────────────────────────────────────────────────────
+function ampDownload() {
+  var EX = 3, W = 390, H = 650;
+  var cv = document.createElement('canvas');
+  cv.width = W * EX; cv.height = H * EX;
+  var ctx = cv.getContext('2d');
+  ctx.scale(EX, EX);
+  function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
+  var ai = document.getElementById('ampImg');
+  // blurred bg — ctx.filter matches CSS exactly: blur(48px) saturate(220%) brightness(0.45)
+  if (ai.naturalWidth) {
+    var bgCV = document.createElement('canvas');
+    bgCV.width = W + 120; bgCV.height = H + 120;
+    var bgCtx = bgCV.getContext('2d');
+    var bgS = Math.max(bgCV.width / ai.naturalWidth, bgCV.height / ai.naturalHeight);
+    var bgW = ai.naturalWidth * bgS, bgH = ai.naturalHeight * bgS;
+    bgCtx.drawImage(ai, (bgCV.width - bgW) / 2, (bgCV.height - bgH) / 2, bgW, bgH);
+    ctx.save();
+    rr(0, 0, W, H, 28); ctx.clip();
+    ctx.filter = 'blur(48px) saturate(220%) brightness(0.45)';
+    ctx.drawImage(bgCV, -60, -60, W + 120, H + 120);
+    ctx.filter = 'none';
+    ctx.fillStyle = 'rgba(0,0,0,0.32)'; ctx.fillRect(0, 0, W, H);
+    ctx.restore();
+  } else { ctx.fillStyle = '#111'; rr(0,0,W,H,28); ctx.fill(); }
+  // artwork
+  var AS = W-52, AX = 26, AY = 26;
+  ctx.save(); rr(AX,AY,AS,AS,14); ctx.clip();
+  if (ai.naturalWidth) {
+    var sc = Math.max(AS/ai.naturalWidth, AS/ai.naturalHeight);
+    ctx.drawImage(ai, AX+(AS-ai.naturalWidth*sc)/2, AY+(AS-ai.naturalHeight*sc)/2, ai.naturalWidth*sc, ai.naturalHeight*sc);
+  } else { ctx.fillStyle='#1c1c1e'; ctx.fillRect(AX,AY,AS,AS); }
+  // watermark — same style as minimalist, inside artwork clip
+  ctx.font = '700 11px Oswald, sans-serif';
+  ctx.fillStyle = 'rgba(200,185,154,0.55)';
+  ctx.fillText('FRAMESET', AX + 12, AY + 22);
+  ctx.restore();
+  // year pill
+  var yr = va('aYear');
+  if (yr) {
+    ctx.font = '600 12px Helvetica Neue, sans-serif';
+    var pw = ctx.measureText(yr).width + 18;
+    ctx.fillStyle = 'rgba(0,0,0,.52)'; rr(AX+AS-pw-10,AY+10,pw,22,6); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,.7)'; ctx.fillText(yr, AX+AS-pw-10+9, AY+25);
+  }
+  var iy = AY+AS+22;
+  ctx.fillStyle='#fff'; ctx.font='600 20px Helvetica Neue, sans-serif';
+  ctx.fillText(va('aTitle') || 'Movie Title', 26, iy);
+  ctx.fillStyle='#fc3c44'; ctx.font='400 15px Helvetica Neue, sans-serif';
+  ctx.fillText(va('aDirector') || 'Director Name', 26, iy+22);
+  // scrubber
+  var bw = W-52, by = iy+44;
+  ctx.fillStyle='rgba(255,255,255,.2)'; rr(26,by,bw,4,2); ctx.fill();
+  ctx.fillStyle='#fff'; rr(26,by,bw*(ampProgress/100),4,2); ctx.fill();
+  var tx = 26+bw*(ampProgress/100);
+  ctx.beginPath(); ctx.arc(tx,by+2,5,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,.4)'; ctx.font='500 11px Helvetica Neue, sans-serif';
+  ctx.fillText(document.getElementById('ampElapsed').textContent, 26, by+18);
+  var rm = document.getElementById('ampRemain').textContent;
+  ctx.fillText(rm, 26+bw-ctx.measureText(rm).width, by+18);
+  // controls
+  var cy = by+50;
+  function icon(path, cx, size, filled) {
+    ctx.save(); ctx.translate(cx-size/2, cy-size/2); ctx.scale(size/24,size/24);
+    var p2 = new Path2D(path);
+    ctx.fillStyle='rgba(255,255,255,0.75)'; ctx.strokeStyle='rgba(255,255,255,0.75)';
+    ctx.lineWidth=24/size*1.5; ctx.lineJoin='round'; ctx.lineCap='round';
+    filled ? ctx.fill(p2) : ctx.stroke(p2); ctx.restore();
+  }
+  icon('M16 3l4 4-4 4M20 7H4M16 17l4-4-4-4M20 13H8l-4 4', 40, 20, false);
+  icon('M19 20L9 12l10-8v16zM5 4h2v16H5z', 105, 24, true);
+  ctx.save(); ctx.beginPath(); ctx.arc(195,cy,28,0,Math.PI*2); ctx.fillStyle='rgba(255,255,255,.15)'; ctx.fill(); ctx.restore();
+  if (ampPlaying) { ctx.fillStyle='#fff'; ctx.fillRect(185,cy-11,5,22); ctx.fillRect(196,cy-11,5,22); }
+  else { icon('M8 5v14l11-7z', 196, 26, true); }
+  icon('M5 4l10 8-10 8V4zM17 4h2v16h-2z', 285, 24, true);
+  icon('M17 1l4 4-4 4M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 01-4 4H3', 350, 20, false);
+  // volume
+  var vy = cy+46;
+  var vx=44, vw=W-44-30, volPct=parseInt(document.getElementById('ampVolFill').style.width)||68;
+  ctx.fillStyle='rgba(255,255,255,.2)'; rr(vx,vy,vw,4,2); ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,.65)'; rr(vx,vy,vw*(volPct/100),4,2); ctx.fill();
+
+  cv.toBlob(function(blob) {
+    lastPosterBlob = blob;
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.download = (va('aTitle') || 'poster').replace(/\s+/g,'_').toUpperCase() + '_amp_poster.png';
+    a.href = url; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){URL.revokeObjectURL(url);},2000);
+    showShare(); showGalleryPrompt();
+  }, 'image/png');
+}
+
+// ── Share ────────────────────────────────────────────────────────────────────
 function updateShareLinks() {
-  var title = v('fTitle') || 'a film';
-  var text  = 'Just made a minimalist poster for "' + title + '" using FRAMESET \u2014 Minimalist Poster Studio. Check it out \uD83C\uDFAC';
+  var title = (currentStyle === 'minimalist' ? vm('mTitle') : va('aTitle')) || 'a film';
+  var text = 'Just made a minimalist poster for "' + title + '" using FRAMESET \u2014 Minimalist Poster Studio. Check it out \uD83C\uDFAC';
   document.getElementById('shareX').href  = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(SITE_URL);
   document.getElementById('shareWA').href = 'https://wa.me/?text=' + encodeURIComponent(text + ' ' + SITE_URL);
   document.getElementById('shareFB').href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(SITE_URL) + '&quote=' + encodeURIComponent(text);
 }
-
 function showShare() {
   updateShareLinks();
   document.getElementById('shareSection').classList.add('visible');
@@ -500,92 +744,60 @@ function showShare() {
   if (isMobile && navigator.canShare) document.getElementById('nativeShareBtn').style.display = 'flex';
   document.getElementById('shareSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
-
 function copyLink() {
   navigator.clipboard.writeText(SITE_URL).then(function() {
     var btn = document.getElementById('copyBtn');
-    btn.classList.add('copied');
-    btn.textContent = ' Copied!';
+    btn.classList.add('copied'); btn.textContent = ' Copied!';
     setTimeout(function() { btn.classList.remove('copied'); btn.textContent = ' Copy Link'; }, 2500);
   });
 }
-
 async function doNativeShare() {
   if (!lastPosterBlob) return;
-  var title = v('fTitle') || 'My Poster';
-  var file  = new File([lastPosterBlob], 'frameset_poster.png', { type: 'image/png' });
-  try {
-    await navigator.share({
-      files: [file],
-      title: 'FRAMESET Poster',
-      text: 'Just made a minimalist poster for "' + title + '" on FRAMESET \uD83C\uDFAC ' + SITE_URL
-    });
-  } catch(e) { /* cancelled */ }
+  var title = (currentStyle === 'minimalist' ? vm('mTitle') : va('aTitle')) || 'My Poster';
+  var file = new File([lastPosterBlob], 'frameset_poster.png', { type: 'image/png' });
+  try { await navigator.share({ files: [file], title: 'FRAMESET Poster', text: 'Just made a poster for "' + title + '" on FRAMESET \uD83C\uDFAC ' + SITE_URL }); } catch(e) {}
 }
 
-// ── Gallery ─────────────────────────────────────────────────────────────────
-function showGalleryPrompt() {
-  document.getElementById('galleryPrompt').classList.add('visible');
-  setTimeout(hideGalleryPrompt, 12000);
-}
-function hideGalleryPrompt() {
-  document.getElementById('galleryPrompt').classList.remove('visible');
-}
-
+// ── Gallery ──────────────────────────────────────────────────────────────────
+function showGalleryPrompt() { document.getElementById('galleryPrompt').classList.add('visible'); setTimeout(hideGalleryPrompt, 12000); }
+function hideGalleryPrompt() { document.getElementById('galleryPrompt').classList.remove('visible'); }
 async function submitToGallery() {
   hideGalleryPrompt();
   if (!lastPosterBlob) return;
   showToast('Uploading to gallery...');
   try {
-    // 1. Upload to Cloudinary
     var formData = new FormData();
     formData.append('file', lastPosterBlob, 'poster.png');
     formData.append('upload_preset', CLOUDINARY_PRESET);
-    var res  = await fetch(CLOUDINARY_URL, { method: 'POST', body: formData });
+    var res = await fetch(CLOUDINARY_URL, { method: 'POST', body: formData });
     var data = await res.json();
     if (!data.secure_url) throw new Error('Cloudinary upload failed');
     var imageUrl = data.secure_url;
-
-    // 2. Save to Firestore
-    var fbApp  = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
+    var fbApp   = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
     var fbStore = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
     var apps = fbApp.getApps();
     var app  = apps.length ? apps[0] : fbApp.initializeApp({
-      apiKey: "AIzaSyAWwHiFUAmx5xglk8c0srYXG6yuJX3qG8U",
-      authDomain: "frameset-3350d.firebaseapp.com",
-      projectId: "frameset-3350d",
-      storageBucket: "frameset-3350d.firebasestorage.app",
-      messagingSenderId: "269498161536",
-      appId: "1:269498161536:web:22ff3d52c39d6c91030965"
+      apiKey: "AIzaSyAWwHiFUAmx5xglk8c0srYXG6yuJX3qG8U", authDomain: "frameset-3350d.firebaseapp.com",
+      projectId: "frameset-3350d", storageBucket: "frameset-3350d.firebasestorage.app",
+      messagingSenderId: "269498161536", appId: "1:269498161536:web:22ff3d52c39d6c91030965"
     });
     var db = fbStore.getFirestore(app);
-    await fbStore.addDoc(fbStore.collection(db, 'posters'), {
-      imageUrl: imageUrl,
-      title:    v('fTitle')    || '',
-      year:     v('fYear')     || '',
-      director: v('fDirector') || '',
-      runtime:  v('fRuntime')  || '',
-      createdAt: new Date()
-    });
+    var title = currentStyle === 'minimalist' ? vm('mTitle') : va('aTitle');
+    var year  = currentStyle === 'minimalist' ? vm('mYear')  : va('aYear');
+    var dir   = currentStyle === 'minimalist' ? vm('mDirector') : va('aDirector');
+    var rt    = currentStyle === 'minimalist' ? vm('mRuntime')  : va('aRuntime');
+    await fbStore.addDoc(fbStore.collection(db, 'posters'), { imageUrl, title: title||'', year: year||'', director: dir||'', runtime: rt||'', createdAt: new Date() });
     showToast('Added to the community gallery! \uD83C\uDFAC');
-  } catch(e) {
-    console.error('Gallery error:', e);
-    showToast('Could not add to gallery — try again later.');
-  }
+  } catch(e) { console.error('Gallery error:', e); showToast('Could not add to gallery \u2014 try again later.'); }
 }
-
 function showToast(msg) {
-  var old = document.getElementById('toast');
-  if (old) old.remove();
-  var t = document.createElement('div');
-  t.id = 'toast';
-  t.textContent = msg;
+  var old = document.getElementById('toast'); if (old) old.remove();
+  var t = document.createElement('div'); t.id = 'toast'; t.textContent = msg;
   t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1a1a1a;border:1px solid #2e2e2e;color:#f0ede8;padding:12px 24px;border-radius:20px;font-family:Inter,sans-serif;font-size:12px;z-index:999;backdrop-filter:blur(10px);white-space:nowrap;box-shadow:0 10px 40px rgba(0,0,0,.5)';
-  document.body.appendChild(t);
-  setTimeout(function() { t.remove(); }, 3500);
+  document.body.appendChild(t); setTimeout(function() { t.remove(); }, 3500);
 }
 
-// ── Footer ──────────────────────────────────────────────────────────────────
+// ── Footer ───────────────────────────────────────────────────────────────────
 function toggleFooter() {
   var panel = document.getElementById('footerPanel'), tab = document.getElementById('footerTab');
   var open = panel.classList.toggle('open');
@@ -594,17 +806,12 @@ function toggleFooter() {
 document.addEventListener('click', function(e) {
   var panel = document.getElementById('footerPanel'), trigger = document.getElementById('footerTrigger');
   if (panel.classList.contains('open') && !panel.contains(e.target) && !trigger.contains(e.target)) {
-    panel.classList.remove('open');
-    document.getElementById('footerTab').textContent = 'About \u2191';
+    panel.classList.remove('open'); document.getElementById('footerTab').textContent = 'About \u2191';
   }
 });
+function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
 
-// ── Nav ─────────────────────────────────────────────────────────────────────
-function toggleMenu() {
-  document.getElementById('mobileMenu').classList.toggle('open');
-}
-
-// ── Drag & drop file ────────────────────────────────────────────────────────
+// ── Drag & drop ──────────────────────────────────────────────────────────────
 var zone = document.getElementById('uploadZone');
 zone.addEventListener('dragover', function(e) { e.preventDefault(); zone.style.borderColor = '#c8b99a'; });
 zone.addEventListener('dragleave', function() { zone.style.borderColor = '#2e2e2e'; });
@@ -613,6 +820,53 @@ zone.addEventListener('drop', function(e) {
   var f = e.dataTransfer.files[0];
   if (f && f.type.startsWith('image/')) handleUpload({ target: { files: [f] } });
 });
+
+// ── Apple Music player ───────────────────────────────────────────────────────
+var ampProgress = 37, ampTotalMins = 116, ampPlaying = false, ampTick = null, ampLiked = false;
+function ampRenderTimes(pct) {
+  var total = ampTotalMins * 60, el = Math.round((pct/100)*total), rm = total - el;
+  function fmt(s) { var h=Math.floor(s/3600),m=Math.floor((s%3600)/60),ss=s%60; return h>0?h+':'+p(m)+':'+p(ss):m+':'+p(ss); }
+  function p(n) { return n<10?'0'+n:''+n; }
+  document.getElementById('ampElapsed').textContent = fmt(el);
+  document.getElementById('ampRemain').textContent  = '\u2212' + fmt(rm);
+  document.getElementById('ampFill').style.width    = pct + '%';
+}
+ampRenderTimes(ampProgress);
+function ampTogglePlay() {
+  ampPlaying = !ampPlaying;
+  document.getElementById('ampPlayIcon').innerHTML = ampPlaying ? '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>' : '<path d="M8 5v14l11-7z"/>';
+  if (ampPlaying) {
+    ampTick = setInterval(function() {
+      ampProgress = Math.min(100, ampProgress + (100/(ampTotalMins*60*10)));
+      ampRenderTimes(ampProgress);
+      if (ampProgress >= 100) { ampTogglePlay(); ampProgress = 0; }
+    }, 100);
+  } else { clearInterval(ampTick); ampTick = null; }
+}
+function ampSkip(pct) { ampProgress = Math.min(100, Math.max(0, ampProgress+pct)); ampRenderTimes(ampProgress); }
+function ampToggleHeart() { ampLiked = !ampLiked; document.getElementById('ampHeart').classList.toggle('liked', ampLiked); }
+function ampToggleMode(btn, color) { btn.dataset.on = btn.dataset.on==='1'?'0':'1'; btn.style.color = btn.dataset.on==='1'?color:''; }
+function ampSetVol(e) {
+  var bar = document.getElementById('ampVolBar');
+  var pct = Math.min(100, Math.max(0, ((e.clientX-bar.getBoundingClientRect().left)/bar.offsetWidth)*100));
+  document.getElementById('ampVolFill').style.width = pct + '%';
+}
+(function() {
+  var bar = document.getElementById('ampBar');
+  function setP(clientX) { var r=bar.getBoundingClientRect(); ampProgress=Math.min(100,Math.max(0,((clientX-r.left)/r.width)*100)); ampRenderTimes(ampProgress); }
+  bar.addEventListener('mousedown', function(e) {
+    bar.classList.add('scrubbing'); setP(e.clientX);
+    var mv=function(ev){setP(ev.clientX);};
+    var up=function(){bar.classList.remove('scrubbing');document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up);};
+    document.addEventListener('mousemove',mv); document.addEventListener('mouseup',up);
+  });
+  bar.addEventListener('touchstart', function(e) {
+    bar.classList.add('scrubbing');
+    var mv=function(ev){setP(ev.touches[0].clientX);ev.preventDefault();};
+    var up=function(){bar.classList.remove('scrubbing');bar.removeEventListener('touchmove',mv);bar.removeEventListener('touchend',up);};
+    bar.addEventListener('touchmove',mv,{passive:false}); bar.addEventListener('touchend',up);
+  },{passive:true});
+})();
 </script>
 </body>
 </html>
