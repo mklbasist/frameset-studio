@@ -11,6 +11,7 @@
 :root {
   --bg: #0f0f0f; --surface: #1a1a1a; --border: #2e2e2e;
   --text: #f0ede8; --muted: #777; --accent: #c8b99a;
+  --sf: -apple-system, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
 }
 html, body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100%; }
 
@@ -109,6 +110,103 @@ input::placeholder { color: #383838; }
 .p-star-row { display: grid; grid-template-columns: 120px 1fr; align-items: baseline; margin-top: 14px; }
 .p-star-val { font-family: 'Oswald', sans-serif; font-size: 14px; font-weight: 600; text-transform: uppercase; color: #111; letter-spacing: .1em; line-height: 1.6; }
 
+
+/* STYLE SWITCHER */
+.style-switcher { display: flex; flex-direction: column; gap: 6px; }
+.style-select {
+  background: #111; border: 1px solid var(--border); color: var(--text);
+  padding: 8px 30px 8px 11px; font-size: 11px; font-family: 'Inter', sans-serif;
+  border-radius: 3px; outline: none; cursor: pointer; width: 100%;
+  transition: border-color .2s; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23777' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 11px center;
+}
+.style-select:focus { border-color: var(--accent); }
+
+/* APPLE MUSIC POSTER — 390×650 */
+.amp-poster {
+  width: 390px; height: 650px; border-radius: 28px; overflow: hidden;
+  position: relative; flex-shrink: 0; display: none;
+  box-shadow: 0 40px 120px rgba(0,0,0,.95), 0 0 0 0.5px rgba(255,255,255,.08);
+}
+.amp-poster.active { display: block; }
+.amp-bg {
+  position: absolute; inset: -60px; background-size: cover; background-position: center;
+  filter: blur(48px) saturate(220%) brightness(0.45); z-index: 0;
+}
+.amp-bg::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,.32); }
+.amp-body {
+  position: relative; z-index: 1; padding: 26px 24px 22px;
+  display: flex; flex-direction: column; height: 100%;
+}
+.amp-art {
+  width: 100%; aspect-ratio: 1/1; border-radius: 14px; overflow: hidden;
+  background: #1c1c1e; margin-bottom: 22px; flex-shrink: 0; position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,.65), 0 0 0 0.5px rgba(255,255,255,.08);
+}
+.amp-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.amp-art-ph {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 10px;
+  color: rgba(255,255,255,.2); font-family: var(--sf); font-size: 11px; letter-spacing: .05em;
+}
+.amp-art-ph svg { opacity: .22; }
+.amp-year-pill {
+  position: absolute; top: 11px; right: 11px;
+  background: rgba(0,0,0,.52); backdrop-filter: blur(12px);
+  border: 0.5px solid rgba(255,255,255,.12); border-radius: 7px;
+  padding: 3px 9px; font-family: var(--sf); font-size: 12px; font-weight: 600;
+  color: rgba(255,255,255,.7); letter-spacing: .02em;
+}
+.amp-track { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; flex-shrink: 0; }
+.amp-track-text { flex: 1; min-width: 0; }
+.amp-song {
+  font-family: var(--sf); font-weight: 600; font-size: 20px; color: #fff;
+  letter-spacing: -.3px; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.amp-artist {
+  font-family: var(--sf); font-weight: 400; font-size: 15px; color: #fc3c44;
+  margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.amp-heart { flex-shrink: 0; margin-left: 12px; cursor: pointer; padding: 4px; transition: transform .12s; }
+.amp-heart:active { transform: scale(.82); }
+.amp-heart svg { width: 22px; height: 22px; fill: none; stroke: rgba(255,255,255,.35); stroke-width: 1.8; transition: all .2s; }
+.amp-heart.liked svg { fill: #fc3c44; stroke: #fc3c44; }
+.amp-scrub { flex-shrink: 0; margin-bottom: 16px; }
+.amp-bar { height: 4px; background: rgba(255,255,255,.2); border-radius: 2px; cursor: pointer; position: relative; }
+.amp-fill { height: 100%; border-radius: 2px; background: #fff; pointer-events: none; position: relative; }
+.amp-fill::after {
+  content: ''; position: absolute; right: -5px; top: 50%; transform: translateY(-50%);
+  width: 12px; height: 12px; background: #fff; border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0,0,0,.4); opacity: 0; transition: opacity .15s;
+}
+.amp-bar:hover .amp-fill::after, .amp-bar.scrubbing .amp-fill::after { opacity: 1; }
+.amp-times {
+  display: flex; justify-content: space-between; margin-top: 5px;
+  font-family: var(--sf); font-size: 11px; font-weight: 500;
+  color: rgba(255,255,255,.38); font-variant-numeric: tabular-nums;
+}
+.amp-controls { display: flex; align-items: center; justify-content: space-between; padding: 0 4px; flex-shrink: 0; margin-bottom: 18px; }
+.amp-btn {
+  background: none; border: none; cursor: pointer; color: rgba(255,255,255,.75);
+  padding: 6px; display: flex; align-items: center; justify-content: center;
+  transition: color .15s, transform .12s;
+}
+.amp-btn:active { transform: scale(.86); color: #fff; }
+.amp-btn svg { width: 26px; height: 26px; fill: currentColor; }
+.amp-play {
+  width: 58px; height: 58px; border-radius: 50%; background: rgba(255,255,255,.15);
+  backdrop-filter: blur(10px); border: none; cursor: pointer; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,.3); transition: transform .12s;
+}
+.amp-play:active { transform: scale(.9); }
+.amp-play svg { width: 28px; height: 28px; fill: #fff; }
+.amp-vol { display: flex; align-items: center; gap: 9px; padding: 0 2px; flex-shrink: 0; }
+.amp-vol svg { flex-shrink: 0; fill: rgba(255,255,255,.4); }
+.amp-vol-bar { flex: 1; height: 4px; background: rgba(255,255,255,.2); border-radius: 2px; cursor: pointer; }
+.amp-vol-fill { height: 100%; background: rgba(255,255,255,.65); border-radius: 2px; }
+
 /* FOOTER */
 .footer-trigger { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); z-index: 100; cursor: pointer; }
 .footer-tab { background: var(--surface); border: 1px solid var(--border); border-bottom: none; border-radius: 8px 8px 0 0; padding: 5px 18px 4px; font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); user-select: none; }
@@ -165,7 +263,17 @@ input::placeholder { color: #383838; }
 
 <div class="studio-layout">
   <aside class="controls">
-    <div>
+    <!-- ── Style Switcher ── -->
+    <div class="style-switcher">
+      <div class="section-label">Poster Style</div>
+      <select class="style-select" id="styleSelect" onchange="switchStyle(this.value)">
+        <option value="minimalist">Minimalist — Classic Film Poster</option>
+        <option value="applemusic">Apple Music — Now Playing Card</option>
+      </select>
+    </div>
+    <div class="divider"></div>
+
+        <div>
       <div class="section-label">Upload Image</div>
       <div class="upload-zone" id="uploadZone">
         <input type="file" accept="image/*" id="imgInput" onchange="handleUpload(event)">
@@ -257,6 +365,73 @@ input::placeholder { color: #383838; }
           </div>
         </div>
       </div>
+
+
+      <!-- ── Apple Music Poster ── -->
+      <div class="amp-poster" id="posterAmp">
+        <div class="amp-bg" id="ampBg"></div>
+        <div class="amp-body">
+          <!-- Artwork -->
+          <div class="amp-art">
+            <div class="amp-art-ph" id="ampArtPh">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+                <rect x="3" y="3" width="18" height="18" rx="3"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <path d="M21 15l-5-5L5 21"/>
+              </svg>
+              Upload an image to begin
+            </div>
+            <img id="ampImg" src="" alt="" style="display:none">
+            <div class="amp-year-pill" id="ampYearPill" style="display:none"></div>
+          </div>
+          <!-- Track info -->
+          <div class="amp-track">
+            <div class="amp-track-text">
+              <div class="amp-song" id="ampSong">Movie Title</div>
+              <div class="amp-artist" id="ampArtist">Director Name</div>
+            </div>
+            <div class="amp-heart" id="ampHeart" onclick="ampToggleHeart()">
+              <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </div>
+          </div>
+          <!-- Scrubber -->
+          <div class="amp-scrub">
+            <div class="amp-bar" id="ampBar">
+              <div class="amp-fill" id="ampFill" style="width:37%"></div>
+            </div>
+            <div class="amp-times">
+              <span id="ampElapsed">0:00</span>
+              <span id="ampRemain">-0:00</span>
+            </div>
+          </div>
+          <!-- Controls -->
+          <div class="amp-controls">
+            <button class="amp-btn" id="ampShuffleBtn" onclick="ampToggleMode(this,'#fc3c44')">
+              <svg viewBox="0 0 24 24"><path d="M16 3l4 4-4 4M20 7H4M16 17l4-4-4-4M20 13H8l-4 4"/></svg>
+            </button>
+            <button class="amp-btn" onclick="ampSkip(-5)">
+              <svg viewBox="0 0 24 24"><path d="M19 20L9 12l10-8v16zM5 4h2v16H5z"/></svg>
+            </button>
+            <button class="amp-play" id="ampPlayBtn" onclick="ampTogglePlay()">
+              <svg id="ampPlayIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <button class="amp-btn" onclick="ampSkip(5)">
+              <svg viewBox="0 0 24 24"><path d="M5 4l10 8-10 8V4zM17 4h2v16h-2z"/></svg>
+            </button>
+            <button class="amp-btn" id="ampRepeatBtn" onclick="ampToggleMode(this,'#fc3c44')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+            </button>
+          </div>
+          <!-- Volume -->
+          <div class="amp-vol">
+            <svg width="13" height="13" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/></svg>
+            <div class="amp-vol-bar" id="ampVolBar" onclick="ampSetVol(event)">
+              <div class="amp-vol-fill" id="ampVolFill" style="width:68%"></div>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 </div>
@@ -278,7 +453,7 @@ input::placeholder { color: #383838; }
 const PW = 564, PH = 780;
 const FX = 20,  FY = 20;
 const FW = 524, FH = 560;
-const SITE_URL = 'https://frameset.vercel.app';
+const SITE_URL = 'https://frameset-studio.vercel.app';
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/du9uiyufc/image/upload';
 const CLOUDINARY_PRESET = 'frameset_gallery';
 
@@ -613,6 +788,245 @@ zone.addEventListener('drop', function(e) {
   var f = e.dataTransfer.files[0];
   if (f && f.type.startsWith('image/')) handleUpload({ target: { files: [f] } });
 });
+
+// ── Style switcher ───────────────────────────────────────────────────────────
+var currentStyle = 'minimalist';
+var ampImgSrc = '';
+
+function switchStyle(val) {
+  currentStyle = val;
+  var mini = document.querySelector('.poster');
+  var amp  = document.getElementById('posterAmp');
+  if (val === 'minimalist') {
+    mini.style.display = 'flex';
+    amp.classList.remove('active');
+    // rescale to minimalist dimensions
+    scalePoster();
+  } else {
+    mini.style.display = 'none';
+    amp.classList.add('active');
+    // if image already uploaded, show it in amp too
+    if (ampImgSrc) {
+      document.getElementById('ampImg').src = ampImgSrc;
+      document.getElementById('ampImg').style.display = 'block';
+      document.getElementById('ampArtPh').style.display = 'none';
+      document.getElementById('ampBg').style.backgroundImage = 'url(' + ampImgSrc + ')';
+    }
+    ampScalePoster();
+  }
+}
+
+// override scalePoster to handle both sizes
+var _origScalePoster = scalePoster;
+function scalePoster() {
+  if (currentStyle === 'applemusic') { ampScalePoster(); return; }
+  _origScalePoster();
+}
+function ampScalePoster() {
+  var area = document.getElementById('previewArea');
+  var s = Math.min((area.clientWidth - 32) / 390, (area.clientHeight - 32) / 650, 1);
+  document.getElementById('posterScaler').style.transform = 'scale(' + s + ')';
+}
+
+// patch handleUpload to also store src for amp
+var _origHandleUpload = handleUpload;
+function handleUpload(e) {
+  var file = e.target.files[0]; if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    ampImgSrc = ev.target.result;
+    // always feed into amp elements (hidden until mode switched)
+    document.getElementById('ampImg').src = ampImgSrc;
+    document.getElementById('ampImg').style.display = 'block';
+    document.getElementById('ampArtPh').style.display = 'none';
+    document.getElementById('ampBg').style.backgroundImage = 'url(' + ampImgSrc + ')';
+    // call original for minimalist
+    _origHandleUpload(e);
+  };
+  reader.readAsDataURL(file);
+}
+
+// patch update() — only updates the ACTIVE poster
+var _origUpdate = update;
+function update() {
+  if (currentStyle === 'minimalist') {
+    _origUpdate();
+    return;
+  }
+  // Apple Music: update only amp elements
+  var title = document.getElementById('fTitle').value.trim();
+  var year  = document.getElementById('fYear').value.trim();
+  var dir   = document.getElementById('fDirector').value.trim();
+  var rt    = document.getElementById('fRuntime').value.trim();
+
+  document.getElementById('ampSong').textContent   = title || 'Movie Title';
+  document.getElementById('ampArtist').textContent = dir   || 'Director Name';
+
+  var pill = document.getElementById('ampYearPill');
+  if (year) { pill.textContent = year; pill.style.display = 'block'; }
+  else       { pill.style.display = 'none'; }
+
+  if (rt) { ampTotalMins = parseInt(rt) || 116; ampRenderTimes(ampProgress); }
+}
+
+// patch downloadPoster to route to amp download
+var _origDownload = downloadPoster;
+function downloadPoster() {
+  if (currentStyle === 'applemusic') { ampDownload(); return; }
+  _origDownload();
+}
+
+// ── Apple Music player ───────────────────────────────────────────────────────
+var ampProgress  = 37;
+var ampTotalMins = 116;
+var ampPlaying   = false;
+var ampTick      = null;
+var ampLiked     = false;
+
+function ampRenderTimes(pct) {
+  var total = ampTotalMins * 60;
+  var el = Math.round((pct / 100) * total);
+  var rm = total - el;
+  function fmt(s) {
+    var h = Math.floor(s/3600), m = Math.floor((s%3600)/60), ss = s%60;
+    return h > 0 ? h+':'+p(m)+':'+p(ss) : m+':'+p(ss);
+  }
+  function p(n) { return n < 10 ? '0'+n : ''+n; }
+  document.getElementById('ampElapsed').textContent = fmt(el);
+  document.getElementById('ampRemain').textContent  = '−' + fmt(rm);
+  document.getElementById('ampFill').style.width    = pct + '%';
+}
+ampRenderTimes(ampProgress);
+
+function ampTogglePlay() {
+  ampPlaying = !ampPlaying;
+  document.getElementById('ampPlayIcon').innerHTML = ampPlaying
+    ? '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'
+    : '<path d="M8 5v14l11-7z"/>';
+  if (ampPlaying) {
+    ampTick = setInterval(function() {
+      ampProgress = Math.min(100, ampProgress + (100 / (ampTotalMins * 60 * 10)));
+      ampRenderTimes(ampProgress);
+      if (ampProgress >= 100) { ampTogglePlay(); ampProgress = 0; }
+    }, 100);
+  } else { clearInterval(ampTick); ampTick = null; }
+}
+
+function ampSkip(pct) {
+  ampProgress = Math.min(100, Math.max(0, ampProgress + pct));
+  ampRenderTimes(ampProgress);
+}
+
+function ampToggleHeart() {
+  ampLiked = !ampLiked;
+  document.getElementById('ampHeart').classList.toggle('liked', ampLiked);
+}
+
+function ampToggleMode(btn, color) {
+  btn.dataset.on = btn.dataset.on === '1' ? '0' : '1';
+  btn.style.color = btn.dataset.on === '1' ? color : '';
+}
+
+function ampSetVol(e) {
+  var bar = document.getElementById('ampVolBar');
+  var pct = Math.min(100, Math.max(0, ((e.clientX - bar.getBoundingClientRect().left) / bar.offsetWidth) * 100));
+  document.getElementById('ampVolFill').style.width = pct + '%';
+}
+
+// scrubber drag
+(function() {
+  var bar = document.getElementById('ampBar');
+  function setP(clientX) {
+    var r = bar.getBoundingClientRect();
+    ampProgress = Math.min(100, Math.max(0, ((clientX - r.left) / r.width) * 100));
+    ampRenderTimes(ampProgress);
+  }
+  bar.addEventListener('mousedown', function(e) {
+    bar.classList.add('scrubbing'); setP(e.clientX);
+    var mv = function(ev) { setP(ev.clientX); };
+    var up = function() { bar.classList.remove('scrubbing'); document.removeEventListener('mousemove', mv); document.removeEventListener('mouseup', up); };
+    document.addEventListener('mousemove', mv); document.addEventListener('mouseup', up);
+  });
+  bar.addEventListener('touchstart', function(e) {
+    bar.classList.add('scrubbing');
+    var mv = function(ev) { setP(ev.touches[0].clientX); ev.preventDefault(); };
+    var up = function() { bar.classList.remove('scrubbing'); bar.removeEventListener('touchmove', mv); bar.removeEventListener('touchend', up); };
+    bar.addEventListener('touchmove', mv, { passive: false }); bar.addEventListener('touchend', up);
+  }, { passive: true });
+})();
+
+// ── Apple Music canvas download ──────────────────────────────────────────────
+function ampDownload() {
+  var EX = 3, W = 390, H = 650;
+  var cv = document.createElement('canvas');
+  cv.width = W * EX; cv.height = H * EX;
+  var ctx = cv.getContext('2d');
+  ctx.scale(EX, EX);
+
+  function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
+
+  // base
+  ctx.fillStyle = '#111'; rr(0,0,W,H,28); ctx.fill();
+
+  var ai = document.getElementById('ampImg');
+  if (ai.naturalWidth) {
+    // blurred bg
+    ctx.save(); rr(0,0,W,H,28); ctx.clip();
+    ctx.globalAlpha = 0.38;
+    ctx.drawImage(ai, -70, -70, W+140, H+140);
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = 'rgba(0,0,0,.55)'; ctx.fillRect(0,0,W,H);
+    ctx.restore();
+  }
+
+  // artwork square
+  var AS = W - 52, AX = 26, AY = 26;
+  ctx.save(); rr(AX,AY,AS,AS,14); ctx.clip();
+  if (ai.naturalWidth) {
+    var s = Math.max(AS/ai.naturalWidth, AS/ai.naturalHeight);
+    var dw = ai.naturalWidth*s, dh = ai.naturalHeight*s;
+    ctx.drawImage(ai, AX+(AS-dw)/2, AY+(AS-dh)/2, dw, dh);
+  } else { ctx.fillStyle='#1c1c1e'; ctx.fillRect(AX,AY,AS,AS); }
+  ctx.restore();
+
+  // year pill
+  var yr = document.getElementById('fYear').value.trim();
+  if (yr) {
+    ctx.font = '600 12px Helvetica Neue, sans-serif';
+    var pw = ctx.measureText(yr).width + 18;
+    ctx.fillStyle = 'rgba(0,0,0,.52)'; rr(AX+AS-pw-10, AY+10, pw, 22, 6); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,.7)'; ctx.fillText(yr, AX+AS-pw-10+9, AY+10+15);
+  }
+
+  var iy = AY + AS + 20;
+  // title
+  ctx.fillStyle = '#fff'; ctx.font = '600 20px Helvetica Neue, sans-serif';
+  ctx.fillText(document.getElementById('fTitle').value.trim() || 'Movie Title', 26, iy);
+  // director
+  ctx.fillStyle = '#fc3c44'; ctx.font = '400 15px Helvetica Neue, sans-serif';
+  ctx.fillText(document.getElementById('fDirector').value.trim() || 'Director Name', 26, iy+22);
+  // scrubber bar
+  var bw = W-52, by = iy+40;
+  ctx.fillStyle='rgba(255,255,255,.2)'; rr(26,by,bw,4,2); ctx.fill();
+  ctx.fillStyle='#fff'; rr(26,by,bw*(ampProgress/100),4,2); ctx.fill();
+  // times
+  ctx.fillStyle='rgba(255,255,255,.38)'; ctx.font='500 11px Helvetica Neue, sans-serif';
+  var el = document.getElementById('ampElapsed').textContent;
+  var rm = document.getElementById('ampRemain').textContent;
+  ctx.fillText(el, 26, by+16);
+  ctx.fillText(rm, 26+bw-ctx.measureText(rm).width, by+16);
+
+  cv.toBlob(function(blob) {
+    lastPosterBlob = blob;
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.download = (document.getElementById('fTitle').value.trim() || 'poster').replace(/\s+/g,'_').toUpperCase() + '_amp_poster.png';
+    a.href = url; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){URL.revokeObjectURL(url);}, 2000);
+    showShare(); showGalleryPrompt();
+  }, 'image/png');
+}
+
 </script>
 </body>
 </html>
