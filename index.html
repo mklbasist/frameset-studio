@@ -721,7 +721,7 @@ function ampDownload() {
     // 2. Pure pixel blur — works on ALL browsers including iOS Safari (no ctx.filter)
     // Strategy: work at a small size (fast + strong blur), then scale up.
     // 3 passes of box blur at small size ≈ Gaussian. Then darken + desaturate.
-    var BSCALE = 8; // work at 1/8th size — gives strong blur when scaled up
+    var BSCALE = 12; // work at 1/8th size — gives strong blur when scaled up
     var bW = Math.ceil((W * EX) / BSCALE);
     var bH = Math.ceil((H * EX) / BSCALE);
 
@@ -779,9 +779,9 @@ function ampDownload() {
     }
 
     // 3 passes at radius 3 on the tiny canvas = very smooth blur
-    boxBlurPixels(blurCtx, bW, bH, 3);
-    boxBlurPixels(blurCtx, bW, bH, 3);
-    boxBlurPixels(blurCtx, bW, bH, 3);
+    boxBlurPixels(blurCtx, bW, bH, 5);
+    boxBlurPixels(blurCtx, bW, bH, 5);
+    boxBlurPixels(blurCtx, bW, bH, 5);
 
     // Apply brightness(0.45) + saturation boost directly on pixels
     var id2 = blurCtx.getImageData(0, 0, bW, bH);
