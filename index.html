@@ -134,9 +134,11 @@ input::placeholder { color: #383838; }
 .amp-bottom-bar { display: flex; align-items: center; justify-content: space-between; padding: 0 8px; flex-shrink: 0; margin-top: 12px; }
 .amp-ico-btn { background: none; border: none; padding: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 .amp-ico-btn svg { width: 22px; height: 22px; }
-.amp-bar { height: 3px; background: #e0e0e0; border-radius: 2px; cursor: pointer; position: relative; }
+.amp-bar { height: 3px; background: #e0e0e0; border-radius: 2px; cursor: pointer; position: relative; transition: height .15s; user-select: none; -webkit-user-select: none; }
+.amp-bar:hover, .amp-bar.scrubbing { height: 5px; }
 .amp-fill { height: 100%; border-radius: 2px; background: #fc3c44; pointer-events: none; position: relative; }
-.amp-fill::after { content: ''; position: absolute; right: -8px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; background: #fff; border-radius: 50%; box-shadow: 0 1px 4px rgba(0,0,0,.25); opacity: 1; }
+.amp-fill::after { content: ''; position: absolute; right: -8px; top: 50%; transform: translateY(-50%) scale(0.5); width: 16px; height: 16px; background: #fff; border-radius: 50%; box-shadow: 0 1px 6px rgba(0,0,0,.28); opacity: 0; transition: opacity .15s, transform .15s; }
+.amp-bar:hover .amp-fill::after, .amp-bar.scrubbing .amp-fill::after { opacity: 1; transform: translateY(-50%) scale(1); }
 .amp-times { display: flex; justify-content: space-between; margin-top: 8px; font-family: var(--sf); font-size: 12px; font-weight: 400; color: #8e8e93; font-variant-numeric: tabular-nums; }
 .amp-controls { display: flex; align-items: center; justify-content: space-between; padding: 0 4px; flex-shrink: 0; margin-top: 18px; margin-bottom: 24px; }
 .amp-btn { background: none; border: none; cursor: pointer; color: #000; padding: 6px; display: flex; align-items: center; justify-content: center; transition: opacity .15s, transform .12s; }
@@ -149,7 +151,8 @@ input::placeholder { color: #383838; }
 
 .amp-vol { display: flex; align-items: center; gap: 10px; padding: 0 4px; flex-shrink: 0; }
 .amp-vol svg { flex-shrink: 0; fill: #c7c7cc; }
-.amp-vol-bar { flex: 1; height: 3px; background: #e0e0e0; border-radius: 2px; cursor: pointer; }
+.amp-vol-bar { flex: 1; height: 3px; background: #e0e0e0; border-radius: 2px; cursor: pointer; transition: height .15s; position: relative; user-select: none; -webkit-user-select: none; }
+.amp-vol-bar:hover, .amp-vol-bar.sliding { height: 5px; }
 .amp-vol-fill { height: 100%; background: #c7c7cc; border-radius: 2px; }
 
 /* FOOTER */
@@ -178,6 +181,36 @@ input::placeholder { color: #383838; }
 }
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* AMP dark mode toggle */
+.amp-mode-toggle { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.amp-mode-label { font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.amp-toggle { width: 40px; height: 24px; border-radius: 12px; background: var(--border); cursor: pointer; position: relative; transition: background .25s; flex-shrink: 0; }
+.amp-toggle.on { background: var(--accent); }
+.amp-toggle-thumb { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: transform .25s; box-shadow: 0 1px 4px rgba(0,0,0,.3); }
+.amp-toggle.on .amp-toggle-thumb { transform: translateX(16px); }
+
+/* AMP dark poster */
+.amp-poster.dark { background: #111; }
+.amp-poster.dark .amp-body { background: #111; }
+.amp-poster.dark .amp-song { color: #fff; }
+.amp-poster.dark .amp-artist { color: #fc3c44; }
+.amp-poster.dark .amp-bar { background: rgba(255,255,255,.15); }
+.amp-poster.dark .amp-fill { background: #fff; }
+.amp-poster.dark .amp-fill::after { background: #fff; box-shadow: 0 1px 6px rgba(0,0,0,.5); }
+.amp-poster.dark .amp-times { color: rgba(255,255,255,.4); }
+.amp-poster.dark .amp-btn { color: #fff; }
+.amp-poster.dark .amp-btn svg { fill: #fff; stroke: #fff; }
+.amp-poster.dark .amp-play { color: #fff; }
+.amp-poster.dark .amp-play svg { fill: #fff; }
+.amp-poster.dark .amp-heart svg { stroke: rgba(255,255,255,.35); }
+.amp-poster.dark .amp-heart.liked svg { fill: #fc3c44; stroke: #fc3c44; }
+.amp-poster.dark .amp-vol svg { fill: rgba(255,255,255,.4); }
+.amp-poster.dark .amp-vol-bar { background: rgba(255,255,255,.15); }
+.amp-poster.dark .amp-vol-fill { background: rgba(255,255,255,.6); }
+.amp-poster.dark .amp-ico-btn svg { stroke: rgba(255,255,255,.4); }
+.amp-poster.dark .amp-art { background: #1c1c1e; box-shadow: 0 24px 56px rgba(0,0,0,.6); }
+.amp-poster.dark .amp-year-pill { background: rgba(0,0,0,.6); }
 </style>
 </head>
 <body>
@@ -255,6 +288,12 @@ input::placeholder { color: #383838; }
     <!-- Apple Music fields -->
     <div id="ampFields" style="display:none">
       <div class="section-label">Track Details</div>
+      <div class="amp-mode-toggle">
+        <span class="amp-mode-label">Dark Mode</span>
+        <div class="amp-toggle" id="ampDarkToggle" onclick="toggleAmpDark()">
+          <div class="amp-toggle-thumb"></div>
+        </div>
+      </div>
       <div class="field-group">
         <div class="field"><label>Movie Title</label><input type="text" id="aTitle" placeholder="Enter movie title" oninput="updateAmp()"></div>
         <div class="field"><label>Year</label><input type="number" id="aYear" placeholder="Enter year" oninput="updateAmp()"></div>
@@ -376,7 +415,7 @@ input::placeholder { color: #383838; }
           </div>
           <div class="amp-vol">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="#c7c7cc"><path d="M11 5L6 9H2v6h4l5 4V5z"/></svg>
-            <div class="amp-vol-bar" id="ampVolBar" onclick="ampSetVol(event)">
+            <div class="amp-vol-bar" id="ampVolBar">
               <div class="amp-vol-fill" id="ampVolFill" style="width:68%"></div>
             </div>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="#c7c7cc"><path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>
@@ -386,7 +425,7 @@ input::placeholder { color: #383838; }
               <svg viewBox="0 0 24 24" fill="none" stroke="#c7c7cc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
             </button>
             <button class="amp-ico-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#c7c7cc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="#c7c7cc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h18a2 2 0 012 2v10a2 2 0 01-2 2h-2"/><polygon points="12,15 17,21 7,21" fill="#c7c7cc" stroke="none"/></svg>
             </button>
             <button class="amp-ico-btn">
               <svg viewBox="0 0 24 24" fill="none" stroke="#c7c7cc" stroke-width="1.8" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
@@ -827,7 +866,16 @@ function ampDownload() {
 
     // blur not used — white bg
   }
-  // white poster with rounded corners
+  // poster bg — white or dark based on mode
+  var ampBgColor   = ampDark ? '#111'                  : '#fff';
+  var ampTextColor = ampDark ? '#fff'                  : '#000';
+  var ampSubColor  = ampDark ? 'rgba(255,255,255,.4)'  : '#8e8e93';
+  var ampBarBg     = ampDark ? 'rgba(255,255,255,.15)' : '#e0e0e0';
+  var ampFillColor = ampDark ? '#fff'                  : '#fc3c44';
+  var ampVolFillC  = ampDark ? 'rgba(255,255,255,.6)'  : '#c7c7cc';
+  var ampIconColor = ampDark ? '#fff'                  : '#000';
+  var ampIcoStroke = ampDark ? 'rgba(255,255,255,.4)'  : '#c7c7cc';
+
   var R = 44 * EX;
   ctx.save();
   ctx.beginPath();
@@ -835,7 +883,7 @@ function ampDownload() {
   ctx.lineTo(W*EX,H*EX-R); ctx.quadraticCurveTo(W*EX,H*EX,W*EX-R,H*EX);
   ctx.lineTo(R,H*EX); ctx.quadraticCurveTo(0,H*EX,0,H*EX-R);
   ctx.lineTo(0,R); ctx.quadraticCurveTo(0,0,R,0); ctx.closePath();
-  ctx.fillStyle = '#fff'; ctx.fill();
+  ctx.fillStyle = ampBgColor; ctx.fill();
   ctx.restore();
 
   // Now apply scale for all remaining drawing
@@ -873,22 +921,22 @@ function ampDownload() {
   }
 
   // track info
-  var iy = AY + AS + 26;
-  ctx.fillStyle = '#000'; ctx.font = '700 22px Helvetica Neue, sans-serif';
+  var iy = AY + AS + 48;
+  ctx.fillStyle = ampTextColor; ctx.font = '700 22px Helvetica Neue, sans-serif';
   ctx.fillText(va('aTitle') || 'Movie Title', PAD2, iy);
   ctx.fillStyle = '#fc3c44'; ctx.font = '400 17px Helvetica Neue, sans-serif';
   ctx.fillText(va('aDirector') || 'Director Name', PAD2, iy+26);
 
   // scrubber
   var bw = W - PAD2*2, by = iy + 56;
-  ctx.fillStyle = '#e0e0e0'; rr(PAD2, by, bw, 3, 2); ctx.fill();
-  ctx.fillStyle = '#fc3c44'; rr(PAD2, by, bw*(ampProgress/100), 3, 2); ctx.fill();
+  ctx.fillStyle = ampBarBg; rr(PAD2, by, bw, 3, 2); ctx.fill();
+  ctx.fillStyle = ampFillColor; rr(PAD2, by, bw*(ampProgress/100), 3, 2); ctx.fill();
   var tx2 = PAD2 + bw*(ampProgress/100);
   ctx.save(); ctx.shadowColor='rgba(0,0,0,.2)'; ctx.shadowBlur=6; ctx.shadowOffsetY=2;
   ctx.beginPath(); ctx.arc(tx2, by+1.5, 8, 0, Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
   ctx.restore();
   // times
-  ctx.fillStyle = '#8e8e93'; ctx.font = '400 12px Helvetica Neue, sans-serif';
+  ctx.fillStyle = ampSubColor; ctx.font = '400 12px Helvetica Neue, sans-serif';
   ctx.fillText(document.getElementById('ampElapsed').textContent, PAD2, by+20);
   var rm = document.getElementById('ampRemain').textContent;
   ctx.fillText(rm, PAD2+bw-ctx.measureText(rm).width, by+20);
@@ -901,8 +949,8 @@ function ampDownload() {
   function filledIcon(path, cx, icx, size) {
     ctx.save(); ctx.translate(cx-size/2, icx-size/2); ctx.scale(size/24,size/24);
     var p2 = new Path2D(path);
-    ctx.fillStyle='#000'; ctx.fill(p2);
-    ctx.strokeStyle='#000'; ctx.lineWidth=2.2; ctx.lineJoin='round'; ctx.stroke(p2);
+    ctx.fillStyle=ampIconColor; ctx.fill(p2);
+    ctx.strokeStyle=ampIconColor; ctx.lineWidth=2.2; ctx.lineJoin='round'; ctx.stroke(p2);
     ctx.restore();
   }
   // rewind — double chevron left, far left
@@ -910,7 +958,7 @@ function ampDownload() {
   // play/pause — center
   if (ampPlaying) {
     var bw2=10, bh2=48, gap=13;
-    ctx.fillStyle='#000';
+    ctx.fillStyle=ampIconColor;
     ctx.fillRect(pcx-gap/2-bw2, cy-bh2/2, bw2, bh2);
     ctx.fillRect(pcx+gap/2, cy-bh2/2, bw2, bh2);
   } else {
@@ -920,9 +968,9 @@ function ampDownload() {
     ctx.translate(pcx - iSize/2 + 2, cy - iSize/2);
     ctx.scale(iSize/24, iSize/24);
     var playPath = new Path2D('M8 5v14l11-7z');
-    ctx.fillStyle = '#000';
+    ctx.fillStyle = ampIconColor;
     ctx.fill(playPath);
-    ctx.strokeStyle = '#000';
+    ctx.strokeStyle = ampIconColor;
     ctx.lineWidth = 2.5;
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
@@ -940,7 +988,7 @@ function ampDownload() {
   if (ampLiked) {
     ctx.fillStyle = '#fc3c44'; ctx.fill(heartPath);
   } else {
-    ctx.strokeStyle = '#c7c7cc'; ctx.lineWidth = 1.6;
+    ctx.strokeStyle = ampIcoStroke; ctx.lineWidth = 1.6;
     ctx.lineJoin = 'round'; ctx.stroke(heartPath);
   }
   ctx.restore();
@@ -948,8 +996,8 @@ function ampDownload() {
   // volume bar
   var vy = cy + 58;
   var vx=PAD2+16, vw=W-PAD2*2-32, volPct=parseInt(document.getElementById('ampVolFill').style.width)||68;
-  ctx.fillStyle='#e0e0e0'; rr(vx,vy,vw,3,2); ctx.fill();
-  ctx.fillStyle='#c7c7cc'; rr(vx,vy,vw*(volPct/100),3,2); ctx.fill();
+  ctx.fillStyle=ampBarBg; rr(vx,vy,vw,3,2); ctx.fill();
+  ctx.fillStyle=ampVolFillC; rr(vx,vy,vw*(volPct/100),3,2); ctx.fill();
   // volume thumb
   var volThumbX = vx + vw*(volPct/100);
   ctx.save(); ctx.shadowColor='rgba(0,0,0,.15)'; ctx.shadowBlur=4; ctx.shadowOffsetY=1;
@@ -960,12 +1008,17 @@ function ampDownload() {
   var biy = vy + 44;
   function strokeIco(path, cx, size) {
     ctx.save(); ctx.translate(cx-size/2, biy-size/2); ctx.scale(size/24,size/24);
-    ctx.strokeStyle='#c7c7cc'; ctx.lineWidth=24/size*1.8;
+    ctx.strokeStyle=ampIcoStroke; ctx.lineWidth=24/size*1.8;
     ctx.lineJoin='round'; ctx.lineCap='round';
     ctx.stroke(new Path2D(path)); ctx.restore();
   }
+  function fillIco(path, cx, size) {
+    ctx.save(); ctx.translate(cx-size/2, biy-size/2); ctx.scale(size/24,size/24);
+    ctx.fillStyle=ampIcoStroke; ctx.fill(new Path2D(path)); ctx.restore();
+  }
   strokeIco('M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z', W*0.2, 22);
-  strokeIco('M12 2a10 10 0 100 20A10 10 0 0012 2zM8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85', W*0.5, 22);
+  strokeIco('M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h18a2 2 0 012 2v10a2 2 0 01-2 2h-2', W*0.5, 22);
+  fillIco('M12 15l5 6H7l5-6z', W*0.5, 22);
   strokeIco('M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01', W*0.8, 22);
 
 
@@ -1074,7 +1127,12 @@ zone.addEventListener('drop', function(e) {
 });
 
 // ── Apple Music player ───────────────────────────────────────────────────────
-var ampProgress = 37, ampTotalMins = 116, ampPlaying = false, ampTick = null, ampLiked = false;
+var ampProgress = 37, ampTotalMins = 116, ampPlaying = false, ampTick = null, ampLiked = false, ampDark = false;
+function toggleAmpDark() {
+  ampDark = !ampDark;
+  document.getElementById('posterAmp').classList.toggle('dark', ampDark);
+  document.getElementById('ampDarkToggle').classList.toggle('on', ampDark);
+}
 function ampRenderTimes(pct) {
   var total = ampTotalMins * 60, el = Math.round((pct/100)*total), rm = total - el;
   function fmt(s) { var h=Math.floor(s/3600),m=Math.floor((s%3600)/60),ss=s%60; return h>0?h+':'+p(m)+':'+p(ss):m+':'+p(ss); }
@@ -1098,17 +1156,34 @@ function ampTogglePlay() {
 function ampSkip(pct) { ampProgress = Math.min(100, Math.max(0, ampProgress+pct)); ampRenderTimes(ampProgress); }
 function ampToggleHeart() { ampLiked = !ampLiked; document.getElementById('ampHeart').classList.toggle('liked', ampLiked); }
 function ampToggleMode(btn, color) { btn.dataset.on = btn.dataset.on==='1'?'0':'1'; btn.style.color = btn.dataset.on==='1'?color:''; }
-function ampSetVol(e) {
+function ampSetVol(clientX) {
   var bar = document.getElementById('ampVolBar');
-  var pct = Math.min(100, Math.max(0, ((e.clientX-bar.getBoundingClientRect().left)/bar.offsetWidth)*100));
+  var pct = Math.min(100, Math.max(0, ((clientX - bar.getBoundingClientRect().left) / bar.offsetWidth) * 100));
   document.getElementById('ampVolFill').style.width = pct + '%';
 }
+(function() {
+  var vbar = document.getElementById('ampVolBar');
+  vbar.addEventListener('mousedown', function(e) {
+    e.preventDefault();
+    vbar.classList.add('sliding'); ampSetVol(e.clientX);
+    var mv = function(ev) { ev.preventDefault(); ampSetVol(ev.clientX); };
+    var up = function() { vbar.classList.remove('sliding'); document.removeEventListener('mousemove', mv); document.removeEventListener('mouseup', up); };
+    document.addEventListener('mousemove', mv); document.addEventListener('mouseup', up);
+  });
+  vbar.addEventListener('touchstart', function(e) {
+    vbar.classList.add('sliding'); ampSetVol(e.touches[0].clientX);
+    var mv = function(ev) { ampSetVol(ev.touches[0].clientX); ev.preventDefault(); };
+    var up = function() { vbar.classList.remove('sliding'); vbar.removeEventListener('touchmove', mv); vbar.removeEventListener('touchend', up); };
+    vbar.addEventListener('touchmove', mv, { passive: false }); vbar.addEventListener('touchend', up);
+  }, { passive: true });
+})();
 (function() {
   var bar = document.getElementById('ampBar');
   function setP(clientX) { var r=bar.getBoundingClientRect(); ampProgress=Math.min(100,Math.max(0,((clientX-r.left)/r.width)*100)); ampRenderTimes(ampProgress); }
   bar.addEventListener('mousedown', function(e) {
+    e.preventDefault();
     bar.classList.add('scrubbing'); setP(e.clientX);
-    var mv=function(ev){setP(ev.clientX);};
+    var mv=function(ev){ev.preventDefault();setP(ev.clientX);};
     var up=function(){bar.classList.remove('scrubbing');document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up);};
     document.addEventListener('mousemove',mv); document.addEventListener('mouseup',up);
   });
