@@ -111,43 +111,46 @@ input::placeholder { color: #383838; }
 .p-star-val { font-family: 'Oswald', sans-serif; font-size: 14px; font-weight: 600; text-transform: uppercase; color: #111; letter-spacing: .1em; line-height: 1.6; }
 
 /* APPLE MUSIC POSTER — 390x650 */
-.amp-poster { width: 390px; height: 650px; border-radius: 28px; overflow: hidden; position: relative; flex-shrink: 0; display: none; box-shadow: 0 40px 120px rgba(0,0,0,.95), 0 0 0 0.5px rgba(255,255,255,.08); }
+/* APPLE MUSIC POSTER — clean white iOS style */
+.amp-poster { width: 390px; height: 720px; border-radius: 44px; overflow: hidden; position: relative; flex-shrink: 0; display: none; background: #fff; box-shadow: 0 40px 120px rgba(0,0,0,.35), 0 0 0 0.5px rgba(0,0,0,.06); }
 .amp-poster.active { display: block; }
-.amp-bg { position: absolute; inset: -60px; background-size: cover; background-position: center; filter: blur(48px) saturate(220%) brightness(0.45); z-index: 0; }
-.amp-bg::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,.32); }
-.amp-body { position: relative; z-index: 1; padding: 26px 24px 22px; display: flex; flex-direction: column; height: 100%; }
-.amp-art { width: 100%; aspect-ratio: 1/1; border-radius: 14px; overflow: hidden; background: #1c1c1e; margin-bottom: 22px; flex-shrink: 0; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,.65), 0 0 0 0.5px rgba(255,255,255,.08); }
-#ampImg { position: absolute; display: none; user-select: none; -webkit-user-drag: none; pointer-events: none; }
+.amp-bg { display: none; }
+.amp-body { padding: 32px 28px 28px; display: flex; flex-direction: column; height: 100%; background: #fff; }
+.amp-art { width: 100%; aspect-ratio: 1/1; border-radius: 16px; overflow: hidden; background: #e8e8e8; margin-bottom: 28px; flex-shrink: 0; position: relative; box-shadow: 0 24px 56px rgba(0,0,0,.28), 0 8px 20px rgba(0,0,0,.12); cursor: grab; }
 .amp-art.drag { cursor: grabbing; }
-.amp-art { cursor: grab; }
-.amp-art-ph { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: rgba(255,255,255,.2); font-family: var(--sf); font-size: 11px; letter-spacing: .05em; }
-.amp-art-ph svg { opacity: .22; }
-.amp-year-pill { position: absolute; top: 11px; right: 11px; background: rgba(0,0,0,.52); backdrop-filter: blur(12px); border: 0.5px solid rgba(255,255,255,.12); border-radius: 7px; padding: 3px 9px; font-family: var(--sf); font-size: 12px; font-weight: 600; color: rgba(255,255,255,.7); letter-spacing: .02em; }
-.amp-track { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; flex-shrink: 0; }
+#ampImg { position: absolute; display: none; user-select: none; -webkit-user-drag: none; pointer-events: none; }
+.amp-art-ph { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: #bbb; font-family: var(--sf); font-size: 11px; letter-spacing: .05em; }
+.amp-art-ph svg { opacity: .4; stroke: #bbb; }
+.amp-year-pill { position: absolute; top: 11px; right: 11px; background: rgba(0,0,0,.45); border-radius: 7px; padding: 3px 9px; font-family: var(--sf); font-size: 12px; font-weight: 600; color: rgba(255,255,255,.85); letter-spacing: .02em; }
+.amp-track { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; flex-shrink: 0; }
 .amp-track-text { flex: 1; min-width: 0; }
-.amp-song { font-family: var(--sf); font-weight: 600; font-size: 20px; color: #fff; letter-spacing: -.3px; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.amp-artist { font-family: var(--sf); font-weight: 400; font-size: 15px; color: #fc3c44; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.amp-heart { flex-shrink: 0; margin-left: 12px; cursor: pointer; padding: 4px; transition: transform .12s; }
+.amp-song { font-family: var(--sf); font-weight: 700; font-size: 22px; color: #000; letter-spacing: -.4px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.amp-artist { font-family: var(--sf); font-weight: 400; font-size: 17px; color: #fc3c44; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.amp-heart { flex-shrink: 0; margin-left: 14px; cursor: pointer; padding: 4px; transition: transform .12s; }
 .amp-heart:active { transform: scale(.82); }
-.amp-heart svg { width: 22px; height: 22px; fill: none; stroke: rgba(255,255,255,.35); stroke-width: 1.8; transition: all .2s; }
+.amp-heart svg { width: 24px; height: 24px; fill: none; stroke: #c7c7cc; stroke-width: 1.8; transition: all .2s; }
 .amp-heart.liked svg { fill: #fc3c44; stroke: #fc3c44; }
-.amp-scrub { flex-shrink: 0; margin-bottom: 16px; }
-.amp-bar { height: 4px; background: rgba(255,255,255,.2); border-radius: 2px; cursor: pointer; position: relative; }
-.amp-fill { height: 100%; border-radius: 2px; background: #fff; pointer-events: none; position: relative; }
-.amp-fill::after { content: ''; position: absolute; right: -5px; top: 50%; transform: translateY(-50%); width: 12px; height: 12px; background: #fff; border-radius: 50%; box-shadow: 0 1px 4px rgba(0,0,0,.4); opacity: 0; transition: opacity .15s; }
-.amp-bar:hover .amp-fill::after, .amp-bar.scrubbing .amp-fill::after { opacity: 1; }
-.amp-times { display: flex; justify-content: space-between; margin-top: 5px; font-family: var(--sf); font-size: 11px; font-weight: 500; color: rgba(255,255,255,.38); font-variant-numeric: tabular-nums; }
-.amp-controls { display: flex; align-items: center; justify-content: space-between; padding: 0 4px; flex-shrink: 0; margin-bottom: 18px; }
-.amp-btn { background: none; border: none; cursor: pointer; color: rgba(255,255,255,.75); padding: 6px; display: flex; align-items: center; justify-content: center; transition: color .15s, transform .12s; }
-.amp-btn:active { transform: scale(.86); color: #fff; }
-.amp-btn svg { width: 26px; height: 26px; fill: currentColor; }
-.amp-play { width: 58px; height: 58px; border-radius: 50%; background: rgba(255,255,255,.15); backdrop-filter: blur(10px); border: none; cursor: pointer; color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,.3); transition: transform .12s; }
+.amp-scrub { flex-shrink: 0; margin-top: 20px; margin-bottom: 4px; }
+.amp-bottom-bar { display: flex; align-items: center; justify-content: space-between; padding: 0 8px; flex-shrink: 0; margin-top: 12px; }
+.amp-ico-btn { background: none; border: none; padding: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.amp-ico-btn svg { width: 22px; height: 22px; }
+.amp-bar { height: 3px; background: #e0e0e0; border-radius: 2px; cursor: pointer; position: relative; }
+.amp-fill { height: 100%; border-radius: 2px; background: #fc3c44; pointer-events: none; position: relative; }
+.amp-fill::after { content: ''; position: absolute; right: -8px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; background: #fff; border-radius: 50%; box-shadow: 0 1px 4px rgba(0,0,0,.25); opacity: 1; }
+.amp-times { display: flex; justify-content: space-between; margin-top: 8px; font-family: var(--sf); font-size: 12px; font-weight: 400; color: #8e8e93; font-variant-numeric: tabular-nums; }
+.amp-controls { display: flex; align-items: center; justify-content: space-between; padding: 0 4px; flex-shrink: 0; margin-top: 18px; margin-bottom: 24px; }
+.amp-btn { background: none; border: none; cursor: pointer; color: #000; padding: 6px; display: flex; align-items: center; justify-content: center; transition: opacity .15s, transform .12s; }
+.amp-btn:active { transform: scale(.86); opacity: .6; }
+.amp-btn svg { width: 34px; height: 34px; fill: currentColor; }
+.amp-play { background: none; border: none; cursor: pointer; color: #000; padding: 0; display: flex; align-items: center; justify-content: center; transition: transform .12s; flex-shrink: 0; }
 .amp-play:active { transform: scale(.9); }
-.amp-play svg { width: 28px; height: 28px; fill: #fff; }
-.amp-vol { display: flex; align-items: center; gap: 9px; padding: 0 2px; flex-shrink: 0; }
-.amp-vol svg { flex-shrink: 0; fill: rgba(255,255,255,.4); }
-.amp-vol-bar { flex: 1; height: 4px; background: rgba(255,255,255,.2); border-radius: 2px; cursor: pointer; }
-.amp-vol-fill { height: 100%; background: rgba(255,255,255,.65); border-radius: 2px; }
+.amp-play svg { width: 56px; height: 56px; fill: #000; }
+.amp-btn svg { width: 44px; height: 44px; fill: #000; paint-order: stroke fill; stroke: #000; stroke-width: 0.5px; stroke-linejoin: round; }
+
+.amp-vol { display: flex; align-items: center; gap: 10px; padding: 0 4px; flex-shrink: 0; }
+.amp-vol svg { flex-shrink: 0; fill: #c7c7cc; }
+.amp-vol-bar { flex: 1; height: 3px; background: #e0e0e0; border-radius: 2px; cursor: pointer; }
+.amp-vol-fill { height: 100%; background: #c7c7cc; border-radius: 2px; }
 
 /* FOOTER */
 .footer-trigger { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); z-index: 100; cursor: pointer; }
@@ -359,28 +362,35 @@ input::placeholder { color: #383838; }
             </div>
           </div>
           <div class="amp-controls">
-            <button class="amp-btn" id="ampShuffleBtn" onclick="ampToggleMode(this,'#fc3c44')">
-              <svg viewBox="0 0 24 24"><path d="M16 3l4 4-4 4M20 7H4M16 17l4-4-4-4M20 13H8l-4 4"/></svg>
-            </button>
-            <button class="amp-btn" onclick="ampSkip(-5)">
-              <svg viewBox="0 0 24 24"><path d="M19 20L9 12l10-8v16zM5 4h2v16H5z"/></svg>
+            <!-- Rewind: two triangles pointing left ⏮ -->
+            <button class="amp-btn" onclick="ampSkip(-10)">
+              <svg viewBox="0 0 24 24" fill="#1c1c1e"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6L11.5 12z"/></svg>
             </button>
             <button class="amp-play" id="ampPlayBtn" onclick="ampTogglePlay()">
-              <svg id="ampPlayIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              <svg id="ampPlayIcon" viewBox="0 0 24 24" fill="#1c1c1e"><path d="M8 5v14l11-7z"/></svg>
             </button>
-            <button class="amp-btn" onclick="ampSkip(5)">
-              <svg viewBox="0 0 24 24"><path d="M5 4l10 8-10 8V4zM17 4h2v16h-2z"/></svg>
-            </button>
-            <button class="amp-btn" id="ampRepeatBtn" onclick="ampToggleMode(this,'#fc3c44')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+            <!-- Forward: two triangles pointing right ⏭ -->
+            <button class="amp-btn" onclick="ampSkip(10)">
+              <svg viewBox="0 0 24 24" fill="#1c1c1e"><path d="M13 18V6l8.5 6L13 18zm-.5-6L4 6v12l8.5-6z"/></svg>
             </button>
           </div>
           <div class="amp-vol">
-            <svg width="13" height="13" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/></svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="#c7c7cc"><path d="M11 5L6 9H2v6h4l5 4V5z"/></svg>
             <div class="amp-vol-bar" id="ampVolBar" onclick="ampSetVol(event)">
               <div class="amp-vol-fill" id="ampVolFill" style="width:68%"></div>
             </div>
-            <svg width="16" height="16" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#c7c7cc"><path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>
+          </div>
+          <div class="amp-bottom-bar">
+            <button class="amp-ico-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#c7c7cc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            </button>
+            <button class="amp-ico-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#c7c7cc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
+            </button>
+            <button class="amp-ico-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#c7c7cc" stroke-width="1.8" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            </button>
           </div>
         </div>
       </div>
@@ -404,7 +414,7 @@ input::placeholder { color: #383838; }
 <script>
 // ── Constants ────────────────────────────────────────────────────────────────
 const PW = 564, PH = 780, FX = 20, FY = 20, FW = 524, FH = 560;
-const SITE_URL = 'https://frameset-studio.vercel.app';
+const SITE_URL = 'https://frameset.vercel.app';
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/du9uiyufc/image/upload';
 const CLOUDINARY_PRESET = 'frameset_gallery';
 
@@ -696,7 +706,7 @@ function downloadPoster() {
 
 // ── Apple Music download ─────────────────────────────────────────────────────
 function ampDownload() {
-  var EX = 3, W = 390, H = 650;
+  var EX = 3, W = 390, H = 720;
   var cv = document.createElement('canvas');
   cv.width = W * EX; cv.height = H * EX;
   var ctx = cv.getContext('2d');
@@ -714,14 +724,17 @@ function ampDownload() {
     srcCV.width  = W * EX + PAD * 2;
     srcCV.height = H * EX + PAD * 2;
     var srcCtx = srcCV.getContext('2d');
+    // cover: scale image so it fills the entire srcCV with no gaps
     var bgS = Math.max(srcCV.width / ai.naturalWidth, srcCV.height / ai.naturalHeight);
     var bgW = ai.naturalWidth * bgS, bgH = ai.naturalHeight * bgS;
-    srcCtx.drawImage(ai, (srcCV.width - bgW) / 2, (srcCV.height - bgH) / 2, bgW, bgH);
+    var bgX = (srcCV.width  - bgW) / 2;
+    var bgY = (srcCV.height - bgH) / 2;
+    srcCtx.drawImage(ai, bgX, bgY, bgW, bgH);
 
     // 2. Pure pixel blur — works on ALL browsers including iOS Safari (no ctx.filter)
     // Strategy: work at a small size (fast + strong blur), then scale up.
     // 3 passes of box blur at small size ≈ Gaussian. Then darken + desaturate.
-    var BSCALE = 24; // work at 1/8th size — gives strong blur when scaled up
+    var BSCALE = 8; // work at 1/8th size — gives strong blur when scaled up
     var bW = Math.ceil((W * EX) / BSCALE);
     var bH = Math.ceil((H * EX) / BSCALE);
 
@@ -790,11 +803,11 @@ function ampDownload() {
       var rr2 = px2[i], gg = px2[i+1], bb = px2[i+2];
       // brightness 0.45
       rr2 *= 0.45; gg *= 0.45; bb *= 0.45;
-      // saturation boost (220% = multiply saturation by 2.2)
+      // saturation (120% = 1.2x, more muted)
       var avg = (rr2 + gg + bb) / 3;
-      rr2 = avg + (rr2 - avg) * 2.2;
-      gg  = avg + (gg  - avg) * 2.2;
-      bb  = avg + (bb  - avg) * 2.2;
+      rr2 = avg + (rr2 - avg) * 1.2;
+      gg  = avg + (gg  - avg) * 1.2;
+      bb  = avg + (bb  - avg) * 1.2;
       px2[i]   = Math.min(255, Math.max(0, rr2));
       px2[i+1] = Math.min(255, Math.max(0, gg));
       px2[i+2] = Math.min(255, Math.max(0, bb));
@@ -812,103 +825,150 @@ function ampDownload() {
     // replace blurCV ref so stamp step below still works
     blurCV = fullBlurCV;
 
-    // 3. Stamp the blurred canvas onto main canvas with rounded clip (pre-scale coords)
-    ctx.save();
-    // clip in physical pixels (no scale applied yet)
-    var R = 28 * EX;
-    ctx.beginPath();
-    ctx.moveTo(R, 0); ctx.lineTo(W*EX-R, 0);
-    ctx.quadraticCurveTo(W*EX, 0, W*EX, R);
-    ctx.lineTo(W*EX, H*EX-R); ctx.quadraticCurveTo(W*EX, H*EX, W*EX-R, H*EX);
-    ctx.lineTo(R, H*EX); ctx.quadraticCurveTo(0, H*EX, 0, H*EX-R);
-    ctx.lineTo(0, R); ctx.quadraticCurveTo(0, 0, R, 0);
-    ctx.closePath(); ctx.clip();
-    ctx.drawImage(blurCV, 0, 0);
-    ctx.restore();
-  } else {
-    ctx.fillStyle = '#111';
-    var R0 = 28 * EX;
-    ctx.beginPath();
-    ctx.moveTo(R0,0); ctx.lineTo(W*EX-R0,0); ctx.quadraticCurveTo(W*EX,0,W*EX,R0);
-    ctx.lineTo(W*EX,H*EX-R0); ctx.quadraticCurveTo(W*EX,H*EX,W*EX-R0,H*EX);
-    ctx.lineTo(R0,H*EX); ctx.quadraticCurveTo(0,H*EX,0,H*EX-R0);
-    ctx.lineTo(0,R0); ctx.quadraticCurveTo(0,0,R0,0); ctx.closePath(); ctx.fill();
+    // blur not used — white bg
   }
+  // white poster with rounded corners
+  var R = 44 * EX;
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(R,0); ctx.lineTo(W*EX-R,0); ctx.quadraticCurveTo(W*EX,0,W*EX,R);
+  ctx.lineTo(W*EX,H*EX-R); ctx.quadraticCurveTo(W*EX,H*EX,W*EX-R,H*EX);
+  ctx.lineTo(R,H*EX); ctx.quadraticCurveTo(0,H*EX,0,H*EX-R);
+  ctx.lineTo(0,R); ctx.quadraticCurveTo(0,0,R,0); ctx.closePath();
+  ctx.fillStyle = '#fff'; ctx.fill();
+  ctx.restore();
 
   // Now apply scale for all remaining drawing
   ctx.scale(EX, EX);
-  // artwork
-  var AS = W-52, AX = 26, AY = 26;
-  ctx.save(); rr(AX,AY,AS,AS,14); ctx.clip();
+  // white background for whole poster
+  // artwork — square, with rounded corners and shadow
+  var PAD2 = 24, AS = W - PAD2*2, AX = PAD2, AY = 28;
+  ctx.save();
+  // shadow
+  ctx.shadowColor = 'rgba(0,0,0,0.28)';
+  ctx.shadowBlur = 40; ctx.shadowOffsetY = 16;
+  ctx.fillStyle = '#e0e0e0'; rr(AX,AY,AS,AS,16); ctx.fill();
+  ctx.shadowColor = 'transparent';
+  rr(AX,AY,AS,AS,16); ctx.clip();
   if (ai.naturalWidth) {
     var sc = Math.max(AS/ampNatW, AS/ampNatH);
     var aDW = ampNatW*sc, aDH = ampNatH*sc;
     var box = document.getElementById('ampArtFrame');
     var ratio = AS / box.offsetWidth;
     ctx.drawImage(ai, AX + ampPx*ratio, AY + ampPy*ratio, aDW*ratio, aDH*ratio);
-  } else { ctx.fillStyle='#1c1c1e'; ctx.fillRect(AX,AY,AS,AS); }
-  // watermark — same style as minimalist, inside artwork clip
+  } else { ctx.fillStyle='#e0e0e0'; ctx.fillRect(AX,AY,AS,AS); }
+  // watermark inside artwork
   ctx.font = '700 11px Oswald, sans-serif';
-  ctx.fillStyle = 'rgba(200,185,154,0.55)';
-  ctx.fillText('FRAMESET', AX + 12, AY + 22);
+  ctx.fillStyle = 'rgba(200,185,154,0.6)';
+  ctx.fillText('FRAMESET', AX+12, AY+22);
   ctx.restore();
+
   // year pill
   var yr = va('aYear');
   if (yr) {
     ctx.font = '600 12px Helvetica Neue, sans-serif';
     var pw = ctx.measureText(yr).width + 18;
-    ctx.fillStyle = 'rgba(0,0,0,.52)'; rr(AX+AS-pw-10,AY+10,pw,22,6); ctx.fill();
-    ctx.fillStyle = 'rgba(255,255,255,.7)'; ctx.fillText(yr, AX+AS-pw-10+9, AY+25);
+    ctx.fillStyle = 'rgba(0,0,0,.45)'; rr(AX+AS-pw-10,AY+10,pw,22,7); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,.88)'; ctx.fillText(yr, AX+AS-pw-10+9, AY+25);
   }
-  var iy = AY+AS+22;
-  ctx.fillStyle='#fff'; ctx.font='600 20px Helvetica Neue, sans-serif';
-  ctx.fillText(va('aTitle') || 'Movie Title', 26, iy);
-  ctx.fillStyle='#fc3c44'; ctx.font='400 15px Helvetica Neue, sans-serif';
-  ctx.fillText(va('aDirector') || 'Director Name', 26, iy+22);
+
+  // track info
+  var iy = AY + AS + 26;
+  ctx.fillStyle = '#000'; ctx.font = '700 22px Helvetica Neue, sans-serif';
+  ctx.fillText(va('aTitle') || 'Movie Title', PAD2, iy);
+  ctx.fillStyle = '#fc3c44'; ctx.font = '400 17px Helvetica Neue, sans-serif';
+  ctx.fillText(va('aDirector') || 'Director Name', PAD2, iy+26);
+
   // scrubber
-  var bw = W-52, by = iy+44;
-  ctx.fillStyle='rgba(255,255,255,.2)'; rr(26,by,bw,4,2); ctx.fill();
-  ctx.fillStyle='#fff'; rr(26,by,bw*(ampProgress/100),4,2); ctx.fill();
-  var tx = 26+bw*(ampProgress/100);
-  ctx.beginPath(); ctx.arc(tx,by+2,5,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
-  ctx.fillStyle='rgba(255,255,255,.4)'; ctx.font='500 11px Helvetica Neue, sans-serif';
-  ctx.fillText(document.getElementById('ampElapsed').textContent, 26, by+18);
-  var rm = document.getElementById('ampRemain').textContent;
-  ctx.fillText(rm, 26+bw-ctx.measureText(rm).width, by+18);
-  // controls
-  var cy = by+50;
-  function icon(path, cx, size, filled) {
-    ctx.save(); ctx.translate(cx-size/2, cy-size/2); ctx.scale(size/24,size/24);
-    var p2 = new Path2D(path);
-    ctx.fillStyle='rgba(255,255,255,0.75)'; ctx.strokeStyle='rgba(255,255,255,0.75)';
-    ctx.lineWidth=24/size*1.5; ctx.lineJoin='round'; ctx.lineCap='round';
-    filled ? ctx.fill(p2) : ctx.stroke(p2); ctx.restore();
-  }
-  icon('M16 3l4 4-4 4M20 7H4M16 17l4-4-4-4M20 13H8l-4 4', 40, 20, false);
-  icon('M19 20L9 12l10-8v16zM5 4h2v16H5z', 105, 24, true);
-  var pcx = W/2, pr = 29;
-  ctx.save(); ctx.beginPath(); ctx.arc(pcx, cy, pr, 0, Math.PI*2); ctx.fillStyle='rgba(255,255,255,.15)'; ctx.fill(); ctx.restore();
-  if (ampPlaying) {
-  var bw2=5, bh2=18, gap=5;
-  ctx.fillStyle='#fff';
-  ctx.fillRect(pcx - gap/2 - bw2, cy - bh2/2, bw2, bh2);
-  ctx.fillRect(pcx + gap/2, cy - bh2/2, bw2, bh2);
-  } else {
-  var iSize = pr * 1.8;
-  ctx.save();
-  ctx.translate(pcx - iSize/2 + 2, cy - iSize/2);
-  ctx.scale(iSize/24, iSize/24);
-  var p2 = new Path2D('M8 5v14l11-7z');
-  ctx.fillStyle = '#fff'; ctx.fill(p2);
+  var bw = W - PAD2*2, by = iy + 56;
+  ctx.fillStyle = '#e0e0e0'; rr(PAD2, by, bw, 3, 2); ctx.fill();
+  ctx.fillStyle = '#fc3c44'; rr(PAD2, by, bw*(ampProgress/100), 3, 2); ctx.fill();
+  var tx2 = PAD2 + bw*(ampProgress/100);
+  ctx.save(); ctx.shadowColor='rgba(0,0,0,.2)'; ctx.shadowBlur=6; ctx.shadowOffsetY=2;
+  ctx.beginPath(); ctx.arc(tx2, by+1.5, 8, 0, Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
   ctx.restore();
-}
-  icon('M5 4l10 8-10 8V4zM17 4h2v16h-2z', 285, 24, true);
-  icon('M17 1l4 4-4 4M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 01-4 4H3', 350, 20, false);
-  // volume
-  var vy = cy+46;
-  var vx=44, vw=W-44-30, volPct=parseInt(document.getElementById('ampVolFill').style.width)||68;
-  ctx.fillStyle='rgba(255,255,255,.2)'; rr(vx,vy,vw,4,2); ctx.fill();
-  ctx.fillStyle='rgba(255,255,255,.65)'; rr(vx,vy,vw*(volPct/100),4,2); ctx.fill();
+  // times
+  ctx.fillStyle = '#8e8e93'; ctx.font = '400 12px Helvetica Neue, sans-serif';
+  ctx.fillText(document.getElementById('ampElapsed').textContent, PAD2, by+20);
+  var rm = document.getElementById('ampRemain').textContent;
+  ctx.fillText(rm, PAD2+bw-ctx.measureText(rm).width, by+20);
+
+  // controls row — match preview spacing (space-between, padding 10px each side)
+  var cy = by + 68;
+  var pcx = W/2;
+  var iconL = 46;          // left icon center (matches preview ~34px + half icon)
+  var iconR = W - 46;      // right icon center
+  function filledIcon(path, cx, icx, size) {
+    ctx.save(); ctx.translate(cx-size/2, icx-size/2); ctx.scale(size/24,size/24);
+    var p2 = new Path2D(path);
+    ctx.fillStyle='#000'; ctx.fill(p2);
+    ctx.strokeStyle='#000'; ctx.lineWidth=2.2; ctx.lineJoin='round'; ctx.stroke(p2);
+    ctx.restore();
+  }
+  // rewind — double chevron left, far left
+  filledIcon('M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6L11.5 12z', iconL, cy, 44);
+  // play/pause — center
+  if (ampPlaying) {
+    var bw2=10, bh2=48, gap=13;
+    ctx.fillStyle='#000';
+    ctx.fillRect(pcx-gap/2-bw2, cy-bh2/2, bw2, bh2);
+    ctx.fillRect(pcx+gap/2, cy-bh2/2, bw2, bh2);
+  } else {
+    // play — match preview exactly: 56px svg, path M8 5v14l11-7z in 24x24 viewbox
+    var iSize = 56;
+    ctx.save();
+    ctx.translate(pcx - iSize/2 + 2, cy - iSize/2);
+    ctx.scale(iSize/24, iSize/24);
+    var playPath = new Path2D('M8 5v14l11-7z');
+    ctx.fillStyle = '#000';
+    ctx.fill(playPath);
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 2.5;
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.stroke(playPath);
+    ctx.restore();
+  }
+  // forward — double chevron right, far right
+  filledIcon('M13 18V6l8.5 6L13 18zm-.5-6L4 6v12l8.5-6z', iconR, cy, 44);
+
+  // heart icon — top right of track info (drawn after controls)
+  var heartX = W - PAD2 - 12, heartY = iy - 6;
+  ctx.save();
+  ctx.translate(heartX - 12, heartY - 12); ctx.scale(24/24, 24/24);
+  var heartPath = new Path2D('M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z');
+  if (ampLiked) {
+    ctx.fillStyle = '#fc3c44'; ctx.fill(heartPath);
+  } else {
+    ctx.strokeStyle = '#c7c7cc'; ctx.lineWidth = 1.6;
+    ctx.lineJoin = 'round'; ctx.stroke(heartPath);
+  }
+  ctx.restore();
+
+  // volume bar
+  var vy = cy + 58;
+  var vx=PAD2+16, vw=W-PAD2*2-32, volPct=parseInt(document.getElementById('ampVolFill').style.width)||68;
+  ctx.fillStyle='#e0e0e0'; rr(vx,vy,vw,3,2); ctx.fill();
+  ctx.fillStyle='#c7c7cc'; rr(vx,vy,vw*(volPct/100),3,2); ctx.fill();
+  // volume thumb
+  var volThumbX = vx + vw*(volPct/100);
+  ctx.save(); ctx.shadowColor='rgba(0,0,0,.15)'; ctx.shadowBlur=4; ctx.shadowOffsetY=1;
+  ctx.beginPath(); ctx.arc(volThumbX, vy+1.5, 7, 0, Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
+  ctx.restore();
+
+  // bottom 3 icons
+  var biy = vy + 44;
+  function strokeIco(path, cx, size) {
+    ctx.save(); ctx.translate(cx-size/2, biy-size/2); ctx.scale(size/24,size/24);
+    ctx.strokeStyle='#c7c7cc'; ctx.lineWidth=24/size*1.8;
+    ctx.lineJoin='round'; ctx.lineCap='round';
+    ctx.stroke(new Path2D(path)); ctx.restore();
+  }
+  strokeIco('M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z', W*0.2, 22);
+  strokeIco('M12 2a10 10 0 100 20A10 10 0 0012 2zM8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85', W*0.5, 22);
+  strokeIco('M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01', W*0.8, 22);
+
+
 
   cv.toBlob(function(blob) {
     lastPosterBlob = blob;
