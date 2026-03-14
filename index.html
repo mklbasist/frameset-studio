@@ -886,9 +886,22 @@ function ampDownload() {
   }
   icon('M16 3l4 4-4 4M20 7H4M16 17l4-4-4-4M20 13H8l-4 4', 40, 20, false);
   icon('M19 20L9 12l10-8v16zM5 4h2v16H5z', 105, 24, true);
-  ctx.save(); ctx.beginPath(); ctx.arc(195,cy,28,0,Math.PI*2); ctx.fillStyle='rgba(255,255,255,.15)'; ctx.fill(); ctx.restore();
-  if (ampPlaying) { ctx.fillStyle='#fff'; ctx.fillRect(185,cy-11,5,22); ctx.fillRect(196,cy-11,5,22); }
-  else { icon('M8 5v14l11-7z', 196, 26, true); }
+  var pcx = W/2, pr = 29;
+  ctx.save(); ctx.beginPath(); ctx.arc(pcx, cy, pr, 0, Math.PI*2); ctx.fillStyle='rgba(255,255,255,.15)'; ctx.fill(); ctx.restore();
+  if (ampPlaying) {
+  var bw2=5, bh2=18, gap=5;
+  ctx.fillStyle='#fff';
+  ctx.fillRect(pcx - gap/2 - bw2, cy - bh2/2, bw2, bh2);
+  ctx.fillRect(pcx + gap/2, cy - bh2/2, bw2, bh2);
+  } else {
+  var iSize = pr * 1.8;
+  ctx.save();
+  ctx.translate(pcx - iSize/2 + 2, cy - iSize/2);
+  ctx.scale(iSize/24, iSize/24);
+  var p2 = new Path2D('M8 5v14l11-7z');
+  ctx.fillStyle = '#fff'; ctx.fill(p2);
+  ctx.restore();
+}
   icon('M5 4l10 8-10 8V4zM17 4h2v16h-2z', 285, 24, true);
   icon('M17 1l4 4-4 4M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 01-4 4H3', 350, 20, false);
   // volume
